@@ -5,25 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>아빠와 아들 | 프리미엄 가구 이동·폐기 서비스</title>
     
+    <!-- Fonts -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
+    <!-- Animations -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1A292F',    /* 헤리티지 네이비  */
-                        secondary: '#F5F5F4',  /* 웜 샌드  */
-                        accent: '#0D9488',     /* 일렉트릭 틸  */
-                        success: '#10B981'     /* 에메랄드 그린  */
+                        primary: '#1A292F',    /* 헤리티지 네이비 */
+                        secondary: '#F5F5F4',  /* 웜 샌드 */
+                        accent: '#0D9488',     /* 일렉트릭 틸 */
+                        success: '#10B981'     /* 에메랄드 그린 */
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'Inter', 'sans-serif']
+                        sans: ['Pretendard', 'Inter', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif']
                     }
                 }
             }
@@ -31,324 +35,457 @@
     </script>
 
     <style>
-        body { background-color: #fff; word-break: keep-all; overflow-x: hidden; }
-        .font-inter { font-family: 'Inter', sans-serif; }
+        body { background-color: #fff; word-break: keep-all; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        /* 볼드 미니멀리즘 디자인 적용 [cite: 34] */
-        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
-        .hero-video-overlay { background: linear-gradient(to bottom, rgba(26,41,47,0.8), rgba(26,41,47,0.4)); }
-        
-        /* 30초 견적 버튼 맥박 애니메이션 [cite: 66] */
+        /* 텍스트 애니메이션 */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee { display: inline-block; animation: marquee 40s linear infinite; }
+
+        /* 맥박 애니메이션 */
         @keyframes pulse-teal {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 15px rgba(13, 148, 136, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
         }
         .animate-pulse-teal { animation: pulse-teal 2s infinite; }
 
-        /* 스티키 바텀 내비게이션 스타일 [cite: 86] */
-        .sticky-nav { height: 65px; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); }
+        /* 비포애프터 슬라이더 */
+        .comparison-slider { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 2rem; }
+        .comparison-before { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .comparison-after { position: absolute; inset: 0; width: 50%; height: 100%; overflow: hidden; border-right: 3px solid white; transition: width 0.1s ease-out; }
+        .comparison-after img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; max-width: none; }
+        .slider-control { position: absolute; left: 50%; top: 0; bottom: 0; width: 40px; margin-left: -20px; cursor: ew-resize; z-index: 10; display: flex; align-items: center; justify-content: center; transition: left 0.1s ease-out; }
+        .slider-control-btn { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; items-center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-weight: bold; color: #1A292F; }
 
-        /* 비포애프터 슬라이더 간이 구현 [cite: 75] */
-        .slider-handle { position: absolute; top: 0; bottom: 0; width: 2px; background: white; left: 50%; cursor: ew-resize; }
-        .slider-handle::after { content: '↔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; width: 30px; height: 30px; border-radius: 50%; display: flex; items-center; justify-content: center; font-weight: bold; color: #1A292F; }
+        /* 글래스모피즘 */
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        
+        /* 커스텀 스크롤바 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #1A292F; border-radius: 10px; }
+
+        /* 모바일 네비게이션 안전 영역 */
+        .pb-safe { padding-bottom: calc(75px + env(safe-area-inset-bottom)); }
     </style>
 </head>
-<body class="text-primary">
+<body class="text-primary font-sans">
 
-    <div class="fixed top-0 w-full z-[60] bg-primary text-white text-[10px] font-bold py-2 px-6 flex justify-between items-center tracking-widest uppercase">
+    <!-- 최상단 배너 (Trust Badge) -->
+    <div class="fixed top-0 w-full z-[60] bg-primary text-white text-[10px] md:text-xs font-bold py-2 px-6 flex justify-between items-center tracking-widest uppercase">
         <div class="flex gap-4">
-            <span>15년 무사고</span>
-            <span>누적 5,717건</span>
-            <span>고객만족 9.9</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-shield-check"></i> 15년 무사고</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-truck-moving"></i> 누적 5,717건</span>
+            <span class="flex items-center gap-1 text-success"><i class="fa-solid fa-star"></i> 고객만족 9.9</span>
         </div>
-        <div class="hidden md:block">Premium Furniture Service</div>
+        <div class="hidden md:block opacity-50">Premium Furniture Logistics Service</div>
     </div>
 
-    <header class="fixed top-8 w-full z-50 px-6">
-        <div class="max-w-7xl mx-auto flex justify-between items-center h-16 bg-white/70 backdrop-blur-md rounded-2xl px-6 border border-gray-100">
+    <!-- 헤더 -->
+    <header class="fixed top-10 w-full z-50 px-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center h-16 glass rounded-2xl px-6">
             <h1 class="font-black text-xl tracking-tighter italic">아빠와 아들</h1>
             <nav class="hidden md:flex gap-8 text-sm font-bold">
-                <a href="#services">서비스</a>
-                <a href="#stories">포트폴리오</a>
-                <a href="#quote" class="text-accent">무료견적</a>
+                <a href="#services" class="hover:text-accent transition-colors">서비스</a>
+                <a href="#stories" class="hover:text-accent transition-colors">포트폴리오</a>
+                <a href="#quote" class="text-accent hover:underline">무료견적</a>
             </nav>
-            <a href="tel:01000000000" class="md:hidden text-accent font-black text-sm">급행상담</a>
+            <a href="tel:01000000000" class="text-accent font-black text-sm flex items-center gap-2">
+                <i class="fa-solid fa-phone"></i> <span class="hidden sm:inline">빠른 상담</span>
+            </a>
         </div>
     </header>
 
+    <!-- 히어로 섹션 -->
     <section class="relative h-screen flex items-center justify-center text-center px-6 overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1581706196308-746369796677?auto=format&fit=crop&q=80" class="w-full h-full object-cover scale-110">
-            <div class="absolute inset-0 hero-video-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1581706196308-746369796677?auto=format&fit=crop&q=80" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/40 to-primary/80"></div>
         </div>
 
-        <div class="relative z-10 text-white" data-aos="fade-up">
-            <p class="font-bold text-accent mb-4 tracking-[0.2em] uppercase text-sm">Moved by Family, Handled by Pros [cite: 140]</p>
-            <h2 class="text-4xl md:text-6xl font-black mb-6 leading-[1.15]">
-                15년의 노하우, <span class="font-inter">5,717</span>번의 약속.<br>
-                진심을 담아 옮깁니다. [cite: 63]
+        <div class="relative z-10 text-white max-w-4xl" data-aos="fade-up">
+            <p class="font-bold text-accent mb-4 tracking-[0.3em] uppercase text-xs md:text-sm">Moved by Family, Handled by Pros</p>
+            <h2 class="text-4xl md:text-7xl font-black mb-8 leading-[1.1] md:tracking-tight">
+                15년의 노하우,<br>
+                <span class="font-inter">5,717</span>번의 약속.<br>
+                진심을 담아 옮깁니다.
             </h2>
-            <p class="text-lg md:text-xl font-medium text-white/70 mb-12">
-                아빠의 경험과 아들의 열정으로 완성하는<br class="md:hidden"> 프리미엄 가구 이동 서비스 [cite: 64]
+            <p class="text-base md:text-xl font-medium text-white/70 mb-12">
+                아버지의 노련함과 아들의 정교함이 만났습니다.<br class="hidden md:block">
+                단순한 운송이 아닌, 고객의 소중한 일상을 이동시킵니다.
             </p>
             
             <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
-                <a href="#quote" class="animate-pulse-teal bg-accent text-white px-10 py-5 rounded-full font-black text-lg shadow-2xl transition-transform active:scale-95">
-                    30초 무료 견적 받기 [cite: 66]
+                <a href="#quote" class="animate-pulse-teal bg-accent text-white px-10 py-5 rounded-full font-black text-lg shadow-2xl transition-all hover:brightness-110 active:scale-95 w-full md:w-auto">
+                    30초 무료 견적 받기
                 </a>
-                <button onclick="alert('카톡 상담으로 연결됩니다.')" class="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-5 rounded-full font-bold flex items-center gap-2">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" class="w-5 h-5"> 카카오톡 간편 상담 [cite: 67]
+                <button onclick="window.open('https://pf.kakao.com/')" class="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-5 rounded-full font-bold flex items-center justify-center gap-3 w-full md:w-auto hover:bg-white/20 transition-all">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" class="w-5 h-5"> 카카오톡 상담
                 </button>
             </div>
         </div>
         
-        <div class="absolute bottom-20 w-full overflow-hidden bg-white/5 py-3 backdrop-blur-sm border-y border-white/10">
-            <div class="whitespace-nowrap inline-block animate-marquee text-[11px] text-white/50 font-medium">
-                서울 강남구 소파 이동 완료 (방금 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 경기 분당구 침대 폐기 완료 (1시간 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 화성 동탄 장롱 이전 설치 완료 (3시간 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 
+        <!-- 실시간 트러스트 티커 -->
+        <div class="absolute bottom-24 w-full overflow-hidden bg-black/30 py-3 backdrop-blur-sm border-y border-white/10">
+            <div class="animate-marquee whitespace-nowrap text-[11px] text-white/70 font-bold uppercase tracking-widest">
+                서울 강남구 소파 이동 완료 (방금 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 경기 분당구 침대 폐기 완료 (1시간 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 화성 동탄 장롱 이전 설치 완료 (3시간 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 서울 송파구 냉장고 운송 완료 (방금 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 서울 강남구 소파 이동 완료 (방금 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 경기 분당구 침대 폐기 완료 (1시간 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 화성 동탄 장롱 이전 설치 완료 (3시간 전) ⭐⭐⭐⭐⭐ &nbsp;&nbsp;&nbsp; 서울 송파구 냉장고 운송 완료 (방금 전) ⭐⭐⭐⭐⭐
             </div>
         </div>
     </section>
 
-    <section class="py-20 bg-secondary px-6">
-        <div class="max-w-5xl mx-auto grid grid-cols-3 gap-8">
+    <!-- 통계 섹션 -->
+    <section class="py-16 bg-secondary px-6">
+        <div class="max-w-5xl mx-auto grid grid-cols-3 gap-4 md:gap-8">
             <div class="text-center" data-aos="fade-up">
-                <p class="text-[10px] font-black text-gray-400 mb-2 tracking-widest uppercase">Experience</p>
-                <p class="text-4xl font-inter font-black">15</p>
-                <p class="text-sm font-bold mt-2">현장 경력(년)</p>
+                <p class="text-[9px] md:text-[10px] font-black text-gray-400 mb-2 tracking-widest uppercase">Experience</p>
+                <p class="text-3xl md:text-5xl font-inter font-black text-primary">15</p>
+                <p class="text-xs md:text-sm font-bold mt-2">현장 경력(년)</p>
             </div>
-            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-                <p class="text-[10px] font-black text-accent mb-2 tracking-widest uppercase">Total Jobs</p>
-                <p class="text-4xl font-inter font-black">5,717</p>
-                <p class="text-sm font-bold mt-2 text-accent">누적 작업 수</p>
+            <div class="text-center border-x border-gray-200" data-aos="fade-up" data-aos-delay="100">
+                <p class="text-[9px] md:text-[10px] font-black text-accent mb-2 tracking-widest uppercase">Total Jobs</p>
+                <p class="text-3xl md:text-5xl font-inter font-black text-accent">5,717</p>
+                <p class="text-xs md:text-sm font-bold mt-2">누적 작업 수</p>
             </div>
             <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-                <p class="text-[10px] font-black text-success mb-2 tracking-widest uppercase">Rating</p>
-                <p class="text-4xl font-inter font-black">9.9<span class="text-lg text-gray-400">/10</span></p>
-                <p class="text-sm font-bold mt-2">고객 만족도</p>
+                <p class="text-[9px] md:text-[10px] font-black text-success mb-2 tracking-widest uppercase">Rating</p>
+                <p class="text-3xl md:text-5xl font-inter font-black text-primary">9.9<span class="text-lg text-gray-400">/10</span></p>
+                <p class="text-xs md:text-sm font-bold mt-2">고객 만족도</p>
             </div>
         </div>
     </section>
 
+    <!-- 브랜드 가치 섹션 -->
     <section class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right">
-                <span class="bg-gray-100 px-4 py-1.5 rounded-full text-[11px] font-black text-gray-400 mb-6 inline-block tracking-widest">PAIN POINTS [cite: 13]</span>
-                <h3 class="text-3xl font-black mb-8 leading-tight italic">"혹시 이런 걱정 하고 계신가요?" [cite: 72]</h3>
-                <ul class="space-y-6">
-                    <li class="flex items-start gap-4">
-                        <i class="fa-solid fa-circle-exclamation text-red-400 mt-1"></i>
-                        <div>
-                            <p class="font-bold">낯선 사람 방문에 대한 불안감 [cite: 13]</p>
-                            <p class="text-sm text-gray-500">누가 오는지 알 수 없는 불안한 서비스는 이제 그만</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fa-solid fa-circle-exclamation text-red-400 mt-1"></i>
-                        <div>
-                            <p class="font-bold">고가 가구 파손 및 마루 긁힘 걱정 [cite: 13]</p>
-                            <p class="text-sm text-gray-500">소중한 우리 집 인테리어가 손상될까 봐 망설여지시나요?</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fa-solid fa-circle-exclamation text-red-400 mt-1"></i>
-                        <div>
-                            <p class="font-bold">불투명한 추가 비용 요구 [cite: 13, 29]</p>
-                            <p class="text-sm text-gray-500">현장에서 갑자기 말을 바꾸는 '바가지 요금'에 지치셨나요?</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="bg-primary rounded-[2.5rem] p-10 text-white" data-aos="fade-left">
-                <h3 class="text-3xl font-black mb-8 leading-tight">아빠와 아들은 다릅니다 [cite: 73]</h3>
+                <span class="bg-secondary px-4 py-1.5 rounded-full text-[11px] font-black text-gray-400 mb-6 inline-block tracking-widest uppercase">Why Choose Us</span>
+                <h3 class="text-3xl md:text-4xl font-black mb-8 leading-tight italic">"이사할 때 느꼈던<br>그 불안함을 잘 압니다."</h3>
                 <div class="space-y-8">
-                    <div class="flex items-center gap-6">
-                        <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center text-accent">
-                            <i class="fa-solid fa-shield-heart text-2xl"></i>
+                    <div class="flex gap-5">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
+                            <i class="fa-solid fa-user-slash text-xl"></i>
                         </div>
                         <div>
-                            <p class="font-bold text-lg">완벽 책임 보상제 [cite: 73]</p>
-                            <p class="text-sm text-white/50">파손 시 100% 책임지는 안심 보증 시스템</p>
+                            <p class="font-bold text-lg mb-1">불투명한 외부 인력 No</p>
+                            <p class="text-sm text-gray-500 leading-relaxed">아르바이트나 파견직을 쓰지 않습니다. 15년 경력의 부자가 직접 모든 현장을 책임집니다.</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-6">
-                        <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center text-accent">
-                            <i class="fa-solid fa-hand-holding-dollar text-2xl"></i>
+                    <div class="flex gap-5">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-500">
+                            <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
                         </div>
                         <div>
-                            <p class="font-bold text-lg">투명한 정찰제 운영 [cite: 73]</p>
-                            <p class="text-sm text-white/50">견적 그대로, 현장 추가금 요구 절대 없음</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-6">
-                        <div class="w-14 h-14 bg-accent/20 rounded-2xl flex items-center justify-center text-accent">
-                            <i class="fa-solid fa-user-check text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="font-bold text-lg">부자(父子) 실명제 서비스 [cite: 6, 8]</p>
-                            <p class="text-sm text-white/50">아르바이트 없이 전문가 부자가 직접 방문</p>
+                            <p class="font-bold text-lg mb-1">현장 추가금 요구 No</p>
+                            <p class="text-sm text-gray-500 leading-relaxed">온라인 견적 그대로 진행합니다. 현장에서 말을 바꾸는 바가지 요금 걱정은 이제 그만하세요.</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="bg-primary rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden" data-aos="fade-left">
+                <div class="relative z-10">
+                    <h3 class="text-2xl md:text-3xl font-black mb-10">우리가 약속하는<br>3대 프리미엄 원칙</h3>
+                    <div class="space-y-10">
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
+                                <i class="fa-solid fa-shield-heart text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-lg mb-1">완벽 책임 보상제</p>
+                                <p class="text-sm text-white/50">가구 파손 및 마루 긁힘 시 100% 보상을 약속합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
+                                <i class="fa-solid fa-clock-rotate-left text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-lg mb-1">투명 정찰제 시스템</p>
+                                <p class="text-sm text-white/50">정확한 기준에 의한 정찰제 운영으로 신뢰를 더합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
+                                <i class="fa-solid fa-users-gear text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-lg mb-1">부자(父子) 실명제</p>
+                                <p class="text-sm text-white/50">아빠의 경험과 아들의 섬세함이 모든 과정을 기록합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl"></div>
+            </div>
         </div>
     </section>
 
+    <!-- 서비스 섹션 -->
     <section id="services" class="py-24 bg-secondary px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
-                <h3 class="text-3xl font-black mb-4 italic">당신의 상황에 맞춘 최적의 솔루션 [cite: 143]</h3>
-                <p class="text-gray-500">필요한 서비스를 선택하시면 가장 전문적인 팀을 보내드립니다.</p>
+                <h3 class="text-3xl md:text-4xl font-black mb-4 italic text-primary">상황에 맞춘 최적의 솔루션</h3>
+                <p class="text-gray-500 max-w-lg mx-auto">어떤 도움이 필요하신가요? 각 분야 전문 팀이 완벽하게 해결해 드립니다.</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white p-10 rounded-[2rem] hover:shadow-xl transition-all group" data-aos="fade-up">
-                    <div class="mb-6 text-primary group-hover:text-accent transition-colors">
-                        <i class="fa-solid fa-trash-can text-4xl"></i>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 서비스 1 -->
+                <div class="bg-white p-10 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden" data-aos="fade-up">
+                    <div class="mb-8 w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center text-primary group-hover:bg-accent group-hover:text-white transition-all">
+                        <i class="fa-solid fa-trash-can text-3xl"></i>
                     </div>
-                    <p class="text-xs font-bold text-gray-400 mb-2">무거운 가구 버리기 힘들 때 [cite: 144]</p>
+                    <p class="text-xs font-black text-accent mb-2 uppercase tracking-widest">Disposal</p>
                     <h4 class="text-xl font-black mb-4">안심 폐기 서비스</h4>
-                    <p class="text-sm text-gray-500 leading-relaxed mb-8">스티커 구매부터 배출까지, 원스톱으로 신속하게 해결해 드립니다. [cite: 13]</p>
-                    <a href="#quote" class="inline-block font-bold text-sm border-b-2 border-primary pb-1">견적 확인하기</a>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8">대형 폐기물 스티커 구매 대행부터 무거운 가구 배출까지 원스톱으로 처리합니다.</p>
+                    <a href="#quote" class="inline-flex items-center gap-2 font-bold text-sm border-b-2 border-primary pb-1 group-hover:text-accent group-hover:border-accent transition-all">
+                        견적 확인하기 <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-10 rounded-[2rem] hover:shadow-xl transition-all group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="mb-6 text-primary group-hover:text-accent transition-colors">
-                        <i class="fa-solid fa-arrows-spin text-4xl"></i>
+                <!-- 서비스 2 -->
+                <div class="bg-white p-10 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="mb-8 w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center text-primary group-hover:bg-accent group-hover:text-white transition-all">
+                        <i class="fa-solid fa-arrows-to-dot text-3xl"></i>
                     </div>
-                    <p class="text-xs font-bold text-gray-400 mb-2">방 구조를 바꾸고 싶을 때 [cite: 145]</p>
+                    <p class="text-xs font-black text-accent mb-2 uppercase tracking-widest">Relocation</p>
                     <h4 class="text-xl font-black mb-4">공간 재배치 서비스</h4>
-                    <p class="text-sm text-gray-500 leading-relaxed mb-8">전문가의 손길로 가구 손상 없이 완벽한 새로운 공간을 만듭니다.</p>
-                    <a href="#quote" class="inline-block font-bold text-sm border-b-2 border-primary pb-1">견적 확인하기</a>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8">집안의 무거운 가구 이동, 가구 손상 없이 구조를 바꾸어 새로운 공간을 창조합니다.</p>
+                    <a href="#quote" class="inline-flex items-center gap-2 font-bold text-sm border-b-2 border-primary pb-1 group-hover:text-accent group-hover:border-accent transition-all">
+                        견적 확인하기 <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
                 </div>
-                <div class="bg-white p-10 rounded-[2rem] hover:shadow-xl transition-all group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="mb-6 text-primary group-hover:text-accent transition-colors">
-                        <i class="fa-solid fa-truck-fast text-4xl"></i>
+                <!-- 서비스 3 -->
+                <div class="bg-white p-10 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="mb-8 w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center text-primary group-hover:bg-accent group-hover:text-white transition-all">
+                        <i class="fa-solid fa-truck-fast text-3xl"></i>
                     </div>
-                    <p class="text-xs font-bold text-gray-400 mb-2">소중한 가구를 새 집으로 [cite: 146]</p>
+                    <p class="text-xs font-black text-accent mb-2 uppercase tracking-widest">Premium Move</p>
                     <h4 class="text-xl font-black mb-4">프리미엄 운송 서비스</h4>
-                    <p class="text-sm text-gray-500 leading-relaxed mb-8">15년 경력의 노하우로 가장 안전하고 깔끔하게 이동을 책임집니다.</p>
-                    <a href="#quote" class="inline-block font-bold text-sm border-b-2 border-primary pb-1">견적 확인하기</a>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8">고가 가구, 앤틱 가구 등 섬세한 케어가 필요한 물품을 최상의 포장법으로 이동합니다.</p>
+                    <a href="#quote" class="inline-flex items-center gap-2 font-bold text-sm border-b-2 border-primary pb-1 group-hover:text-accent group-hover:border-accent transition-all">
+                        견적 확인하기 <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="stories" class="py-24 px-6 overflow-hidden">
-        <div class="max-w-5xl mx-auto text-center mb-16" data-aos="fade-up">
-            <h3 class="text-3xl font-black mb-4">시각적으로 증명된 압도적 차이 [cite: 80]</h3>
-            <p class="text-gray-500">슬라이더를 조작하여 전후 차이를 직접 확인해 보세요. [cite: 76]</p>
+    <!-- 포트폴리오 (비포애프터) -->
+    <section id="stories" class="py-24 px-6 overflow-hidden max-w-5xl mx-auto">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="text-accent font-black text-xs tracking-[0.3em] uppercase mb-4 block">Our Portfolio</span>
+            <h3 class="text-3xl md:text-4xl font-black mb-4">압도적 차이를 직접 확인하세요</h3>
+            <p class="text-gray-500">슬라이더를 좌우로 움직여 전후 차이를 비교해 보세요.</p>
         </div>
         
-        <div class="max-w-4xl mx-auto relative h-[400px] rounded-[2.5rem] overflow-hidden shadow-2xl" data-aos="zoom-in">
-            <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80" class="absolute inset-0 w-full h-full object-cover">
-            <div class="absolute inset-0 w-1/2 overflow-hidden border-r-2 border-white shadow-xl">
-                <img src="https://images.unsplash.com/photo-1581706196308-746369796677?auto=format&fit=crop&q=80" class="absolute inset-0 h-[400px] w-[896px] object-cover grayscale opacity-80">
-                <div class="absolute top-4 left-6 bg-black/50 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Before [cite: 78]</div>
+        <div class="comparison-slider shadow-2xl" id="comparisonSlider" data-aos="zoom-in">
+            <!-- After Image -->
+            <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&q=80" class="comparison-before" alt="작업 후">
+            <!-- Before Image -->
+            <div class="comparison-after" id="comparisonAfter">
+                <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80" alt="작업 전" class="grayscale brightness-50">
+                <div class="absolute top-1/2 left-10 -translate-y-1/2 text-white/50 text-4xl font-black uppercase tracking-tighter pointer-events-none">Before</div>
             </div>
-            <div class="absolute top-4 right-6 bg-accent text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">After [cite: 79]</div>
-            <div class="slider-handle"></div>
+            <div class="absolute top-1/2 right-10 -translate-y-1/2 text-white/80 text-4xl font-black uppercase tracking-tighter pointer-events-none">After</div>
+            <div class="slider-control" id="sliderControl">
+                <div class="slider-control-btn"><i class="fa-solid fa-arrows-left-right"></i></div>
+            </div>
         </div>
     </section>
 
+    <!-- 견적 폼 (멀티스텝) -->
     <section id="quote" class="py-24 bg-primary text-white px-6">
-        <div class="max-w-2xl mx-auto">
+        <div class="max-w-3xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-accent font-black text-xs tracking-[0.3em] uppercase mb-4 block">Smart Quote System</span>
-                <h3 class="text-3xl font-black mb-4 italic">30초 만에 끝나는 스마트 견적 [cite: 19]</h3>
-                <p class="text-white/50 text-sm">정보를 입력해주시면 즉시 답변 드립니다.</p>
+                <h3 class="text-3xl md:text-5xl font-black mb-6 italic tracking-tight">30초면 끝나는 스마트 견적</h3>
+                <p class="text-white/40 text-sm md:text-base">최대한 쉽고 빠르게 작성이 가능하도록 설계되었습니다.</p>
             </div>
             
-            <form id="multiStepForm" class="space-y-8">
-                <div class="form-step" data-aos="fade-up">
-                    <label class="block text-xs font-bold text-white/30 mb-6 tracking-widest uppercase">Step 1: 서비스 선택 [cite: 102]</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button type="button" class="group flex flex-col items-center gap-4 bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent hover:bg-accent/10 transition-all">
-                            <i class="fa-solid fa-trash-can text-2xl group-hover:text-accent"></i>
-                            <span class="font-bold text-sm">가구 폐기</span>
-                        </button>
-                        <button type="button" class="group flex flex-col items-center gap-4 bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent hover:bg-accent/10 transition-all">
-                            <i class="fa-solid fa-truck-fast text-2xl group-hover:text-accent"></i>
-                            <span class="font-bold text-sm">가구 이동</span>
-                        </button>
+            <div class="bg-white/5 p-8 md:p-12 rounded-[3rem] border border-white/10">
+                <form id="quoteForm" class="space-y-10">
+                    <!-- Step 1: 서비스 선택 -->
+                    <div id="step1" class="space-y-6">
+                        <label class="block text-xs font-bold text-accent tracking-widest uppercase">Step 1. 서비스 유형 선택</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <button type="button" onclick="nextStep(2)" class="flex flex-col items-center gap-4 bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent hover:bg-accent/10 transition-all active:scale-95 group">
+                                <i class="fa-solid fa-trash-can text-3xl group-hover:text-accent transition-colors"></i>
+                                <span class="font-bold text-sm">가구 폐기</span>
+                            </button>
+                            <button type="button" onclick="nextStep(2)" class="flex flex-col items-center gap-4 bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent hover:bg-accent/10 transition-all active:scale-95 group">
+                                <i class="fa-solid fa-arrows-to-dot text-3xl group-hover:text-accent transition-colors"></i>
+                                <span class="font-bold text-sm">가구 이동</span>
+                            </button>
+                            <button type="button" onclick="nextStep(2)" class="flex flex-col items-center gap-4 bg-white/5 border border-white/10 p-8 rounded-3xl hover:border-accent hover:bg-accent/10 transition-all active:scale-95 group">
+                                <i class="fa-solid fa-truck-fast text-3xl group-hover:text-accent transition-colors"></i>
+                                <span class="font-bold text-sm">프리미엄 운송</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="space-y-4">
-                    <input type="text" placeholder="방문 지역 (예: 화성 동탄)" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl text-sm font-bold focus:outline-none focus:border-accent transition-colors">
-                    <input type="tel" placeholder="연락처 (숫자만 입력)" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl text-sm font-bold focus:outline-none focus:border-accent transition-colors">
-                </div>
 
-                <div class="p-8 border-2 border-dashed border-white/10 rounded-3xl text-center bg-white/[0.02]">
-                    <i class="fa-solid fa-camera-retro text-3xl text-white/20 mb-3"></i>
-                    <p class="text-xs text-white/40 font-bold leading-relaxed">사진을 첨부하시면<br><span class="text-accent">정확한 확정 견적</span>이 산출됩니다 [cite: 110]</p>
-                </div>
+                    <!-- Step 2: 정보 입력 (Hidden initially) -->
+                    <div id="step2" class="space-y-8 hidden">
+                        <label class="block text-xs font-bold text-accent tracking-widest uppercase">Step 2. 방문 정보 입력</label>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-medium text-white/50 ml-2">지역 선택</label>
+                                <input type="text" placeholder="예: 화성시 동탄" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl text-sm font-bold focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-medium text-white/50 ml-2">연락처</label>
+                                <input type="tel" placeholder="숫자만 입력해 주세요" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl text-sm font-bold focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-medium text-white/50 ml-2">문의 내용 (가구 품목 등)</label>
+                            <textarea rows="3" placeholder="예: 3인용 소파 폐기하고 싶습니다." class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl text-sm font-bold focus:outline-none focus:border-accent transition-all"></textarea>
+                        </div>
 
-                <button type="submit" class="w-full bg-accent text-white py-6 rounded-2xl font-black text-xl shadow-2xl hover:bg-[#0A7A70] transition-all">
-                    내 견적 확인하기 [cite: 111]
-                </button>
-                <p class="text-center text-white/30 text-[10px] italic">오늘 예약 시 5% 추가 할인 혜택이 적용됩니다. [cite: 113]</p>
-            </form>
+                        <div class="flex gap-4">
+                            <button type="button" onclick="nextStep(1)" class="w-1/3 bg-white/5 border border-white/10 py-6 rounded-2xl font-bold text-white/50 hover:bg-white/10 transition-all">이전으로</button>
+                            <button type="submit" class="w-2/3 bg-accent text-white py-6 rounded-2xl font-black text-xl shadow-2xl hover:brightness-110 active:scale-95 transition-all">내 견적 확인하기</button>
+                        </div>
+                        <p class="text-center text-white/30 text-[10px] italic">"지금 신청 시 무료 견적 및 사진 기반 추가 상담이 가능합니다."</p>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 
-    <footer class="bg-secondary py-16 px-8 pb-32">
-        <div class="max-w-5xl mx-auto">
-            <h1 class="font-black text-xl italic mb-8">아빠와 아들</h1>
-            <div class="grid md:grid-cols-2 gap-10 text-[11px] text-gray-400 font-medium leading-loose uppercase tracking-tighter">
+    <!-- 푸터 -->
+    <footer class="bg-secondary py-20 px-8 pb-32">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-12">
+            <div class="max-w-md">
+                <h1 class="font-black text-2xl italic mb-6">아빠와 아들</h1>
+                <p class="text-sm text-gray-500 leading-loose mb-8">우리는 고객의 소중한 공간과 자산을 관리하는 프리미엄 서비스 기업입니다. 15년의 경험과 최신 시스템의 결합으로 최상의 만족을 제공합니다.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent transition-all"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent transition-all"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent transition-all"><i class="fa-solid fa-blog"></i></a>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-12 text-[11px] text-gray-400 font-medium leading-loose uppercase tracking-tighter">
                 <div>
+                    <p class="text-primary font-black mb-4">Company Info</p>
                     <p>대표: 김OO | 사업자번호: 000-00-00000</p>
-                    <p>주소: 경기도 화성시 동탄중앙로 000-00 [cite: 150]</p>
-                    <p>TEL: 010-0000-0000 | E-MAIL: support@dadsun.com</p>
+                    <p>주소: 경기도 화성시 동탄중앙로 000-00</p>
+                    <p>TEL: 010-0000-0000</p>
+                    <p>E-MAIL: support@dadsun.com</p>
                 </div>
                 <div>
-                    <p>본 사이트는 프리미엄 가구 이전 설치 서비스를 위해 제작되었습니다. [cite: 152]</p>
-                    <p>무단 복제 및 전재를 금합니다.</p>
-                    <p class="mt-4 font-inter">© 2026 DAD & SON PREMIUM. ALL RIGHTS RESERVED.</p>
+                    <p class="text-primary font-black mb-4">Business Hours</p>
+                    <p>월~토: 08:00 - 20:00</p>
+                    <p>일요일: 사전 예약제 운영</p>
+                    <p class="mt-8 font-inter">© 2026 DAD & SON PREMIUM. ALL RIGHTS RESERVED.</p>
                 </div>
             </div>
         </div>
     </footer>
 
-    <div class="fixed bottom-0 w-full z-50 bg-white/80 backdrop-blur-xl border-t border-gray-100 flex justify-around items-center sticky-nav px-2 md:hidden">
-        <a href="#" class="flex flex-col items-center gap-1 text-gray-400">
-            <i class="fa-solid fa-house text-lg"></i>
-            <span class="text-[9px] font-black">홈</span>
+    <!-- 모바일 스티키 바텀 내비게이션 -->
+    <div class="fixed bottom-0 w-full z-50 bg-white/90 backdrop-blur-2xl border-t border-gray-100 flex justify-around items-center h-[75px] md:hidden px-4 pb-safe">
+        <a href="#" class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors">
+            <i class="fa-solid fa-house text-xl"></i>
+            <span class="text-[10px] font-black">홈</span>
         </a>
-        <a href="#services" class="flex flex-col items-center gap-1 text-gray-400">
-            <i class="fa-solid fa-briefcase text-lg"></i>
-            <span class="text-[9px] font-black">서비스</span>
+        <a href="#services" class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors">
+            <i class="fa-solid fa-layer-group text-xl"></i>
+            <span class="text-[10px] font-black">서비스</span>
         </a>
-        <a href="#quote" class="bg-accent text-white w-14 h-14 rounded-2xl flex items-center justify-center shadow-xl shadow-accent/40 -mt-6 border-4 border-white">
-            <i class="fa-solid fa-calculator text-xl"></i>
+        <!-- 중앙 강조 버튼 -->
+        <a href="#quote" class="bg-accent text-white w-16 h-16 rounded-[2rem] flex items-center justify-center shadow-xl shadow-accent/40 -mt-10 border-4 border-white active:scale-90 transition-all">
+            <i class="fa-solid fa-calculator text-2xl"></i>
         </a>
-        <a href="#stories" class="flex flex-col items-center gap-1 text-gray-400">
-            <i class="fa-solid fa-images text-lg"></i>
-            <span class="text-[9px] font-black">리뷰</span>
+        <a href="#stories" class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors">
+            <i class="fa-solid fa-images text-xl"></i>
+            <span class="text-[10px] font-black">포트폴리오</span>
         </a>
         <a href="tel:01000000000" class="flex flex-col items-center gap-1 text-accent">
-            <i class="fa-solid fa-phone-volume text-lg"></i>
-            <span class="text-[9px] font-black">긴급전화</span>
+            <i class="fa-solid fa-phone-volume text-xl"></i>
+            <span class="text-[10px] font-black">상담원연결</span>
         </a>
     </div>
 
-    <button onclick="alert('카톡 상담 연결')" class="fixed bottom-24 right-6 w-14 h-14 bg-[#FEE500] rounded-full shadow-2xl flex items-center justify-center z-40 transition-transform active:scale-90">
+    <!-- 플로팅 카카오 버튼 (모바일) -->
+    <button onclick="window.open('https://pf.kakao.com/')" class="fixed bottom-28 right-6 w-14 h-14 bg-[#FEE500] rounded-full shadow-2xl flex items-center justify-center z-40 transition-all hover:scale-110 active:scale-95 md:bottom-10">
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" class="w-7 h-7">
     </button>
 
+    <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        // AOS 초기화
+        AOS.init({ duration: 1000, once: true, offset: 50 });
 
-        // 폼 제출 애니메이션 [cite: 137]
-        document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+        // 비포애프터 슬라이더 로직
+        const slider = document.getElementById('comparisonSlider');
+        const sliderAfter = document.getElementById('comparisonAfter');
+        const sliderControl = document.getElementById('sliderControl');
+
+        function moveSlider(e) {
+            let x;
+            if (e.type === 'touchmove') {
+                x = e.touches[0].clientX - slider.getBoundingClientRect().left;
+            } else {
+                x = e.clientX - slider.getBoundingClientRect().left;
+            }
+            
+            const width = slider.offsetWidth;
+            if (x < 0) x = 0;
+            if (x > width) x = width;
+            
+            const percent = (x / width) * 100;
+            sliderAfter.style.width = percent + '%';
+            sliderControl.style.left = percent + '%';
+        }
+
+        slider.addEventListener('mousemove', moveSlider);
+        slider.addEventListener('touchmove', moveSlider);
+
+        // 견적 폼 멀티스텝 로직
+        function nextStep(step) {
+            const s1 = document.getElementById('step1');
+            const s2 = document.getElementById('step2');
+            
+            if (step === 2) {
+                s1.classList.add('hidden');
+                s2.classList.remove('hidden');
+                s2.classList.add('animate-fade-in');
+            } else {
+                s2.classList.add('hidden');
+                s1.classList.remove('hidden');
+            }
+        }
+
+        // 폼 제출 핸들링
+        document.getElementById('quoteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]');
-            btn.innerText = "견적 전송 중...";
+            const originalText = btn.innerText;
+            btn.innerText = "상담 요청 전송 중...";
+            btn.disabled = true;
+            
             setTimeout(() => {
-                alert("상담 접수가 완료되었습니다! 10분 내로 베테랑 팀장이 직접 연락드리겠습니다.");
-                btn.innerText = "제출 완료";
+                alert("상담 접수가 성공적으로 완료되었습니다!\n10분 내로 전문 상담 팀장이 직접 연락드리겠습니다.");
+                btn.innerText = originalText;
+                btn.disabled = false;
                 this.reset();
+                nextStep(1);
             }, 1500);
+        });
+
+        // 스무스 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
