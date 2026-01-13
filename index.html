@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>아빠와 아들 가구서비스</title>
+    <title>아빠와 아들 가구서비스 | 전문가 부자의 정직한 서비스</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,7 +18,11 @@
                     colors: {
                         primary: '#1A3B5C',
                         secondary: '#FF6B00',
-                        accent: '#F3F4F6'
+                        accent: '#F8FAFC'
+                    },
+                    borderRadius: {
+                        '2xl': '1.25rem',
+                        '3xl': '1.875rem',
                     }
                 }
             }
@@ -24,213 +30,270 @@
     </script>
 
     <style>
-        body { font-family: 'Pretendard', sans-serif; overflow-x: hidden; background-color: #fff; }
+        body { font-family: 'Pretendard', sans-serif; overflow-x: hidden; background-color: #fff; word-break: keep-all; }
         
-        /* 애니메이션 효과: 글자가 안 보이는 현상 방지를 위해 기본 opacity 1로 설정 */
-        .fade-in { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
-        @media (min-width: 768px) {
-            .reveal { opacity: 0; transform: translateY(20px); }
-            .reveal.active { opacity: 1; transform: translateY(0); }
+        /* 고급스러운 그라데이션 및 질감 */
+        .hero-gradient { 
+            background: linear-gradient(135deg, #1A3B5C 0%, #2A528A 100%);
+            position: relative;
+        }
+        .hero-gradient::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+            opacity: 0.05; pointer-events: none;
         }
 
-        .insta-card { border-radius: 20px; border: 1px solid #efefef; background: #fff; }
-        .hero-gradient { background: linear-gradient(180deg, rgba(26,59,92,1) 0%, rgba(26,59,92,0.85) 100%); }
+        /* 카드 호버 효과 */
+        .hover-lift { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+
+        /* 폼 요소 개선 */
+        input, select, textarea { border: 1px solid #E2E8F0 !important; transition: all 0.2s; }
+        input:focus { border-color: #FF6B00 !important; ring: 2px; ring-color: #FF6B00; }
         
-        /* 폼 요소 세련되게 */
-        input, select, textarea { -webkit-appearance: none; border-radius: 12px !important; }
+        /* 버튼 클릭 피드백 */
+        .btn-active:active { transform: scale(0.95); }
         
-        /* 버튼 눌림 효과 */
-        .btn-active:active { transform: scale(0.96); transition: 0.1s; }
+        /* 프로그래스 바 형태의 강조 */
+        .stat-badge { background: rgba(255, 107, 0, 0.1); color: #FF6B00; padding: 4px 12px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; }
     </style>
 </head>
 <body class="text-gray-900 leading-tight">
 
-    <header class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
-        <div class="flex justify-between items-center px-5 h-14">
-            <h1 class="font-black text-lg tracking-tighter text-primary">아빠와 아들 <span class="text-secondary font-bold text-sm">15+경력</span></h1>
-            <a href="#quote" class="text-secondary font-bold text-sm">무료견적</a>
+    <header class="fixed top-0 w-full bg-white/80 backdrop-blur-xl z-50 border-b border-gray-100">
+        <div class="flex justify-between items-center px-6 h-16">
+            <h1 class="font-black text-xl tracking-tighter text-primary">
+                아빠와 아들 <span class="text-secondary font-bold text-xs ml-1 italic">PREMIUM</span>
+            </h1>
+            <a href="#quote" class="bg-primary text-white px-4 py-2 rounded-full font-bold text-sm btn-active transition-all">
+                무료견적 받기
+            </a>
         </div>
     </header>
 
-    <section class="mt-14 pt-12 pb-16 px-6 hero-gradient text-white text-center relative overflow-hidden">
-        <div class="relative z-10">
-            <div class="inline-block bg-white/20 px-3 py-1 rounded-full text-xs font-bold mb-4 border border-white/30">경기 남부 전지역 방문</div>
-            <h2 class="text-3xl font-black mb-4 leading-snug tracking-tight">
-                15년 숙련도,<br>5,000번의 현장 경험<br>
-                <span class="text-secondary">이름 걸고 직접 방문합니다.</span>
+    <section class="mt-16 pt-16 pb-24 px-6 hero-gradient text-white text-center overflow-hidden">
+        <div data-aos="fade-up" data-aos-duration="1000">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold mb-6 border border-white/20">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+                </span>
+                경기 남부 전지역 1시간 내 방문
+            </div>
+            <h2 class="text-4xl font-black mb-6 leading-tight tracking-tight">
+                가구 이동의 격이 다릅니다.<br>
+                <span class="text-secondary italic">직접 보여드리겠습니다.</span>
             </h2>
-            <p class="text-white/80 text-base font-medium mb-8">
-                하청 없는 100% 실명제 서비스<br>전문가 부자(父子)가 직접 갑니다.
+            <p class="text-white/70 text-lg font-medium mb-10 leading-relaxed">
+                하청 업체에 맡기지 않습니다.<br>
+                15년 경력의 부자(父子)가 책임지고 직접 방문합니다.
             </p>
-            <a href="#quote" class="btn-active inline-block bg-secondary text-white px-8 py-4 rounded-2xl font-black text-lg shadow-xl shadow-orange-900/20">
-                30초 무료 견적 받기
-            </a>
-        </div>
-        <div class="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-20 blur-3xl"></div>
-    </section>
-
-    <section class="px-5 -mt-8 relative z-20">
-        <div class="grid grid-cols-3 gap-3">
-            <div class="bg-white p-4 rounded-2xl shadow-lg text-center border border-gray-50">
-                <i class="fa-solid fa-truck-moving text-secondary text-xl mb-2"></i>
-                <p class="text-[11px] font-bold text-gray-500">당일 출동</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl shadow-lg text-center border border-gray-50">
-                <i class="fa-solid fa-medal text-secondary text-xl mb-2"></i>
-                <p class="text-[11px] font-bold text-gray-500">경력 15년+</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl shadow-lg text-center border border-gray-50">
-                <i class="fa-solid fa-shield-heart text-secondary text-xl mb-2"></i>
-                <p class="text-[11px] font-bold text-gray-500">파손보장</p>
+            <div class="flex flex-col gap-3 items-center">
+                <a href="#quote" class="btn-active w-full max-w-xs bg-secondary text-white py-5 rounded-2xl font-black text-xl shadow-2xl shadow-orange-600/30 transition-all">
+                    30초 무료 견적 받기
+                </a>
+                <p class="text-white/40 text-xs mt-2 italic">현재 동탄/수원 지역 실시간 접수 중</p>
             </div>
         </div>
     </section>
 
-    <section class="py-16 px-6">
-        <div class="text-center mb-10">
-            <h3 class="text-2xl font-black tracking-tight mb-2">"가구 전문가가 하면 다릅니다"</h3>
-            <p class="text-gray-400 text-sm font-medium">아르바이트생은 절대 쓰지 않습니다.</p>
+    <section class="px-5 -mt-10 relative z-20">
+        <div class="grid grid-cols-3 gap-3" data-aos="zoom-in" data-aos-delay="200">
+            <div class="bg-white p-5 rounded-3xl shadow-xl text-center border border-gray-50 hover-lift">
+                <p class="text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Total Jobs</p>
+                <p class="text-xl font-black text-primary">5,200+</p>
+                <div class="h-1 w-8 bg-secondary mx-auto mt-2 rounded-full"></div>
+                <p class="text-[11px] font-bold text-gray-500 mt-2">누적 작업 수</p>
+            </div>
+            <div class="bg-white p-5 rounded-3xl shadow-xl text-center border border-gray-50 hover-lift">
+                <p class="text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Satisfaction</p>
+                <p class="text-xl font-black text-primary text-secondary">9.9<span class="text-xs text-gray-400">/10</span></p>
+                <div class="flex justify-center gap-0.5 mt-2">
+                    <i class="fa-solid fa-star text-[8px] text-secondary"></i>
+                    <i class="fa-solid fa-star text-[8px] text-secondary"></i>
+                    <i class="fa-solid fa-star text-[8px] text-secondary"></i>
+                    <i class="fa-solid fa-star text-[8px] text-secondary"></i>
+                    <i class="fa-solid fa-star text-[8px] text-secondary"></i>
+                </div>
+                <p class="text-[11px] font-bold text-gray-500 mt-2">고객 만족도</p>
+            </div>
+            <div class="bg-white p-5 rounded-3xl shadow-xl text-center border border-gray-50 hover-lift">
+                <p class="text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">Experience</p>
+                <p class="text-xl font-black text-primary">15년</p>
+                <div class="h-1 w-8 bg-primary/20 mx-auto mt-2 rounded-full"></div>
+                <p class="text-[11px] font-bold text-gray-500 mt-2">현장 경력</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 bg-white">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="stat-badge mb-4 inline-block">WHY US?</span>
+            <h3 class="text-3xl font-black tracking-tight mb-4 text-primary italic">"기술은 흉내 낼 수 있어도<br>정성은 따라올 수 없습니다"</h3>
+            <p class="text-gray-400 text-sm font-medium">아르바이트생 없는 100% 책임 시공제</p>
         </div>
         
-        <div class="space-y-4">
-            <div class="insta-card p-5 flex items-center gap-4 group transition">
-                <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center text-secondary">
-                    <i class="fa-solid fa-check-double text-xl"></i>
+        <div class="space-y-6">
+            <div class="bg-accent p-6 rounded-3xl flex items-center gap-5 hover-lift" data-aos="fade-right" data-aos-delay="100">
+                <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-secondary">
+                    <i class="fa-solid fa-box-open text-2xl"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-lg">완벽한 바닥 보호</h4>
-                    <p class="text-gray-500 text-sm">찍힘 ZERO, 전용 포장재 사용</p>
+                    <h4 class="font-bold text-lg text-primary">프리미엄 전용 포장재</h4>
+                    <p class="text-gray-500 text-sm">가구별 맞춤 커버로 기스/파손 원천 차단</p>
                 </div>
             </div>
-            <div class="insta-card p-5 flex items-center gap-4">
-                <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center text-secondary">
-                    <i class="fa-solid fa-coins text-xl"></i>
+            <div class="bg-accent p-6 rounded-3xl flex items-center gap-5 hover-lift" data-aos="fade-right" data-aos-delay="200">
+                <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-secondary">
+                    <i class="fa-solid fa-handshake-angle text-2xl"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-lg">정직한 정찰제</h4>
-                    <p class="text-gray-500 text-sm">현장 추가금 요구 절대 없음</p>
+                    <h4 class="font-bold text-lg text-primary">투명한 정찰제 운영</h4>
+                    <p class="text-gray-500 text-sm">현장 추가금 요구 관행을 완전히 없앴습니다</p>
                 </div>
             </div>
-            <div class="insta-card p-5 flex items-center gap-4">
-                <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center text-secondary">
-                    <i class="fa-solid fa-user-group text-xl"></i>
+            <div class="bg-accent p-6 rounded-3xl flex items-center gap-5 hover-lift" data-aos="fade-right" data-aos-delay="300">
+                <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-secondary">
+                    <i class="fa-solid fa-users-gear text-2xl"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-lg">부자(父子) 2인 1조</h4>
-                    <p class="text-gray-500 text-sm">호흡이 다른 베테랑의 기술</p>
+                    <h4 class="font-bold text-lg text-primary">부자(父子) 원팀 시스템</h4>
+                    <p class="text-gray-500 text-sm">눈빛만 봐도 아는 호흡으로 빠르고 정확하게</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="bg-accent py-16 px-6">
-        <h3 class="text-xl font-black mb-6 flex items-center gap-2">
-            <i class="fa-brands fa-instagram text-2xl text-pink-600"></i> 작업 현장 리포트
-        </h3>
-        <div class="grid grid-cols-2 gap-2">
-            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&q=40" class="w-full h-full object-cover">
-                <div class="absolute bottom-2 left-2 bg-black/50 text-[10px] text-white px-2 py-0.5 rounded">#동탄 장롱</div>
-            </div>
-            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&q=40" class="w-full h-full object-cover">
-                <div class="absolute bottom-2 left-2 bg-black/50 text-[10px] text-white px-2 py-0.5 rounded">#수원 침대</div>
-            </div>
-            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=40" class="w-full h-full object-cover">
-                <div class="absolute bottom-2 left-2 bg-black/50 text-[10px] text-white px-2 py-0.5 rounded">#용인 소파</div>
-            </div>
-            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=40" class="w-full h-full object-cover">
-                <div class="absolute bottom-2 left-2 bg-black/50 text-[10px] text-white px-2 py-0.5 rounded">#오산 책상</div>
-            </div>
-        </div>
-    </section>
-
-    <section id="quote" class="py-20 px-6">
-        <div class="text-center mb-10">
-            <h3 class="text-2xl font-black mb-2">지금 바로 견적받기</h3>
-            <p class="text-gray-400 text-sm font-medium">확인 즉시 전화를 드립니다!</p>
-        </div>
-        
-        <form id="contactForm" class="space-y-5">
+    <section class="bg-primary py-24 px-6 overflow-hidden">
+        <div class="flex justify-between items-end mb-10" data-aos="fade-up">
             <div>
-                <label class="block text-sm font-bold mb-2">어떤 작업이 필요한가요?</label>
+                <h3 class="text-2xl font-black text-white mb-2 leading-tight">작업 현장 실시간 리포트</h3>
+                <p class="text-white/50 text-xs font-medium">실제로 방문하여 시공한 현장들입니다.</p>
+            </div>
+            <i class="fa-brands fa-instagram text-3xl text-white/20"></i>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3" data-aos="fade-up" data-aos-delay="200">
+            <div class="aspect-[4/5] bg-gray-800 rounded-3xl overflow-hidden relative group">
+                <img src="https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&q=60" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-4 left-4">
+                    <p class="text-[10px] text-secondary font-bold mb-1">STORAGE</p>
+                    <p class="text-xs text-white font-medium">동탄 아파트 붙박이장</p>
+                </div>
+            </div>
+            <div class="aspect-[4/5] bg-gray-800 rounded-3xl overflow-hidden relative group translate-y-8">
+                <img src="https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&q=60" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-4 left-4">
+                    <p class="text-[10px] text-secondary font-bold mb-1">BEDROOM</p>
+                    <p class="text-xs text-white font-medium">수원 영통 침대 이동</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quote" class="py-24 px-6 bg-white">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h3 class="text-3xl font-black mb-3 text-primary">스마트 견적 요청</h3>
+            <p class="text-gray-400 text-sm font-medium">정보를 입력해주시면 10분 내로 답변 드립니다!</p>
+        </div>
+        
+        <form id="contactForm" class="space-y-6 max-w-md mx-auto" data-aos="fade-up" data-aos-delay="100">
+            <div>
+                <label class="block text-xs font-bold text-gray-400 mb-3 uppercase tracking-widest">Service Type</label>
                 <div class="grid grid-cols-3 gap-2">
-                    <label class="flex-1">
+                    <label class="cursor-pointer">
                         <input type="radio" name="stype" class="hidden peer" checked>
-                        <div class="text-center py-3 rounded-xl border-2 border-gray-100 font-bold text-sm peer-checked:border-secondary peer-checked:text-secondary">폐기</div>
+                        <div class="text-center py-4 rounded-2xl border border-gray-100 bg-gray-50 font-bold text-sm text-gray-400 peer-checked:border-secondary peer-checked:bg-orange-50 peer-checked:text-secondary transition-all italic">폐기</div>
                     </label>
-                    <label class="flex-1">
+                    <label class="cursor-pointer">
                         <input type="radio" name="stype" class="hidden peer">
-                        <div class="text-center py-3 rounded-xl border-2 border-gray-100 font-bold text-sm peer-checked:border-secondary peer-checked:text-secondary">이동</div>
+                        <div class="text-center py-4 rounded-2xl border border-gray-100 bg-gray-50 font-bold text-sm text-gray-400 peer-checked:border-secondary peer-checked:bg-orange-50 peer-checked:text-secondary transition-all italic">이동</div>
                     </label>
-                    <label class="flex-1">
+                    <label class="cursor-pointer">
                         <input type="radio" name="stype" class="hidden peer">
-                        <div class="text-center py-3 rounded-xl border-2 border-gray-100 font-bold text-sm peer-checked:border-secondary peer-checked:text-secondary">이전설치</div>
+                        <div class="text-center py-4 rounded-2xl border border-gray-100 bg-gray-50 font-bold text-sm text-gray-400 peer-checked:border-secondary peer-checked:bg-orange-50 peer-checked:text-secondary transition-all italic">설치</div>
                     </label>
                 </div>
             </div>
             
-            <input type="text" placeholder="방문 지역 (예: 화성 동탄)" class="w-full bg-gray-100 border-none p-4 text-sm font-bold" required>
-            <input type="tel" placeholder="연락처 ('-' 제외 숫자만)" class="w-full bg-gray-100 border-none p-4 text-sm font-bold" required>
+            <div class="space-y-4">
+                <div class="relative">
+                    <i class="fa-solid fa-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                    <input type="text" placeholder="방문 지역 (예: 화성 동탄)" class="w-full bg-gray-50 border-none p-4 pl-12 rounded-2xl text-sm font-bold focus:bg-white" required>
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                    <input type="tel" placeholder="연락처 ('-' 제외)" class="w-full bg-gray-50 border-none p-4 pl-12 rounded-2xl text-sm font-bold focus:bg-white" required>
+                </div>
+            </div>
             
-            <div class="p-6 border-2 border-dashed border-gray-200 rounded-2xl text-center">
-                <i class="fa-solid fa-camera text-2xl text-gray-300 mb-2"></i>
-                <p class="text-xs text-gray-400 font-bold">가구 사진을 첨부하면 견적이 더 정확해요</p>
+            <div class="p-8 border-2 border-dashed border-gray-100 rounded-3xl text-center bg-gray-50 group hover:border-secondary/30 transition-colors">
+                <i class="fa-solid fa-camera-retro text-3xl text-gray-300 mb-3 group-hover:text-secondary/50 transition-colors"></i>
+                <p class="text-xs text-gray-400 font-bold leading-relaxed">사진을 첨부하시면<br><span class="text-secondary">정확한 확정 견적</span>이 가능합니다</p>
                 <input type="file" class="hidden">
             </div>
 
-            <button type="submit" class="btn-active w-full bg-primary text-white py-5 rounded-2xl font-black text-lg shadow-lg">
-                무료 견적 요청하기
+            <button type="submit" class="btn-active w-full bg-primary text-white py-6 rounded-2xl font-black text-lg shadow-xl hover:bg-slate-800 transition-all">
+                무료 견적서 제출하기
             </button>
         </form>
     </section>
 
-    <footer class="bg-gray-50 py-12 px-6 pb-24 text-[11px] text-gray-400 leading-relaxed">
-        <p class="font-bold text-gray-600 mb-2 text-[13px]">아빠와 아들 가구서비스</p>
-        <p>대표: OOO | 사업자번호: 000-00-00000</p>
-        <p>주소: 경기도 화성시 동탄중앙로 OOO</p>
-        <p class="mt-4">© 2026 Dad & Son. All rights reserved.</p>
+    <footer class="bg-accent py-16 px-8 pb-32 text-[11px] text-gray-400 leading-relaxed border-t border-gray-100">
+        <div class="max-w-md mx-auto">
+            <p class="font-black text-primary mb-4 text-[14px]">아빠와 아들 가구서비스</p>
+            <p>대표: 김 OO | 사업자등록번호: 000-00-00000</p>
+            <p>경기도 화성시 동탄중앙로 000-00</p>
+            <p class="mt-6 font-medium text-gray-300">본 사이트는 프리미엄 가구 이전 설치 서비스를 위해 제작되었습니다. 무단 복제를 금합니다.</p>
+            <p class="mt-2 uppercase tracking-tighter">© 2026 DAD & SON PREMIUM. ALL RIGHTS RESERVED.</p>
+        </div>
     </footer>
 
-    <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-100 p-3 flex gap-2 z-50">
-        <a href="#quote" class="flex-[1.5] flex items-center justify-center gap-2 bg-secondary text-white py-4 rounded-xl font-black text-sm btn-active shadow-lg shadow-orange-500/20">
-            <i class="fa-solid fa-calculator"></i> 30초 무료 견적
+    <div class="fixed bottom-6 left-6 right-6 flex gap-3 z-50" data-aos="fade-up" data-aos-offset="0">
+        <a href="#quote" class="flex-[1.5] flex items-center justify-center gap-3 bg-secondary text-white py-5 rounded-2xl font-black text-sm btn-active shadow-2xl shadow-orange-500/40">
+            <i class="fa-solid fa-paper-plane"></i> 빠른 견적 신청
         </a>
-        <a href="#" onclick="alert('카톡 상담으로 연결됩니다.')" class="flex-1 flex items-center justify-center gap-2 bg-[#FEE500] text-[#3c1e1e] py-4 rounded-xl font-black text-sm btn-active">
-            <i class="fa-solid fa-comment"></i> 카톡상담
+        <a href="tel:010-0000-0000" class="flex-1 flex items-center justify-center gap-2 bg-white text-primary border border-gray-100 py-5 rounded-2xl font-black text-sm btn-active shadow-xl">
+            <i class="fa-solid fa-phone"></i> 전화상담
         </a>
     </div>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 폼 제출 애니메이션
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
+
+        // 폼 제출 핸들러
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = this.querySelector('button');
             const originalText = btn.innerText;
             
-            btn.innerText = "전송 중...";
+            btn.innerText = "전송 중입니다...";
             btn.disabled = true;
             
             setTimeout(() => {
-                alert("접수되었습니다! 확인 후 10분 내로 연락드리겠습니다.");
+                alert("상담 접수가 완료되었습니다! 10분 내로 베테랑 팀장이 직접 전화드리겠습니다.");
                 btn.innerText = originalText;
                 btn.disabled = false;
                 this.reset();
-            }, 1000);
+            }, 1200);
         });
 
-        // 스크롤 애니메이션 (데스크톱/큰화면용)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
     </script>
 </body>
 </html>
