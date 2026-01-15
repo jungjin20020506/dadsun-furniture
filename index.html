@@ -112,7 +112,8 @@
                         <h2 className="text-2xl font-bold text-slate-900 mb-2">실제 작업 현장</h2>
                         <p className="text-slate-500 text-sm text-left">5,700여 건의 현장이 증명하는 실력입니다.</p>
                     </div>
-                   <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -832] }} transition={{ repeat: Infinity, duration: 10, ease: "linear" }}>
+                  {/* 이동 거리 계산: (이미지너비 240px + 간격 16px) * 9장 = 2304px */}
+<motion.div className="flex space-x-4" animate={{ x: [0, -2304] }} transition={{ repeat: Infinity, duration: 30, ease: "linear" }}>
                         {doubledProjects.map((p, i) => (
                             <div key={i} className="flex-shrink-0 w-[240px] group">
                                 <div className="h-[240px] rounded-3xl overflow-hidden mb-3 relative shadow-md">
@@ -150,7 +151,8 @@
                         <h2 className="text-2xl font-bold text-slate-900">조작 없는 생생한 후기</h2> 
                     </div> 
                    {/* 속도를 duration: 15로 상향 (기존 25), 비율을 w-[280px] h-[350px]로 4:5 조정 */}
-<motion.div className="flex space-x-4 px-4" animate={{ x: [0, -1176] }} transition={{ repeat: Infinity, duration: 15, ease: "linear" }}> 
+{/* 이동 거리 계산: (이미지너비 280px + 간격 16px) * 8장 = 2368px */}
+<motion.div className="flex space-x-4" animate={{ x: [0, -2368] }} transition={{ repeat: Infinity, duration: 35, ease: "linear" }}> 
     {doubled.map((r, i) => ( 
         <div key={i} className="flex-shrink-0 w-[280px] h-[350px] rounded-3xl overflow-hidden border shadow-lg relative">
             <img src={r.url} className="w-full h-full object-cover" />
@@ -577,6 +579,7 @@
     </script>
 </body>
 </html>
+
 
 
 
