@@ -30,15 +30,7 @@
             const [count, setCount] = useState(0); 
             const ref = useRef(null); 
             const isInView = useInView(ref, { once: true }); 
-            useEffect(() => { 
-                if (isInView) { 
-                    const controls = animate(0, target, { 
-                        duration: duration, 
-                        onUpdate: (value) => setCount(value), 
-                    }); 
-                    return () => controls.stop(); 
-                } 
-            }, [isInView, target]); 
+            useEffect(() => { if (isInView) { const controls = animate(0, target, { duration: duration, onUpdate: (value) => setCount(value), }); return () => controls.stop(); } }, [isInView, target]); 
             return <span ref={ref}>{count.toLocaleString(undefined, {minimumFractionDigits: decimals, maximumFractionDigits: decimals})}{suffix}</span>; 
         };
 
@@ -56,9 +48,7 @@
                         {stats.map((stat, idx) => ( 
                             <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-slate-50 p-5 rounded-3xl border border-slate-100 text-center"> 
                                 <div className="text-2xl mb-2">{stat.icon}</div> 
-                                <div className="text-2xl font-black text-slate-900 mb-1">
-                                    <Counter target={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
-                                </div> 
+                                <div className="text-2xl font-black text-slate-900 mb-1"><Counter target={stat.value} suffix={stat.suffix} decimals={stat.decimals} /></div> 
                                 <div className="text-[12px] text-slate-500 font-bold">{stat.label}</div> 
                             </motion.div> 
                         ))} 
@@ -76,24 +66,24 @@
                 { label: "현장 추가금", us: "0원 (정찰제 원칙)", others: "빈번하게 발생" } 
             ]; 
             return ( 
-                <section className="px-6 py-20 bg-slate-50 text-center relative overflow-hidden"> 
+                <section className="px-6 py-20 bg-slate-50 text-center relative overflow-hidden text-white"> 
                     <div className="relative z-10">
                         <h2 className="text-2xl font-bold text-slate-900 mb-2">왜 '아빠와 아들'일까요?</h2> 
                         <p className="text-slate-500 text-sm mb-10">결과가 다른 프리미엄의 차이</p> 
                         <div className="overflow-hidden rounded-[32px] border border-slate-200 shadow-xl bg-white"> 
-                            <div className="grid grid-cols-12 font-bold text-[11px] bg-slate-100/50 border-b border-slate-100"> 
-                                <div className="col-span-3 py-4 text-slate-400">비교 항목</div> 
+                            <div className="grid grid-cols-12 font-bold text-[11px] bg-slate-100/50 border-b border-slate-100 text-slate-400"> 
+                                <div className="col-span-3 py-4">비교 항목</div> 
                                 <div className="col-span-5 py-4 text-white bg-amber-500 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)]">아빠와 아들</div> 
-                                <div className="col-span-4 py-4 text-slate-400">일반 업체</div> 
+                                <div className="col-span-4 py-4">일반 업체</div> 
                             </div> 
                             {compareData.map((item, idx) => ( 
                                 <motion.div key={idx} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.15 }} className="grid grid-cols-12 items-center border-b border-slate-50 last:border-0 group"> 
                                     <div className="col-span-3 py-5 text-[10px] sm:text-[11px] font-bold text-slate-500 bg-slate-50/50">{item.label}</div> 
-                                    <div className="col-span-5 py-5 bg-amber-50/50 text-[12px] font-black text-amber-700 relative">
+                                    <div className="col-span-5 py-5 bg-amber-50/50 text-[12px] font-black text-amber-700 relative text-center">
                                         <div className="absolute inset-0 border-x-2 border-amber-200/50 pointer-events-none"></div>
                                         <motion.span initial={{ scale: 1 }} whileInView={{ scale: [1, 1.05, 1] }} transition={{ repeat: Infinity, duration: 3, delay: idx * 0.5 }} className="inline-block"> ✨ {item.us} </motion.span>
                                     </div> 
-                                    <div className="col-span-4 py-5 text-[11px] font-medium text-slate-300">❌ {item.others}</div> 
+                                    <div className="col-span-4 py-5 text-[11px] font-medium text-slate-300 text-center">❌ {item.others}</div> 
                                 </motion.div> 
                             ))} 
                         </div> 
@@ -113,9 +103,9 @@
             const doubledProjects = [...projects, ...projects];
             return (
                 <section className="py-16 bg-white overflow-hidden">
-                    <div className="px-6 mb-8">
+                    <div className="px-6 mb-8 text-left">
                         <h2 className="text-2xl font-bold text-slate-900 mb-2">실제 작업 현장</h2>
-                        <p className="text-slate-500 text-sm">5,700여 건의 현장이 증명하는 실력입니다.</p>
+                        <p className="text-slate-500 text-sm text-left">5,700여 건의 현장이 증명하는 실력입니다.</p>
                     </div>
                     <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -832] }} transition={{ repeat: Infinity, duration: 20, ease: "linear" }}>
                         {doubledProjects.map((p, i) => (
@@ -173,14 +163,14 @@
             ]; 
             return ( 
                 <section className="px-6 py-16 bg-slate-900 text-white relative"> 
-                    <h2 className="text-2xl font-bold mb-12 text-center">작업 프로세스</h2> 
+                    <h2 className="text-2xl font-bold mb-12 text-center text-white">작업 프로세스</h2> 
                     <div className="absolute left-[39px] top-40 bottom-24 w-0.5 border-l-2 border-dashed border-slate-700"></div> 
-                    <div className="space-y-10"> 
+                    <div className="space-y-10 text-left"> 
                         {steps.map((s, i) => ( 
                             <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} className="relative flex items-start space-x-6"> 
                                 <div className="relative z-10 w-14 h-14 bg-amber-400 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-amber-400/20">{s.icon}</div> 
                                 <div className="flex-1 pt-1"> 
-                                    <h3 className="text-lg font-bold">{s.title}</h3> 
+                                    <h3 className="text-lg font-bold text-white">{s.title}</h3> 
                                     <p className="text-slate-400 text-[13px]">{s.desc}</p> 
                                 </div> 
                             </motion.div> 
@@ -200,9 +190,9 @@
             ]; 
             return ( 
                 <section className="px-6 py-16 bg-white"> 
-                    <h2 className="text-2xl font-bold mb-8">자주 묻는 질문</h2> 
+                    <h2 className="text-2xl font-bold mb-8 text-left">자주 묻는 질문</h2> 
                     {faqs.map((f, i) => ( 
-                        <div key={i} className="border-b border-slate-100 last:border-0"> 
+                        <div key={i} className="border-b border-slate-100 last:border-0 text-left"> 
                             <button onClick={() => setOpenIdx(openIdx === i ? null : i)} className="w-full py-5 flex justify-between items-center text-left font-bold text-slate-800"> 
                                 <span>{f.q}</span> 
                                 <span className="text-amber-500">{openIdx === i ? '−' : '+'}</span> 
@@ -220,7 +210,6 @@
             ); 
         };
 
-        // [지역 선택 데이터]
         const regionData = {
             "경기도": ["수원시", "성남시", "용인시", "화성시", "안산시", "안양시", "평택시", "시흥시", "광명시", "군포시", "이천시", "오산시", "안성시", "의왕시"],
             "서울특별시": ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
@@ -228,28 +217,36 @@
             "충청남도": ["천안시", "아산시", "당진시", "서산시"]
         };
 
-        // [모듈 8] 견적 신청 폼
+        // [모듈 8] 견적 신청 폼 (업그레이드된 사진 전송 포함)
         const MultiStepQuoteForm = () => { 
             const [step, setStep] = useState(1); 
             const [isSubmitted, setIsSubmitted] = useState(false);
             const [loading, setLoading] = useState(false);
-            const [formData, setFormData] = useState({ service: '', province: '', city: '', content: '', date: '', dateNone: false, hasPhoto: false, phone: '' });
+            const [formData, setFormData] = useState({ service: '', province: '', city: '', content: '', date: '', dateNone: false, photoData: null, photoName: '', phone: '' });
 
             const next = () => setStep(s => s + 1); 
             const prev = () => setStep(s => Math.max(1, s - 1));
 
+            const handleFileChange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFormData({ ...formData, photoData: reader.result, photoName: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
             const handleSubmit = async () => {
                 setLoading(true);
-                const GAS_URL = "https://script.google.com/macros/s/AKfycbysTbOPC5nxyFxLpBGpXim9l5QvpSo93qgU2GuvARXWatrlw76uD3-dnCbs-RKGP0gx5w/exec";
+                const GAS_URL = "https://script.google.com/macros/s/AKfycbwBy6--NhzoROIcRCIrlbcj-Ea-gDyZiqdEm4prhO49KoweSqjMVMr3dnaNEk4n-slQTw/exec";
                 try {
-                    await fetch(GAS_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        cache: 'no-cache',
-                        headers: {
-                            'Content-Type': 'text/plain;charset=utf-8',
-                        },
-                        body: JSON.stringify(formData)
+                    await fetch(GAS_URL, { 
+                        method: 'POST', 
+                        mode: 'no-cors', 
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(formData) 
                     });
                     setIsSubmitted(true);
                 } catch (error) {
@@ -261,12 +258,12 @@
 
             if (isSubmitted) {
                 return (
-                    <section className="px-6 py-32 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20 text-center text-white">
+                    <section className="px-6 py-32 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20 text-center text-white text-center">
                         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
                             <div className="text-6xl mb-6">✅</div>
-                            <h2 className="text-2xl font-bold mb-2">접수가 완료되었습니다!</h2>
+                            <h2 className="text-2xl font-bold mb-2 text-white">접수가 완료되었습니다!</h2>
                             <p className="text-slate-400">사장님이 확인 후 10분 내로<br/>견적 상담 연락을 드립니다.</p>
-                            <button onClick={() => {setIsSubmitted(false); setStep(1);}} className="mt-10 text-amber-400 underline">새로 신청하기</button>
+                            <button onClick={() => {setIsSubmitted(false); setStep(1);}} className="mt-10 text-amber-400 underline decoration-amber-400 underline-offset-4">새로 신청하기</button>
                         </motion.div>
                     </section>
                 );
@@ -281,33 +278,33 @@
                     </div> 
                     <div className="min-h-[380px]"> 
                         {step === 1 && ( 
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-3"> 
-                                <p className="font-bold text-lg mb-6 text-left">질문 : 어떤 작업을 원하실까요?</p> 
+                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-3 text-left"> 
+                                <p className="font-bold text-lg mb-6 text-white text-left">질문 : 어떤 작업을 원하실까요?</p> 
                                 {["가구폐기", "가구이동 (방 <-> 방)", "가구이동 (집 <-> 집)", "기타"].map(v => ( 
                                     <button key={v} onClick={() => { setFormData({...formData, service: v}); next(); }} className={`w-full h-16 border rounded-2xl font-bold px-5 text-left transition-all ${formData.service === v ? "bg-amber-400 text-slate-900 border-amber-400" : "bg-white/5 border-white/10 text-slate-300"}`}>{v}</button> 
                                 ))} 
                             </motion.div> 
                         )} 
                         {step === 2 && (
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6">
-                                <p className="font-bold text-lg text-left">질문 : 작업 지역이 어디신가요?</p>
+                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6 text-left">
+                                <p className="font-bold text-lg text-white text-left">질문 : 작업 지역이 어디신가요?</p>
                                 <div className="space-y-4">
                                     <select className="w-full h-16 bg-white/10 border border-white/20 rounded-2xl px-4 text-white outline-none" value={formData.province} onChange={(e) => setFormData({...formData, province: e.target.value, city: ''})}>
-                                        <option value="" className="bg-slate-900">도를 선택해 주세요</option>
-                                        {Object.keys(regionData).map(p => <option key={p} value={p} className="bg-slate-900">{p}</option>)}
+                                        <option value="" className="bg-slate-900 text-white">도를 선택해 주세요</option>
+                                        {Object.keys(regionData).map(p => <option key={p} value={p} className="bg-slate-900 text-white">{p}</option>)}
                                     </select>
                                     <select disabled={!formData.province} className="w-full h-16 bg-white/10 border border-white/20 rounded-2xl px-4 text-white outline-none disabled:opacity-30" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})}>
-                                        <option value="" className="bg-slate-900">시/군/구를 선택해 주세요</option>
-                                        {formData.province && regionData[formData.province].map(c => <option key={c} value={c} className="bg-slate-900">{c}</option>)}
+                                        <option value="" className="bg-slate-900 text-white">시/군/구를 선택해 주세요</option>
+                                        {formData.province && regionData[formData.province].map(c => <option key={c} value={c} className="bg-slate-900 text-white">{c}</option>)}
                                     </select>
                                 </div>
                                 <button disabled={!formData.city} onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg disabled:opacity-30">다음으로</button>
-                                <button onClick={prev} className="w-full py-2 text-slate-500 text-sm">이전으로</button>
+                                <button onClick={prev} className="w-full py-2 text-slate-500 text-sm text-center">이전으로</button>
                             </motion.div>
                         )}
                         {step === 3 && ( 
                             <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4 text-left"> 
-                                <p className="font-bold text-lg mb-4">질문 : 구체적인 작업 내용을 알려주세요.</p>
+                                <p className="font-bold text-lg mb-4 text-white">질문 : 구체적인 작업 내용을 알려주세요.</p>
                                 <textarea onChange={(e) => setFormData({...formData, content: e.target.value})} className="w-full h-40 bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-amber-400" placeholder={"이동하시는 가구와 갯수를 적어주시면 더 빠른 견적상담이 가능합니다\nex,\n옷장 1개, 서랍장 2개..."}></textarea>
                                 <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button>
                                 <button onClick={prev} className="w-full py-2 text-slate-500 text-sm w-full text-center">이전으로</button>
@@ -315,11 +312,11 @@
                         )} 
                         {step === 4 && ( 
                             <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6 text-left"> 
-                                <p className="font-bold text-lg">질문 : 원하시는 날짜가 있으신가요?</p> 
+                                <p className="font-bold text-lg text-white">질문 : 원하시는 날짜가 있으신가요?</p> 
                                 <div className="space-y-3">
-                                    <input type="date" onChange={(e) => setFormData({...formData, date: e.target.value})} disabled={formData.dateNone} className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none focus:border-amber-400 disabled:opacity-30" /> 
-                                    <label className="flex items-center justify-end space-x-2 text-slate-400 font-bold pr-2 cursor-pointer">
-                                        <input type="checkbox" checked={formData.dateNone} onChange={(e) => setFormData({...formData, dateNone: e.target.checked})} className="w-5 h-5 accent-amber-400" />
+                                    <input type="date" onChange={(e) => setFormData({...formData, date: e.target.value})} disabled={formData.dateNone} className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none focus:border-amber-400" /> 
+                                    <label className="flex items-center justify-end space-x-2 text-slate-400 font-bold cursor-pointer">
+                                        <input type="checkbox" onChange={(e) => setFormData({...formData, dateNone: e.target.checked})} className="w-5 h-5 accent-amber-400" />
                                         <span>날짜 상관없음</span>
                                     </label>
                                 </div>
@@ -329,11 +326,12 @@
                         )} 
                         {step === 5 && ( 
                             <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6 text-left"> 
-                                <p className="font-bold text-lg mb-4">질문 : 사진 확인 시 더 정확한 견적 상담이 가능합니다!</p>
-                                <div className={`flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-3xl transition-colors relative ${formData.hasPhoto ? "border-amber-400 bg-amber-400/5" : "border-white/20 bg-white/5"}`}>
-                                    <input type="file" onChange={(e) => setFormData({...formData, hasPhoto: e.target.files.length > 0})} className="absolute inset-0 opacity-0 cursor-pointer" multiple />
-                                    <div className="text-3xl mb-2">{formData.hasPhoto ? "✅" : "📸"}</div>
-                                    <p className="text-slate-400 text-sm">{formData.hasPhoto ? "사진 선택 완료" : "촬영 또는 앨범 선택"}</p>
+                                <p className="font-bold text-lg mb-4 text-white">질문 : 사진 확인 시 더 정확한 견적 상담이 가능합니다!</p>
+                                <div className={`flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-3xl transition-colors relative ${formData.photoData ? "border-amber-400 bg-amber-400/5" : "border-white/20 bg-white/5"}`}>
+                                    <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" multiple />
+                                    <div className="text-3xl mb-2">{formData.photoData ? "✅" : "📸"}</div>
+                                    <p className="text-slate-400 text-sm">{formData.photoData ? "사진 업로드 완료" : "촬영 또는 앨범 선택"}</p>
+                                    {formData.photoName && <p className="text-[10px] text-amber-500 mt-1">{formData.photoName}</p>}
                                 </div>
                                 <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button> 
                                 <button onClick={prev} className="w-full py-2 text-slate-500 text-sm w-full text-center">이전으로</button>
@@ -341,7 +339,7 @@
                         )}
                         {step === 6 && ( 
                             <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4 text-center"> 
-                                <p className="font-bold text-lg text-left mb-6">질문 : 상담을 위해 상담 가능한 연락처 부탁드립니다</p> 
+                                <p className="font-bold text-lg text-left mb-6 text-white text-left">질문 : 상담을 위해 상담 가능한 연락처 부탁드립니다</p> 
                                 <input type="tel" onChange={(e) => setFormData({...formData, phone: e.target.value})} placeholder="010-0000-0000" className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-4 text-white text-center text-xl font-bold outline-none focus:border-amber-400" /> 
                                 <div className="pt-4">
                                     <button disabled={loading || !formData.phone} onClick={handleSubmit} className="w-full h-20 bg-amber-400 text-slate-900 rounded-2xl font-black text-xl shadow-lg shadow-amber-400/20 disabled:opacity-50">{loading ? "접수 중..." : "아래에 견적 확인하기!"}</button> 
@@ -358,7 +356,7 @@
         const FloatingBottomBar = () => { 
             return ( 
                 <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-[440px] z-[100]"> 
-                    <div className="flex justify-center mb-3"> 
+                    <div className="flex justify-center mb-3 text-center"> 
                         <div className="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-100 flex items-center space-x-2"> 
                             <span className="relative flex h-2 w-2"> 
                                 <span className="animate-ping absolute h-full w-full rounded-full bg-green-400 opacity-75"></span> 
@@ -375,7 +373,6 @@
             ); 
         };
 
-        // --- 메인 App 컴포넌트 ---
         const App = () => {
             return (
                 <div className="max-w-[480px] mx-auto bg-white min-h-screen pb-40 shadow-2xl relative overflow-x-hidden">
@@ -399,10 +396,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex-1 pl-6 flex flex-col justify-center py-2 text-white">
-                                    <h2 className="text-3xl font-extrabold leading-none mb-2">정용원 <span className="text-lg font-bold text-slate-400">대표</span></h2>
-                                    <p className="text-amber-300/90 text-[13px] font-medium leading-snug mb-5 italic">"정직하게, 거짓없이, 최선을 다하겠습니다."</p>
-                                    <div className="space-y-2.5 text-[12px] font-medium text-slate-300 border-t border-white/10 pt-4 leading-tight">
+                                <div className="flex-1 pl-6 flex flex-col justify-center py-2 text-left">
+                                    <h2 className="text-3xl font-extrabold text-white leading-none mb-2 text-left">정용원 <span className="text-lg font-bold text-slate-400">대표</span></h2>
+                                    <p className="text-amber-300/90 text-[13px] font-medium leading-snug mb-5 italic text-left">"정직하게, 거짓없이, 최선을 다하겠습니다."</p>
+                                    <div className="space-y-2.5 text-[12px] font-medium text-slate-300 border-t border-white/10 pt-4 leading-tight text-left">
                                         <div className="flex items-center"><span className="text-amber-400 mr-2 text-[14px]">✓</span> 15년 무사고 현장 경력</div>
                                         <div className="flex items-center"><span className="text-amber-400 mr-2 text-[14px]">✓</span> 가구조립기능사 자격 보유</div>
                                         <div className="flex items-center"><span className="text-amber-400 mr-2 text-[14px]">✓</span> 5,700건 이상 누적 시공</div>
@@ -412,12 +409,12 @@
                         </div>
                     </div>
                     <header className="py-14 px-6 text-center">
-                        <motion.h1 initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-[26px] font-extrabold text-slate-900 leading-[1.35] mb-4">
+                        <motion.h1 initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-[26px] font-extrabold text-slate-900 leading-[1.35] mb-4 text-center">
                             <span className="text-amber-600"><Counter target={5740} duration={1.2} /></span>가족이 선택한 이유,<br/>
-                            <motion.span animate={{ scale: [1, 1.05, 1], color: ["#0f172a", "#f59e0b", "#0f172a"] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }} className="inline-block text-[32px] text-amber-500 my-1">경기남부 1등</motion.span><br/>
+                            <motion.span animate={{ scale: [1, 1.05, 1], color: ["#0f172a", "#f59e0b", "#0f172a"] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }} className="inline-block text-[32px] text-amber-500 my-1 text-center font-black">경기남부 1등</motion.span><br/>
                             가구 케어 <span className="underline decoration-slate-900 underline-offset-4 decoration-2">'아빠와 아들'</span>
                         </motion.h1>
-                        <p className="text-slate-500 text-sm font-medium">"수수료 0원, 현장 추가금 없는 정찰제 서비스"</p>
+                        <p className="text-slate-500 text-sm font-medium text-center">"수수료 0원, 현장 추가금 없는 정찰제 서비스"</p>
                     </header>
                     <StatSection />
                     <ComparisonSection />
@@ -436,5 +433,3 @@
     </script>
 </body>
 </html>
-
-
