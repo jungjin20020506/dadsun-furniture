@@ -218,7 +218,7 @@
         };
 
         // [모듈 8] 견적 신청 폼 (업그레이드된 사진 전송 포함)
-        const MultiStepQuoteForm = () => { 
+       const MultiStepQuoteForm = () => { 
             const [step, setStep] = useState(1); 
             const [isSubmitted, setIsSubmitted] = useState(false);
             const [loading, setLoading] = useState(false);
@@ -226,6 +226,19 @@
 
             const next = () => setStep(s => s + 1); 
             const prev = () => setStep(s => Math.max(1, s - 1));
+
+            // [아이디어 4] 단계별 격려 메시지
+            const getEncouragement = (step) => {
+                const messages = {
+                    1: "첫 단추를 끼우셨네요! 금방 끝납니다. 😊",
+                    2: "경기남부 어디든 달려갑니다!",
+                    3: "상세히 적어주실수록 견적이 더 정확해져요!",
+                    4: "거의 다 왔어요! 날짜는 편하게 골라주세요.",
+                    5: "사진까지 있으면 사장님이 아주 좋아하십니다! 📸",
+                    6: "마지막입니다! 연락처만 남겨주시면 끝나요."
+                };
+                return messages[step] || "";
+            };
 
             const handleFileChange = (e) => {
                 const file = e.target.files[0];
@@ -271,23 +284,38 @@
 
             return ( 
                 <section id="quote-form" className="px-6 py-20 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20 overflow-hidden text-white"> 
-                    <div className="flex justify-between mb-10 px-4"> 
+                    {/* [아이디어 19] 브랜드 약속 배너 */}
+                    <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="mb-8 p-5 bg-white/5 rounded-3xl border border-white/10">
+                        <p className="text-amber-400 text-[11px] font-black mb-1 tracking-widest">FAMILY PROMISE</p>
+                        <p className="text-[13px] text-slate-300 leading-relaxed">
+                            "아빠와 아들의 이름을 걸고 <span className="text-white font-bold underline decoration-amber-500">정직하게</span> 상담하겠습니다. 모든 상담은 100% 무료입니다."
+                        </p>
+                    </motion.div>
+
+                    <div className="flex justify-between mb-4 px-4"> 
                         {[1, 2, 3, 4, 5, 6].map(num => ( 
                             <div key={num} className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black transition-colors ${step >= num ? "bg-amber-400 text-slate-900" : "bg-slate-800 text-slate-500"}`}>{num}</div> 
                         ))} 
                     </div> 
-                    <div className="min-h-[380px]"> 
-                        {step === 1 && ( 
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-3 text-left"> 
-                                <p className="font-bold text-lg mb-6 text-white text-left">질문 : 어떤 작업을 원하실까요?</p> 
+
+                    {/* [아이디어 16] 격려 메시지 영역 */}
+                    <p className="text-center text-amber-200/70 text-[11px] font-medium mb-8 h-4">
+                        {getEncouragement(step)}
+                    </p>
+
+                    <div className="min-h-[400px]"> 
+                        <AnimatePresence mode="wait">
+                       {step === 1 && ( 
+                            <motion.div key="step1" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="space-y-3 text-left"> 
+                                <p className="font-bold text-lg mb-6 text-white text-left">어떤 작업을 도와드릴까요?<br/><span className="text-sm text-slate-400 font-normal">(가장 비슷한 것을 골라주세요)</span></p> 
                                 {["가구폐기", "가구이동 (방 <-> 방)", "가구이동 (집 <-> 집)", "기타"].map(v => ( 
-                                    <button key={v} onClick={() => { setFormData({...formData, service: v}); next(); }} className={`w-full h-16 border rounded-2xl font-bold px-5 text-left transition-all ${formData.service === v ? "bg-amber-400 text-slate-900 border-amber-400" : "bg-white/5 border-white/10 text-slate-300"}`}>{v}</button> 
+                                    <motion.button whileTap={{ scale: 0.98 }} key={v} onClick={() => { setFormData({...formData, service: v}); next(); }} className={`w-full h-16 border rounded-2xl font-bold px-5 text-left transition-all ${formData.service === v ? "bg-amber-400 text-slate-900 border-amber-400" : "bg-white/5 border-white/10 text-slate-300"}`}>{v}</motion.button> 
                                 ))} 
                             </motion.div> 
                         )} 
                         {step === 2 && (
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6 text-left">
-                                <p className="font-bold text-lg text-white text-left">질문 : 작업 지역이 어디신가요?</p>
+                            <motion.div key="step2" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="space-y-6 text-left">
+                                <p className="font-bold text-lg text-white text-left">어디로 방문하면 될까요?<br/><span className="text-sm text-slate-400 font-normal">경기남부 전 지역 가능합니다!</span></p>
                                 <div className="space-y-4">
                                     <select className="w-full h-16 bg-white/10 border border-white/20 rounded-2xl px-4 text-white outline-none" value={formData.province} onChange={(e) => setFormData({...formData, province: e.target.value, city: ''})}>
                                         <option value="" className="bg-slate-900 text-white">도를 선택해 주세요</option>
@@ -298,55 +326,83 @@
                                         {formData.province && regionData[formData.province].map(c => <option key={c} value={c} className="bg-slate-900 text-white">{c}</option>)}
                                     </select>
                                 </div>
-                                <button disabled={!formData.city} onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg disabled:opacity-30">다음으로</button>
+                                <motion.button whileTap={{ scale: 0.95 }} disabled={!formData.city} onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg disabled:opacity-30">다음으로</motion.button>
                                 <button onClick={prev} className="w-full py-2 text-slate-500 text-sm text-center">이전으로</button>
                             </motion.div>
                         )}
                         {step === 3 && ( 
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4 text-left"> 
-                                <p className="font-bold text-lg mb-4 text-white">질문 : 구체적인 작업 내용을 알려주세요.</p>
-                                <textarea onChange={(e) => setFormData({...formData, content: e.target.value})} className="w-full h-40 bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-amber-400" placeholder={"이동하시는 가구와 갯수를 적어주시면 더 빠른 견적상담이 가능합니다\nex,\n옷장 1개, 서랍장 2개..."}></textarea>
-                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button>
+                            <motion.div key="step3" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="space-y-4 text-left"> 
+                                <p className="font-bold text-lg mb-4 text-white">구체적인 작업 내용을 알려주세요.</p>
+                                <textarea onChange={(e) => setFormData({...formData, content: e.target.value})} className="w-full h-40 bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-amber-400" placeholder={"이동하시는 가구와 갯수를 적어주시면 더 빠른 견적상담이 가능합니다\nex, 옷장 1개, 서랍장 2개..."}></textarea>
+                                <motion.button whileTap={{ scale: 0.95 }} onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</motion.button>
                                 <button onClick={prev} className="w-full py-2 text-slate-500 text-sm w-full text-center">이전으로</button>
                             </motion.div> 
-                        )} 
+                        )}
                         {step === 4 && ( 
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6 text-left"> 
-                                <p className="font-bold text-lg text-white">질문 : 원하시는 날짜가 있으신가요?</p> 
-                                <div className="space-y-3">
-                                    <input type="date" onChange={(e) => setFormData({...formData, date: e.target.value})} disabled={formData.dateNone} className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none focus:border-amber-400" /> 
-                                    <label className="flex items-center justify-end space-x-2 text-slate-400 font-bold cursor-pointer">
-                                        <input type="checkbox" onChange={(e) => setFormData({...formData, dateNone: e.target.checked})} className="w-5 h-5 accent-amber-400" />
-                                        <span>날짜 상관없음</span>
-                                    </label>
+                            <motion.div key="step4" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="space-y-6 text-left"> 
+                                <p className="font-bold text-lg text-white">희망하시는 작업 날짜가 있으신가요?</p> 
+                                <div className="grid gap-4">
+                                    <motion.button 
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => { setFormData({...formData, dateNone: true, date: ''}); next(); }}
+                                        className={`h-20 rounded-2xl border-2 transition-all flex items-center justify-center font-bold space-x-3 ${formData.dateNone ? "border-amber-400 bg-amber-400 text-slate-900" : "border-white/10 bg-white/5 text-slate-400"}`}
+                                    >
+                                        <span className="text-2xl">🗓️</span>
+                                        <span>아빠와 아들 일정에 맞출게요 (날짜 무관)</span>
+                                    </motion.button>
+                                    
+                                    <div className="flex items-center space-x-4 py-2">
+                                        <div className="flex-1 h-px bg-white/10"></div>
+                                        <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">OR</span>
+                                        <div className="flex-1 h-px bg-white/10"></div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <p className="text-[11px] text-slate-500 font-bold ml-1">직접 날짜 선택하기</p>
+                                        <input type="date" onChange={(e) => { setFormData({...formData, date: e.target.value, dateNone: false}); }} className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none focus:border-amber-400" /> 
+                                    </div>
                                 </div>
-                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button> 
+                                <motion.button whileTap={{ scale: 0.95 }} onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</motion.button> 
                                 <button onClick={prev} className="w-full py-2 text-slate-500 text-sm w-full text-center">이전으로</button>
                             </motion.div> 
-                        )} 
+                        )}
                         {step === 5 && ( 
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6 text-left"> 
-                                <p className="font-bold text-lg mb-4 text-white">질문 : 사진 확인 시 더 정확한 견적 상담이 가능합니다!</p>
+                            <motion.div key="step5" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="space-y-6 text-left"> 
+                                <p className="font-bold text-lg mb-4 text-white">가구 사진을 보여주세요!<br/><span className="text-sm text-slate-400 font-normal">더 정확한 견적 산출이 가능합니다.</span></p>
                                 <div className={`flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-3xl transition-colors relative ${formData.photoData ? "border-amber-400 bg-amber-400/5" : "border-white/20 bg-white/5"}`}>
                                     <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 cursor-pointer" multiple />
                                     <div className="text-3xl mb-2">{formData.photoData ? "✅" : "📸"}</div>
-                                    <p className="text-slate-400 text-sm">{formData.photoData ? "사진 업로드 완료" : "촬영 또는 앨범 선택"}</p>
-                                    {formData.photoName && <p className="text-[10px] text-amber-500 mt-1">{formData.photoName}</p>}
+                                    <p className="text-slate-400 text-sm font-bold">{formData.photoData ? "사진 업로드 완료" : "여기를 눌러 사진 선택"}</p>
+                                    {formData.photoName && <p className="text-[10px] text-amber-500 mt-2 font-medium">{formData.photoName}</p>}
                                 </div>
-                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button> 
+                                <motion.button whileTap={{ scale: 0.95 }} onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</motion.button> 
                                 <button onClick={prev} className="w-full py-2 text-slate-500 text-sm w-full text-center">이전으로</button>
                             </motion.div> 
                         )}
                         {step === 6 && ( 
-                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4 text-center"> 
-                                <p className="font-bold text-lg text-left mb-6 text-white text-left">질문 : 상담을 위해 상담 가능한 연락처 부탁드립니다</p> 
-                                <input type="tel" onChange={(e) => setFormData({...formData, phone: e.target.value})} placeholder="010-0000-0000" className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-4 text-white text-center text-xl font-bold outline-none focus:border-amber-400" /> 
-                                <div className="pt-4">
-                                    <button disabled={loading || !formData.phone} onClick={handleSubmit} className="w-full h-20 bg-amber-400 text-slate-900 rounded-2xl font-black text-xl shadow-lg shadow-amber-400/20 disabled:opacity-50">{loading ? "접수 중..." : "아래에 견적 확인하기!"}</button> 
+                            <motion.div key="step6" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="space-y-4 text-center"> 
+                                <p className="font-bold text-lg text-left mb-2 text-white">견적을 받으실 번호를 남겨주세요</p> 
+                                <p className="text-slate-400 text-[12px] text-left mb-6 leading-relaxed">
+                                    사장님(아버지)이 직접 확인 후, <span className="text-amber-400 font-bold underline decoration-amber-400/30">10분 내로</span> 정확한 금액을 문자로 안내드립니다.
+                                </p>
+                                <input type="tel" onChange={(e) => setFormData({...formData, phone: e.target.value})} placeholder="010-0000-0000" className="w-full h-20 bg-white/5 border border-white/10 rounded-3xl px-4 text-white text-center text-2xl font-black outline-none focus:border-amber-400 transition-all" /> 
+                                <div className="mt-4 flex items-center justify-center space-x-2 text-slate-500 mb-8">
+                                    <span className="text-[11px]">🛡️ 개인정보는 오직 견적 상담 용도로만 안전하게 사용됩니다.</span>
                                 </div>
-                                <button onClick={prev} className="w-full py-4 text-slate-500 text-sm">이전으로</button>
+                                <div className="pt-2">
+                                    <motion.button 
+                                        whileTap={{ scale: 0.95 }}
+                                        disabled={loading || !formData.phone} 
+                                        onClick={handleSubmit} 
+                                        className="w-full h-20 bg-amber-400 text-slate-900 rounded-3xl font-black text-xl shadow-2xl shadow-amber-400/20 disabled:opacity-50"
+                                    >
+                                        {loading ? "전송 중..." : "10분 내로 견적 받기"}
+                                    </motion.button> 
+                                </div>
+                                <button onClick={prev} className="w-full py-4 text-slate-600 text-[13px] font-bold">정보 수정하기</button>
                             </motion.div> 
                         )} 
+                        </AnimatePresence>
                     </div> 
                 </section> 
             ); 
@@ -433,6 +489,7 @@
     </script>
 </body>
 </html>
+
 
 
 
