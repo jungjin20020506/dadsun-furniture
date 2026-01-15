@@ -107,7 +107,7 @@
                         <h2 className="text-2xl font-bold text-slate-900 mb-2">실제 작업 현장</h2>
                         <p className="text-slate-500 text-sm text-left">5,700여 건의 현장이 증명하는 실력입니다.</p>
                     </div>
-                    <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -832] }} transition={{ repeat: Infinity, duration: 20, ease: "linear" }}>
+                   <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -832] }} transition={{ repeat: Infinity, duration: 10, ease: "linear" }}>
                         {doubledProjects.map((p, i) => (
                             <div key={i} className="flex-shrink-0 w-[240px] group">
                                 <div className="h-[240px] rounded-3xl overflow-hidden mb-3 relative shadow-md">
@@ -140,10 +140,11 @@
                         <div className="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-[11px] font-bold rounded-full mb-3">REAL REVIEWS</div> 
                         <h2 className="text-2xl font-bold text-slate-900">조작 없는 생생한 후기</h2> 
                     </div> 
-                    <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -1000] }} transition={{ repeat: Infinity, duration: 25, ease: "linear" }}> 
-                        {doubled.map((r, i) => ( 
-                            <div key={i} className="flex-shrink-0 w-[320px] h-[200px] rounded-3xl overflow-hidden border shadow-lg relative">
-                                <img src={r.url} className="w-full h-full object-cover" /> 
+                   {/* 속도를 duration: 15로 상향 (기존 25), 비율을 w-[280px] h-[350px]로 4:5 조정 */}
+<motion.div className="flex space-x-4 px-4" animate={{ x: [0, -1176] }} transition={{ repeat: Infinity, duration: 15, ease: "linear" }}> 
+    {doubled.map((r, i) => ( 
+        <div key={i} className="flex-shrink-0 w-[280px] h-[350px] rounded-3xl overflow-hidden border shadow-lg relative">
+            <img src={r.url} className="w-full h-full object-cover" />
                                 <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 text-white text-[10px] font-bold rounded-full">{r.tag}</div> 
                             </div> 
                         ))} 
@@ -567,6 +568,7 @@
     </script>
 </body>
 </html>
+
 
 
 
