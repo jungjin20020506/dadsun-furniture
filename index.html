@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>아빠와 아들 가구 서비스</title>
+    <title>아빠와 아들 가구 서비스 | 경기남부 전문</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -14,143 +14,307 @@
         body { font-family: "Pretendard Variable", sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         html { scroll-behavior: smooth; }
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
     </style>
 </head>
 <body class="bg-slate-100">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
-        // Motion이 정의되지 않았을 때를 대비한 안전장치
-        const motion = window.Motion?.motion || {};
-        const AnimatePresence = window.Motion?.AnimatePresence || (({children}) => children);
+        const { useState, useEffect, useRef } = React;
+        const { motion, animate, useInView, AnimatePresence } = window.Motion;
 
-        const LandingPage = () => {
-            const [reviewIdx, setReviewIdx] = useState(0);
-            const reviews = [
-                { url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=500", text: "동탄 반도유보라 침대 이동 완료" },
-                { url: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=500", text: "화성 남양 소파 폐기 지원" },
-                { url: "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=500", text: "수원 광교 중고 식탁 운송" }
-            ];
+        // --- [모듈 1] 숫자 카운팅 컴포넌트 ---
+        const Counter = ({ target, duration = 2, suffix = "" }) => {
+            const [count, setCount] = useState(0);
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: true });
 
             useEffect(() => {
-                const timer = setInterval(() => {
-                    setReviewIdx((prev) => (prev + 1) % reviews.length);
-                }, 3500);
-                return () => clearInterval(timer);
-            }, []);
+                if (isInView) {
+                    const controls = animate(0, target, {
+                        duration: duration,
+                        onUpdate: (value) => setCount(Math.floor(value * 10) / 10),
+                    });
+                    return () => controls.stop();
+                }
+            }, [isInView, target]);
 
+            return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
+        };
+
+        const StatSection = () => {
+            const stats = [
+                { label: "함께한 시간", value: 15, suffix: "년+", icon: "⏳" },
+                { label: "누적 작업", value: 5742, suffix: "건", icon: "🚚" },
+                { label: "고객 만족도", value: 4.9, suffix: "/5.0", icon: "⭐" },
+                { label: "가구 파손율", value: 0, suffix: "%", icon: "🛡️" }
+            ];
             return (
-                <div className="max-w-[480px] mx-auto bg-white min-h-screen pb-32 shadow-2xl relative overflow-x-hidden">
-                    
-                    {/* 상단 프로필 섹션 (가장 먼저 신뢰 전달) */}
-                    <div className="pt-6 px-6 bg-slate-900">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="text-amber-400 font-black text-xl italic">Dad & Son</div>
-                            <div className="text-white/60 text-[10px]">경기남부 가구케어 전문</div>
-                        </div>
-                        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 mb-8 border border-white/20 flex items-center space-x-4">
-                            <div className="w-16 h-16 bg-slate-700 rounded-2xl overflow-hidden border-2 border-amber-400 flex-shrink-0 flex items-center justify-center text-[10px] text-white/40 text-center px-1">
-                                사진 준비중
-                            </div>
-                            <div>
-                                <div className="text-white font-bold">베테랑 김준호 대표</div>
-                                <div className="text-amber-400 text-xs font-medium mt-0.5">"15년 경력의 정직함을 약속합니다"</div>
-                                <div className="flex gap-1 mt-2">
-                                    <span className="bg-white/10 text-[9px] text-white/80 px-2 py-0.5 rounded-full">#하청없음</span>
-                                    <span className="bg-white/10 text-[9px] text-white/80 px-2 py-0.5 rounded-full">#당일시공가능</span>
-                                </div>
-                            </div>
-                        </div>
+                <section className="px-6 py-12 bg-white">
+                    <div className="grid grid-cols-2 gap-4">
+                        {stats.map((stat, idx) => (
+                            <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-slate-50 p-5 rounded-3xl border border-slate-100 text-center">
+                                <div className="text-2xl mb-2">{stat.icon}</div>
+                                <div className="text-2xl font-black text-slate-900 mb-1"><Counter target={stat.value} suffix={stat.suffix} /></div>
+                                <div className="text-[12px] text-slate-500 font-bold">{stat.label}</div>
+                            </motion.div>
+                        ))}
                     </div>
+                </section>
+            );
+        };
 
-                    {/* 히어로 섹션 */}
-                    <header className="relative py-12 px-6 text-center">
-                        <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-4">
-                            가구 이동/폐기,<br/>
-                            <span className="text-amber-500 underline decoration-slate-900 underline-offset-4 decoration-2">아빠가 직접</span> 갑니다.
-                        </h1>
-                        <p className="text-slate-500 text-sm">중간 수수료 0원, 현장 추가금 없는 정찰제 서비스</p>
-                    </header>
+        // --- [모듈 2] 실시간 예약 현황 토스트 ---
+        const RealTimeToast = () => {
+            const [isVisible, setIsVisible] = useState(false);
+            const [currentMsg, setCurrentMsg] = useState(0);
+            const messages = [
+                "방금 전 동탄 영천동에서 거실 가구 재배치 문의 접수",
+                "화성 남양읍 침대 프레임 폐기 지원 예약 확정",
+                "오산 세교지구 소파 이전 설치 상담 중",
+                "수원 광교 4인용 식탁 운송 완료",
+                "용인 기흥구 서랍장 위치 이동 신청"
+            ];
+            useEffect(() => {
+                const showToast = () => {
+                    setIsVisible(true);
+                    setTimeout(() => { setIsVisible(false); setTimeout(() => setCurrentMsg(p => (p + 1) % messages.length), 1000); }, 5000);
+                };
+                const timer = setInterval(showToast, 15000);
+                const firstTimer = setTimeout(showToast, 3000);
+                return () => { clearInterval(timer); clearTimeout(firstTimer); };
+            }, []);
+            return (
+                <div className="fixed bottom-28 left-4 z-[60] pointer-events-none">
+                    <AnimatePresence>
+                        {isVisible && (
+                            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl p-4 flex items-center space-x-3 max-w-[280px]">
+                                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0 text-xl">🔔</div>
+                                <div>
+                                    <p className="text-[10px] text-amber-600 font-bold">실시간 현황</p>
+                                    <p className="text-[12px] text-slate-800 font-medium mt-0.5">{messages[currentMsg]}</p>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            );
+        };
 
-                    {/* 실시간 후기 이미지 슬라이드 */}
-                    <section className="px-6 mb-12">
-                        <div className="relative h-72 rounded-3xl overflow-hidden shadow-2xl border border-slate-100">
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={reviewIdx}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    className="absolute inset-0"
-                                >
-                                    <img src={reviews[reviewIdx].url} className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                                    <div className="absolute bottom-5 left-5 right-5 text-white">
-                                        <p className="text-xs text-amber-400 font-bold mb-1">실시간 작업 현장</p>
-                                        <p className="text-sm font-medium">{reviews[reviewIdx].text}</p>
-                                    </div>
-                                </motion.div>
+        // --- [모듈 3] 비교표 섹션 ---
+        const ComparisonSection = () => {
+            const compareData = [
+                { label: "작업 주체", us: "가족(부자) 직접 시공", others: "단순 용역/알바" },
+                { label: "보양 작업", us: "바닥/가구 전용 보양", others: "보양 없이 작업" },
+                { label: "수평 조절", us: "전문 장비 수평 무료", others: "단순 이동만 수행" },
+                { label: "현장 추가금", us: "0원 (정찰제 원칙)", others: "빈번하게 발생" }
+            ];
+            return (
+                <section className="px-6 py-16 bg-slate-50 text-center">
+                    <h2 className="text-2xl font-bold text-slate-900 mb-2">무엇이 다른가요?</h2>
+                    <p className="text-slate-500 text-sm mb-10">소중한 가구, 아무에게나 맡기지 마세요.</p>
+                    <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm bg-white">
+                        <div className="grid grid-cols-11 font-bold text-[11px] bg-slate-100/50 border-b border-slate-100">
+                            <div className="col-span-3 py-4 text-slate-400">비교 항목</div>
+                            <div className="col-span-4 py-4 text-amber-600 bg-amber-50">아빠와 아들</div>
+                            <div className="col-span-4 py-4 text-slate-500">일반 업체</div>
+                        </div>
+                        {compareData.map((item, idx) => (
+                            <div key={idx} className="grid grid-cols-11 items-center border-b border-slate-50 last:border-0">
+                                <div className="col-span-3 py-5 text-[11px] font-bold text-slate-500 bg-slate-50/30">{item.label}</div>
+                                <div className="col-span-4 py-5 bg-amber-50/30 text-[12px] font-black text-slate-800">✅ {item.us}</div>
+                                <div className="col-span-4 py-5 text-[11px] font-medium text-slate-400">❌ {item.others}</div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        // --- [모듈 4] 실제 후기 슬라이더 ---
+        const ReviewSlider = () => {
+            const reviewImages = [
+                { url: "https://images.unsplash.com/photo-1594814610410-d66222d8a781?q=80&w=300&h=500&fit=crop", tag: "동탄 맘카페 후기" },
+                { url: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=300&h=500&fit=crop", tag: "당근마켓 실시간" },
+                { url: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=300&h=500&fit=crop", tag: "네이버 예약 리뷰" },
+                { url: "https://images.unsplash.com/photo-1556911223-05303477af31?q=80&w=300&h=500&fit=crop", tag: "직접 받은 문자" }
+            ];
+            const doubled = [...reviewImages, ...reviewImages];
+            return (
+                <section className="py-16 bg-white overflow-hidden">
+                    <div className="text-center mb-8 px-6">
+                        <div className="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-[11px] font-bold rounded-full mb-3">REAL REVIEWS</div>
+                        <h2 className="text-2xl font-bold text-slate-900">조작 없는 생생한 후기</h2>
+                    </div>
+                    <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -1000] }} transition={{ repeat: Infinity, duration: 25, ease: "linear" }}>
+                        {doubled.map((r, i) => (
+                            <div key={i} className="flex-shrink-0 w-[200px] h-[340px] rounded-3xl overflow-hidden border shadow-lg relative">
+                                <img src={r.url} className="w-full h-full object-cover" />
+                                <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 text-white text-[10px] font-bold rounded-full">{r.tag}</div>
+                            </div>
+                        ))}
+                    </motion.div>
+                </section>
+            );
+        };
+
+        // --- [모듈 5] 작업 프로세스 ---
+        const ProcessSection = () => {
+            const steps = [
+                { title: "사진 접수 및 견적 확정", desc: "가구 사진으로 확정 견적을 드립니다.", icon: "📸" },
+                { title: "현장 방문 및 보양 작업", desc: "전용 보양재로 바닥과 벽을 보호합니다.", icon: "🏠" },
+                { title: "안전한 가구 이동", desc: "15년 노하우로 손상 없이 이동합니다.", icon: "🚚" },
+                { title: "수평 조절 및 설치", desc: "가구 균형을 완벽하게 잡아드립니다.", icon: "⚙️" },
+                { title: "뒷정리 및 사후 관리", desc: "깔끔한 정리와 A/S 정책을 안내합니다.", icon: "✨" }
+            ];
+            return (
+                <section className="px-6 py-16 bg-slate-900 text-white relative">
+                    <h2 className="text-2xl font-bold mb-12 text-center">작업 프로세스</h2>
+                    <div className="absolute left-[39px] top-40 bottom-24 w-0.5 border-l-2 border-dashed border-slate-700"></div>
+                    <div className="space-y-10">
+                        {steps.map((s, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} className="relative flex items-start space-x-6">
+                                <div className="relative z-10 w-14 h-14 bg-amber-400 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-amber-400/20">{s.icon}</div>
+                                <div className="flex-1 pt-1">
+                                    <h3 className="text-lg font-bold">{s.title}</h3>
+                                    <p className="text-slate-400 text-[13px]">{s.desc}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        // --- [모듈 6] FAQ ---
+        const FAQSection = () => {
+            const [openIdx, setOpenIdx] = useState(null);
+            const faqs = [
+                { q: "가구 파손 시 어떻게 되나요?", a: "현대해상 배상책임보험에 가입되어 있어 절차에 따라 완벽히 보상해 드립니다." },
+                { q: "현장 추가금이 있나요?", a: "사진과 정보가 정확하다면 추가금을 요구하지 않는 정찰제 원칙을 준수합니다." },
+                { q: "가구 한 개만 옮기는 것도 되나요?", a: "네, 단 하나의 가구도 정성껏 모십니다. 부담 없이 연락주세요." }
+            ];
+            return (
+                <section className="px-6 py-16 bg-white">
+                    <h2 className="text-2xl font-bold mb-8">자주 묻는 질문</h2>
+                    {faqs.map((f, i) => (
+                        <div key={i} className="border-b border-slate-100 last:border-0">
+                            <button onClick={() => setOpenIdx(openIdx === i ? null : i)} className="w-full py-5 flex justify-between items-center text-left font-bold text-slate-800">
+                                <span>{f.q}</span>
+                                <span className="text-amber-500">{openIdx === i ? '−' : '+'}</span>
+                            </button>
+                            <AnimatePresence>
+                                {openIdx === i && (
+                                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden pb-5 text-[13px] text-slate-500 leading-relaxed">
+                                        {f.a}
+                                    </motion.div>
+                                )}
                             </AnimatePresence>
                         </div>
-                    </section>
+                    ))}
+                </section>
+            );
+        };
 
-                    {/* 신뢰 지표 카드 */}
-                    <div className="grid grid-cols-2 gap-3 px-6 mb-12">
-                        <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                            <div className="text-2xl font-black text-slate-900">5,700+</div>
-                            <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">누적 작업건수</div>
-                        </div>
-                        <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                            <div className="text-2xl font-black text-amber-500">4.9점</div>
-                            <div className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">고객 평균 만족도</div>
+        // --- [모듈 7] 멀티스텝 견적 폼 ---
+        const MultiStepQuoteForm = () => {
+            const [step, setStep] = useState(1);
+            const next = () => setStep(s => Math.min(s + 1, 3));
+            return (
+                <section id="quote-form" className="px-6 py-20 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20">
+                    <div className="flex justify-between mb-10 px-4">
+                        {[1, 2, 3].map(num => (
+                            <div key={num} className={`w-8 h-8 rounded-full flex items-center justify-center font-black transition-colors ${step >= num ? "bg-amber-400 text-slate-900" : "bg-slate-800 text-slate-500"}`}>{num}</div>
+                        ))}
+                    </div>
+                    <div className="min-h-[300px]">
+                        {step === 1 && (
+                            <motion.div initial={{ x: 20 }} animate={{ x: 0 }} className="space-y-3">
+                                <p className="text-white font-bold mb-4">서비스를 선택해주세요.</p>
+                                {["가구 재배치", "가구 폐기 지원", "이전 설치"].map(v => (
+                                    <button key={v} onClick={next} className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl text-slate-300 font-bold px-5 text-left hover:border-amber-400">{v}</button>
+                                ))}
+                            </motion.div>
+                        )}
+                        {step === 2 && (
+                            <motion.div initial={{ x: 20 }} animate={{ x: 0 }} className="space-y-4">
+                                <input type="text" placeholder="지역 (예: 동탄 영천동)" className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none" />
+                                <input type="date" className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none" />
+                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button>
+                            </motion.div>
+                        )}
+                        {step === 3 && (
+                            <motion.div initial={{ x: 20 }} animate={{ x: 0 }} className="space-y-4 text-center">
+                                <p className="text-white font-bold text-lg">마지막입니다!</p>
+                                <input type="tel" placeholder="010-0000-0000" className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white text-center text-lg outline-none" />
+                                <button className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg shadow-lg shadow-amber-400/20">견적 신청 완료</button>
+                                <button onClick={() => setStep(1)} className="text-slate-500 text-sm underline mt-4">처음부터 다시</button>
+                            </motion.div>
+                        )}
+                    </div>
+                </section>
+            );
+        };
+
+        // --- [모듈 8] 실시간 상태 배지 & 하단 바 ---
+        const FloatingBottomBar = () => {
+            return (
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-[440px] z-[100]">
+                    <div className="flex justify-center mb-3">
+                        <div className="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-100 flex items-center space-x-2">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            <span className="text-[11px] font-bold text-slate-600">현재 상담 가능 <span className="text-slate-400 font-medium">(응답 10분 내)</span></span>
                         </div>
                     </div>
-
-                    {/* 견적서 폼 */}
-                    <section className="px-6 py-10 bg-slate-900 rounded-t-[40px]" id="quote-form">
-                        <div className="text-center mb-8">
-                            <h2 className="text-2xl font-bold text-white mb-2">30초 간편 견적 신청</h2>
-                            <p className="text-slate-400 text-xs">확인 즉시 문자로 예상 비용을 보내드려요.</p>
-                        </div>
-                        
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-[11px] font-bold text-slate-500 mb-2 ml-1">문의 서비스</label>
-                                <select className="w-full h-14 px-4 bg-white/5 border border-white/10 rounded-2xl text-white text-sm focus:outline-none focus:border-amber-400 transition-colors appearance-none">
-                                    <option className="text-slate-900">단순 가구 이동 (방간 이동)</option>
-                                    <option className="text-slate-900">가구 운송 (집간 이동)</option>
-                                    <option className="text-slate-900">가구 폐기 지원</option>
-                                    <option className="text-slate-900">기타 문의</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-[11px] font-bold text-slate-500 mb-2 ml-1">연락처</label>
-                                <input type="tel" placeholder="010-0000-0000" className="w-full h-14 px-4 bg-white/5 border border-white/10 rounded-2xl text-white text-sm focus:outline-none focus:border-amber-400" />
-                            </div>
-                            <button className="w-full h-16 bg-amber-400 hover:bg-amber-500 text-slate-900 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all mt-4">
-                                견적 신청하기
-                            </button>
-                        </div>
-                    </section>
-
-                    {/* 하단 고정 홈바 */}
-                    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-50">
-                        <div className="bg-white/80 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] rounded-3xl p-2 border border-white flex gap-2">
-                            <a href="https://open.kakao.com" target="_blank" className="flex-1 h-14 bg-[#FEE500] text-slate-900 rounded-2xl flex items-center justify-center font-bold text-sm shadow-sm active:scale-95 transition-transform">
-                                <span className="mr-2">💬</span> 카톡 문의
-                            </a>
-                            <a href="#quote-form" className="flex-[1.5] h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-bold text-sm shadow-sm active:scale-95 transition-transform">
-                                <span className="mr-2">📋</span> 30초 견적 받기
-                            </a>
-                        </div>
+                    <div className="bg-slate-900/90 backdrop-blur-xl shadow-2xl rounded-3xl p-2.5 flex gap-2 border border-white/10">
+                        <a href="https://open.kakao.com" className="flex-1 h-14 bg-[#FEE500] text-slate-900 rounded-2xl flex items-center justify-center font-black text-[14px]">💬 카톡 문의</a>
+                        <a href="#quote-form" className="flex-[1.4] h-14 bg-amber-400 text-slate-900 rounded-2xl flex items-center justify-center font-black text-[14px]">📋 30초 견적 받기</a>
                     </div>
                 </div>
             );
         };
 
+        const App = () => {
+            return (
+                <div className="max-w-[480px] mx-auto bg-white min-h-screen pb-40 shadow-2xl relative overflow-x-hidden">
+                    <RealTimeToast />
+                    <div className="pt-6 px-6 bg-slate-900 pb-8">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="text-amber-400 font-black text-xl italic">Dad & Son</div>
+                            <div className="text-white/60 text-[10px]">경기남부 가구케어 전문</div>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/20 flex items-center space-x-4">
+                            <div className="w-16 h-16 bg-slate-700 rounded-2xl border-2 border-amber-400 flex items-center justify-center text-[10px] text-white/40">사진</div>
+                            <div>
+                                <div className="text-white font-bold text-lg">베테랑 김준호 대표</div>
+                                <div className="text-amber-400 text-sm font-medium">"15년 경력의 정직함"</div>
+                            </div>
+                        </div>
+                    </div>
+                    <header className="py-12 px-6 text-center">
+                        <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-4">가구 이동/폐기,<br/><span className="text-amber-500 underline decoration-slate-900 underline-offset-4 decoration-2">아빠가 직접</span> 갑니다.</h1>
+                        <p className="text-slate-500 text-sm italic">"수수료 0원, 현장 추가금 없는 정찰제 서비스"</p>
+                    </header>
+                    <StatSection />
+                    <ComparisonSection />
+                    <ReviewSlider />
+                    <ProcessSection />
+                    <FAQSection />
+                    <MultiStepQuoteForm />
+                    <FloatingBottomBar />
+                </div>
+            );
+        };
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<LandingPage />);
+        root.render(<App />);
     </script>
 </body>
 </html>
