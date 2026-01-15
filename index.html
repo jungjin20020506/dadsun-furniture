@@ -109,8 +109,8 @@
                     </div>
                     <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -832] }} transition={{ repeat: Infinity, duration: 20, ease: "linear" }}>
                         {doubledProjects.map((p, i) => (
-                            <div key={i} className="flex-shrink-0 w-[260px] group">
-                                <div className="h-[180px] rounded-3xl overflow-hidden mb-3 relative shadow-md">
+                            <div key={i} className="flex-shrink-0 w-[240px] group">
+                                <div className="h-[240px] rounded-3xl overflow-hidden mb-3 relative shadow-md">
                                     <img src={p.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                     <div className="absolute bottom-3 left-4">
@@ -142,7 +142,7 @@
                     </div> 
                     <motion.div className="flex space-x-4 px-4" animate={{ x: [0, -1000] }} transition={{ repeat: Infinity, duration: 25, ease: "linear" }}> 
                         {doubled.map((r, i) => ( 
-                            <div key={i} className="flex-shrink-0 w-[200px] h-[340px] rounded-3xl overflow-hidden border shadow-lg relative"> 
+                            <div key={i} className="flex-shrink-0 w-[320px] h-[200px] rounded-3xl overflow-hidden border shadow-lg relative">
                                 <img src={r.url} className="w-full h-full object-cover" /> 
                                 <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 text-white text-[10px] font-bold rounded-full">{r.tag}</div> 
                             </div> 
@@ -567,6 +567,7 @@
     </script>
 </body>
 </html>
+
 
 
 
