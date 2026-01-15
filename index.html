@@ -238,46 +238,109 @@
             ); 
         };
 
-        // [모듈 8] 견적 신청 폼
+       // [모듈 8] 견적 신청 폼 (리드폼 업데이트)
         const MultiStepQuoteForm = () => { 
             const [step, setStep] = useState(1); 
-            const next = () => setStep(s => Math.min(s + 1, 3)); 
+            const [isSubmitted, setIsSubmitted] = useState(false);
+            const [formData, setFormData] = useState({ dateNone: false });
+
+            const next = () => setStep(s => s + 1); 
+            const prev = () => setStep(s => Math.max(1, s - 1));
+            const handleSubmit = () => setIsSubmitted(true);
+
+            if (isSubmitted) {
+                return (
+                    <section className="px-6 py-32 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20 text-center">
+                        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                            <div className="text-6xl mb-6">✅</div>
+                            <h2 className="text-2xl font-bold text-white mb-2">정상적으로 접수되었습니다!</h2>
+                            <p className="text-slate-400">연락드리도록 하겠습니다 감사합니다!</p>
+                            <button onClick={() => {setIsSubmitted(false); setStep(1);}} className="mt-10 text-amber-400 underline decoration-amber-400 underline-offset-4">새로 신청하기</button>
+                        </motion.div>
+                    </section>
+                );
+            }
+
             return ( 
-                <section id="quote-form" className="px-6 py-20 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20"> 
+                <section id="quote-form" className="px-6 py-20 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20 overflow-hidden"> 
                     <div className="flex justify-between mb-10 px-4"> 
-                        {[1, 2, 3].map(num => ( 
-                            <div key={num} className={`w-8 h-8 rounded-full flex items-center justify-center font-black transition-colors ${step >= num ? "bg-amber-400 text-slate-900" : "bg-slate-800 text-slate-500"}`}>{num}</div> 
+                        {[1, 2, 3, 4, 5].map(num => ( 
+                            <div key={num} className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-black transition-colors ${step >= num ? "bg-amber-400 text-slate-900" : "bg-slate-800 text-slate-500"}`}>{num}</div> 
                         ))} 
                     </div> 
-                    <div className="min-h-[300px]"> 
+                    <div className="min-h-[380px]"> 
+                        {/* Step 1: 서비스 선택 */}
                         {step === 1 && ( 
-                            <motion.div initial={{ x: 20 }} animate={{ x: 0 }} className="space-y-3"> 
-                                <p className="text-white font-bold mb-4">서비스를 선택해주세요.</p> 
-                                {["가구 재배치", "가구 폐기 지원", "이전 설치"].map(v => ( 
-                                    <button key={v} onClick={next} className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl text-slate-300 font-bold px-5 text-left hover:border-amber-400">{v}</button> 
+                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-3 text-left"> 
+                                <p className="text-white font-bold text-lg mb-6">질문 : 어떤 작업을 원하실까요?</p> 
+                                {["가구폐기", "가구이동 (방 <-> 방)", "가구이동 (집 <-> 집)", "기타"].map(v => ( 
+                                    <button key={v} onClick={next} className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl text-slate-300 font-bold px-5 text-left hover:border-amber-400 active:bg-amber-400 active:text-slate-900 transition-all">{v}</button> 
                                 ))} 
                             </motion.div> 
                         )} 
+
+                        {/* Step 2: 작업 내용 */}
                         {step === 2 && ( 
-                            <motion.div initial={{ x: 20 }} animate={{ x: 0 }} className="space-y-4"> 
-                                <input type="text" placeholder="지역 (예: 동탄 영천동)" className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none" /> 
-                                <input type="date" className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none" /> 
-                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button> 
+                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4"> 
+                                <p className="text-white font-bold text-lg mb-4 text-left">질문 : 구체적인 작업 내용을 알려주세요.</p>
+                                <textarea 
+                                    className="w-full h-48 bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm outline-none focus:border-amber-400 placeholder:text-slate-600 leading-relaxed"
+                                    placeholder={"이동하시는 가구와 갯수를 적어주시면 더 빠른 견적상담이 가능합니다\nex,\n옷장 1개\n서랍장 2개\n2인 쇼파 1개\n방에서 방으로 이동입니다"}
+                                ></textarea>
+                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg shadow-lg">다음으로</button>
+                                <button onClick={prev} className="w-full py-2 text-slate-500 text-sm">이전으로</button>
                             </motion.div> 
                         )} 
+
+                        {/* Step 3: 날짜 선택 */}
                         {step === 3 && ( 
-                            <motion.div initial={{ x: 20 }} animate={{ x: 0 }} className="space-y-4 text-center"> 
-                                <p className="text-white font-bold text-lg">마지막입니다!</p> 
-                                <input type="tel" placeholder="010-0000-0000" className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white text-center text-lg outline-none" /> 
-                                <button className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg shadow-lg shadow-amber-400/20">견적 신청 완료</button> 
-                                <button onClick={() => setStep(1)} className="text-slate-500 text-sm underline mt-4">처음부터 다시</button> 
+                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6"> 
+                                <p className="text-white font-bold text-lg text-left">질문 : 원하시는 날짜가 있으신가요?</p> 
+                                <div className="space-y-3">
+                                    <input type="date" disabled={formData.dateNone} className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-4 text-white outline-none focus:border-amber-400 disabled:opacity-30" /> 
+                                    <label className="flex items-center justify-end space-x-2 text-slate-400 font-bold pr-2 cursor-pointer">
+                                        <input type="checkbox" className="w-5 h-5 accent-amber-400" onChange={(e) => setFormData({...formData, dateNone: e.target.checked})} />
+                                        <span>날짜 상관없음</span>
+                                    </label>
+                                </div>
+                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button> 
+                                <button onClick={prev} className="w-full py-2 text-slate-500 text-sm">이전으로</button>
+                            </motion.div> 
+                        )} 
+
+                        {/* Step 4: 사진 업로드 */}
+                        {step === 4 && ( 
+                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6"> 
+                                <div className="text-left">
+                                    <p className="text-white font-bold text-lg mb-1">질문 : 사진 확인 시 더 정확한</p>
+                                    <p className="text-white font-bold text-lg mb-4">견적 상담이 가능합니다!</p>
+                                </div>
+                                <div className="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-white/20 rounded-3xl bg-white/5 hover:border-amber-400 transition-colors relative">
+                                    <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" multiple />
+                                    <div className="text-3xl mb-2">📸</div>
+                                    <p className="text-slate-400 text-sm">촬영 또는 앨범에서 선택</p>
+                                </div>
+                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-2xl font-black text-lg">다음으로</button> 
+                                <p className="text-slate-500 text-[11px] text-center italic">사진이 없으시면 그냥 '다음으로'를 눌러주세요.</p>
+                                <button onClick={prev} className="w-full py-1 text-slate-500 text-sm">이전으로</button>
+                            </motion.div> 
+                        )}
+
+                        {/* Step 5: 연락처 입력 */}
+                        {step === 5 && ( 
+                            <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4 text-center"> 
+                                <p className="text-white font-bold text-lg text-left mb-6">질문 : 상담을 위해 상담 가능한 연락처 부탁드립니다</p> 
+                                <input type="tel" placeholder="010-0000-0000" className="w-full h-16 bg-white/5 border border-white/10 rounded-2xl px-4 text-white text-center text-xl font-bold outline-none focus:border-amber-400" /> 
+                                <div className="pt-4">
+                                    <button onClick={handleSubmit} className="w-full h-20 bg-amber-400 text-slate-900 rounded-2xl font-black text-xl shadow-lg shadow-amber-400/20">아래에 견적 확인하기!</button> 
+                                </div>
+                                <button onClick={prev} className="w-full py-4 text-slate-500 text-sm">이전으로</button>
                             </motion.div> 
                         )} 
                     </div> 
                 </section> 
             ); 
         };
-
         // [모듈 9] 플로팅 바
         const FloatingBottomBar = () => { 
             return ( 
@@ -380,3 +443,4 @@
     </script>
 </body>
 </html>
+
