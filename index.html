@@ -25,8 +25,8 @@
         const { useState, useEffect, useRef } = React;
         const { motion, animate, useInView, AnimatePresence } = window.Motion;
 
-        // [모듈 1] 숫자 카운터
-        const Counter = ({ target, duration = 2, suffix = "" }) => { 
+        // [모듈 1] 숫자 카운터 (소수점 지원 업데이트)
+        const Counter = ({ target, duration = 2, suffix = "", decimals = 0 }) => { 
             const [count, setCount] = useState(0); 
             const ref = useRef(null); 
             const isInView = useInView(ref, { once: true }); 
@@ -34,21 +34,21 @@
                 if (isInView) { 
                     const controls = animate(0, target, { 
                         duration: duration, 
-                        onUpdate: (value) => setCount(Math.floor(value)), 
+                        onUpdate: (value) => setCount(value), 
                     }); 
                     return () => controls.stop(); 
                 } 
             }, [isInView, target]); 
-            return <span ref={ref}>{count.toLocaleString()}{suffix}</span>; 
+            return <span ref={ref}>{count.toLocaleString(undefined, {minimumFractionDigits: decimals, maximumFractionDigits: decimals})}{suffix}</span>; 
         };
 
         // [모듈 2] 통계 섹션
         const StatSection = () => { 
             const stats = [ 
-                { label: "함께한 시간", value: 15, suffix: "년+", icon: "⏳" }, 
-                { label: "누적 작업", value: 5742, suffix: "건", icon: "🚚" }, 
-                { label: "고객 만족도", value: 4.9, suffix: "/5.0", icon: "⭐" }, 
-                { label: "가구 파손율", value: 0, suffix: "%", icon: "🛡️" } 
+                { label: "함께한 시간", value: 15, suffix: "년+", icon: "⏳", decimals: 0 }, 
+                { label: "누적 작업", value: 5742, suffix: "건", icon: "🚚", decimals: 0 }, 
+                { label: "고객 만족도", value: 4.9, suffix: "/5.0", icon: "⭐", decimals: 1 }, 
+                { label: "가구 파손율", value: 0, suffix: "%", icon: "🛡️", decimals: 0 } 
             ]; 
             return ( 
                 <section className="px-6 py-12 bg-white"> 
@@ -56,7 +56,9 @@
                         {stats.map((stat, idx) => ( 
                             <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-slate-50 p-5 rounded-3xl border border-slate-100 text-center"> 
                                 <div className="text-2xl mb-2">{stat.icon}</div> 
-                                <div className="text-2xl font-black text-slate-900 mb-1"><Counter target={stat.value} suffix={stat.suffix} /></div> 
+                                <div className="text-2xl font-black text-slate-900 mb-1">
+                                    <Counter target={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
+                                </div> 
                                 <div className="text-[12px] text-slate-500 font-bold">{stat.label}</div> 
                             </motion.div> 
                         ))} 
@@ -65,7 +67,7 @@
             ); 
         };
 
-        // [모듈 3] 서비스 비교 섹션
+        // [모듈 3] 서비스 비교 섹션 (디자인 및 모션 강화)
         const ComparisonSection = () => { 
             const compareData = [ 
                 { label: "작업 주체", us: "가족(부자) 직접 시공", others: "단순 용역/알바" }, 
@@ -74,23 +76,41 @@
                 { label: "현장 추가금", us: "0원 (정찰제 원칙)", others: "빈번하게 발생" } 
             ]; 
             return ( 
-                <section className="px-6 py-16 bg-slate-50 text-center"> 
-                    <h2 className="text-2xl font-bold text-slate-900 mb-2">무엇이 다른가요?</h2> 
-                    <p className="text-slate-500 text-sm mb-10">소중한 가구, 아무에게나 맡기지 마세요.</p> 
-                    <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm bg-white"> 
-                        <div className="grid grid-cols-11 font-bold text-[11px] bg-slate-100/50 border-b border-slate-100"> 
-                            <div className="col-span-3 py-4 text-slate-400">비교 항목</div> 
-                            <div className="col-span-4 py-4 text-amber-600 bg-amber-50">아빠와 아들</div> 
-                            <div className="col-span-4 py-4 text-slate-500">일반 업체</div> 
-                        </div> 
-                        {compareData.map((item, idx) => ( 
-                            <div key={idx} className="grid grid-cols-11 items-center border-b border-slate-50 last:border-0"> 
-                                <div className="col-span-3 py-5 text-[11px] font-bold text-slate-500 bg-slate-50/30">{item.label}</div> 
-                                <div className="col-span-4 py-5 bg-amber-50/30 text-[12px] font-black text-slate-800">✅ {item.us}</div> 
-                                <div className="col-span-4 py-5 text-[11px] font-medium text-slate-400">❌ {item.others}</div> 
+                <section className="px-6 py-20 bg-slate-50 text-center relative overflow-hidden"> 
+                    <div className="relative z-10">
+                        <h2 className="text-2xl font-bold text-slate-900 mb-2">왜 '아빠와 아들'일까요?</h2> 
+                        <p className="text-slate-500 text-sm mb-10">결과가 다른 프리미엄의 차이</p> 
+                        <div className="overflow-hidden rounded-[32px] border border-slate-200 shadow-xl bg-white"> 
+                            <div className="grid grid-cols-12 font-bold text-[11px] bg-slate-100/50 border-b border-slate-100"> 
+                                <div className="col-span-3 py-4 text-slate-400">비교 항목</div> 
+                                <div className="col-span-5 py-4 text-white bg-amber-500 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)]">아빠와 아들</div> 
+                                <div className="col-span-4 py-4 text-slate-400">일반 업체</div> 
                             </div> 
-                        ))} 
-                    </div> 
+                            {compareData.map((item, idx) => ( 
+                                <motion.div 
+                                    key={idx} 
+                                    initial={{ opacity: 0, x: -10 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: idx * 0.15 }}
+                                    className="grid grid-cols-12 items-center border-b border-slate-50 last:border-0 group"
+                                > 
+                                    <div className="col-span-3 py-5 text-[10px] sm:text-[11px] font-bold text-slate-500 bg-slate-50/50">{item.label}</div> 
+                                    <div className="col-span-5 py-5 bg-amber-50/50 text-[12px] font-black text-amber-700 relative">
+                                        <div className="absolute inset-0 border-x-2 border-amber-200/50 pointer-events-none"></div>
+                                        <motion.span 
+                                            initial={{ scale: 1 }}
+                                            whileInView={{ scale: [1, 1.05, 1] }}
+                                            transition={{ repeat: Infinity, duration: 3, delay: idx * 0.5 }}
+                                            className="inline-block"
+                                        >
+                                            ✨ {item.us}
+                                        </motion.span>
+                                    </div> 
+                                    <div className="col-span-4 py-5 text-[11px] font-medium text-slate-300">❌ {item.others}</div> 
+                                </motion.div> 
+                            ))} 
+                        </div> 
+                    </div>
                 </section> 
             ); 
         };
@@ -279,7 +299,6 @@
             ); 
         };
 
-        // --- 메인 App 컴포넌트 ---
         const App = () => {
             return (
                 <div className="max-w-[480px] mx-auto bg-white min-h-screen pb-40 shadow-2xl relative overflow-x-hidden">
@@ -321,7 +340,6 @@
                         </div>
                     </div>
 
-                    {/* [수정된 메인 헤드라인] */}
                     <header className="py-14 px-6 text-center">
                         <motion.h1 
                             initial={{ opacity: 0, y: 15 }}
