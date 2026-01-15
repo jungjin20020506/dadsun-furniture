@@ -8,178 +8,184 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <style>
+        body { font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = FramerMotion;
 
         const LandingPage = () => {
-            const [service, setService] = useState('moving');
-            const [itemCount, setItemCount] = useState(1);
-            const pricePerItem = { moving: 50000, disposal: 40000, transport: 60000 };
-            const totalPrice = pricePerItem[service] * itemCount;
+            // 리뷰 이미지 슬라이드 상태
+            const [reviewIdx, setReviewIdx] = useState(0);
+            const reviews = [
+                "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=500",
+                "https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=500",
+                "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=500"
+            ];
+
+            useEffect(() => {
+                const timer = setInterval(() => {
+                    setReviewIdx((prev) => (prev + 1) % reviews.length);
+                }, 3000);
+                return () => clearInterval(timer);
+            }, []);
 
             return (
-                <div className="min-h-screen font-sans text-slate-900 bg-white">
-                    {/* Section 1: 히어로 섹션 */}
-                    <header className="relative h-[90vh] flex items-center justify-center text-white bg-slate-900">
-                        <div className="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1581578731522-7b754794b59b?auto=format&fit=crop&q=80')] bg-cover bg-center"></div>
-                        <div className="relative z-10 text-center px-4">
-                            <div className="inline-block px-4 py-1 mb-4 border border-amber-400 text-amber-400 rounded-full text-sm font-semibold">
+                <div className="max-w-[480px] mx-auto bg-white min-h-screen pb-32 shadow-2xl relative">
+                    
+                    {/* Section 1: Hero (모션 추가) */}
+                    <header className="relative h-[80vh] flex items-center justify-center text-white bg-slate-900 overflow-hidden">
+                        <motion.div 
+                            initial={{ scale: 1.1, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 0.4 }}
+                            transition={{ duration: 1.5 }}
+                            className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581578731522-7b754794b59b?auto=format&fit=crop&q=80')] bg-cover bg-center"
+                        />
+                        <div className="relative z-10 text-center px-6">
+                            <motion.div 
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                className="inline-block px-4 py-1 mb-4 border border-amber-400 text-amber-400 rounded-full text-xs font-bold"
+                            >
                                 경기남부 가구케어 1위
-                            </div>
-                            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                                15년 경력 베테랑 아빠가 직접 갑니다.<br/>
-                                <span className="text-amber-400">하청 없는 정직한 가구 케어</span>
-                            </h1>
-                            <p className="text-lg md:text-xl mb-10 opacity-90">
-                                경기남부 5,700건의 기록, 후기 평점 4.9가 증명하는 완벽함
-                            </p>
-                            <button className="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-5 px-10 rounded-xl text-xl shadow-lg transition-all transform hover:scale-105">
-                                30초 만에 가견적 확인하기
-                            </button>
+                            </motion.div>
+                            <motion.h1 
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                className="text-3xl font-bold mb-4 leading-tight"
+                            >
+                                15년 경력 베테랑 아빠가<br/>
+                                <span className="text-amber-400 font-extrabold text-4xl">직접 찾아갑니다.</span>
+                            </motion.h1>
+                            <motion.p 
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="text-sm opacity-80 mb-8"
+                            >
+                                후기 평점 4.9가 증명하는 완벽한 가구 케어
+                            </motion.p>
                         </div>
                     </header>
 
-                    {/* Section 2: 신뢰 지표 */}
-                    <section className="py-16 bg-slate-50">
-                        <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                            <div>
-                                <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">15년+</div>
-                                <div className="text-slate-500">누적 경력</div>
-                            </div>
-                            <div>
-                                <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">5,700건+</div>
-                                <div className="text-slate-500">작업 완료</div>
-                            </div>
-                            <div>
-                                <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">4.9/5.0</div>
-                                <div className="text-slate-500">고객 만족도</div>
+                    {/* Section 2: 아버지 프로필 (상단 이동) */}
+                    <motion.section 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="px-6 -mt-16 relative z-20"
+                    >
+                        <div className="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 flex items-center space-x-5">
+                            <div className="w-24 h-24 bg-slate-200 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-amber-400">
+                                <div className="w-full h-full flex items-center justify-center text-[10px] text-slate-400 text-center px-1 bg-slate-100">
+                                    [대표님 사진]
+                                </div>
                             </div>
                             <div>
-                                <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">100%</div>
-                                <div className="text-slate-500">직접 출장</div>
+                                <h3 className="font-bold text-lg">대표 김준호</h3>
+                                <p className="text-sm text-slate-500 mb-2">"내 가족 가구처럼 다룹니다"</p>
+                                <div className="flex gap-1">
+                                    <span className="bg-slate-100 text-[10px] px-2 py-1 rounded-full font-bold text-slate-600">#직접시공</span>
+                                    <span className="bg-slate-100 text-[10px] px-2 py-1 rounded-full font-bold text-slate-600">#비흡연자</span>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.section>
+
+                    {/* Section 3: 실시간 고객 후기 (자동 슬라이드) */}
+                    <section className="py-12 px-6">
+                        <h2 className="text-xl font-bold mb-6 flex items-center">
+                            <span className="text-amber-500 mr-2">●</span> 고객님들의 실제 작업 현장
+                        </h2>
+                        <div className="relative h-64 w-full rounded-2xl overflow-hidden shadow-lg bg-slate-200">
+                            <AnimatePresence mode="wait">
+                                <motion.img
+                                    key={reviewIdx}
+                                    src={reviews[reviewIdx]}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.8 }}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                            </AnimatePresence>
+                            <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs">
+                                {reviewIdx + 1} / {reviews.length}
                             </div>
                         </div>
                     </section>
 
-                    {/* Section 3: 페인 포인트 */}
-                    <section className="py-20 max-w-5xl mx-auto px-4">
-                        <h2 className="text-3xl font-bold text-center mb-16 underline decoration-amber-400 decoration-4 underline-offset-8">가구 업체, 이런 점이 걱정되셨나요?</h2>
-                        <div className="grid md:grid-cols-3 gap-10">
-                            <div className="p-8 border-l-4 border-slate-900 shadow-sm bg-white">
-                                <h3 className="text-xl font-bold mb-4 text-red-500">추가금 걱정?</h3>
-                                <p className="text-slate-600">"확정 문자 내 견적 금액 그대로, 현장 추가금 0원을 약속합니다."</p>
+                    {/* Section 4: 신뢰의 지표 */}
+                    <section className="py-10 bg-slate-50 grid grid-cols-2 gap-4 px-6">
+                        {[
+                            { label: "누적 경력", val: "15년+" },
+                            { label: "작업 완료", val: "5,700건" },
+                            { label: "만족도", val: "4.9/5.0" },
+                            { label: "추가금", val: "0원" }
+                        ].map((item, i) => (
+                            <div key={i} className="bg-white p-4 rounded-2xl text-center shadow-sm border border-slate-100">
+                                <div className="text-amber-500 font-bold text-xl">{item.val}</div>
+                                <div className="text-slate-400 text-xs">{item.label}</div>
                             </div>
-                            <div className="p-8 border-l-4 border-slate-900 shadow-sm bg-white">
-                                <h3 className="text-xl font-bold mb-4 text-red-500">가구 손상 걱정?</h3>
-                                <p className="text-slate-600">"2인 1조 원칙, 바닥/벽면 완벽 보양 작업 후 안전하게 이동합니다."</p>
+                        ))}
+                    </section>
+
+                    {/* Section 5: 견적 신청서 (계산기 대신 폼) */}
+                    <section className="py-12 px-6 bg-white" id="quote-form">
+                        <div className="text-center mb-8">
+                            <h2 className="text-2xl font-bold mb-2">간편 시공 견적서</h2>
+                            <p className="text-sm text-slate-500">정보를 남겨주시면 30분 내로 연락드려요!</p>
+                        </div>
+                        
+                        <div className="space-y-5">
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 mb-2">서비스 선택</label>
+                                <select className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                                    <option>단순 가구 이동 (방에서 방)</option>
+                                    <option>용달 이동 (집에서 집)</option>
+                                    <option>가구 폐기 지원</option>
+                                    <option>중고거래 운송/설치</option>
+                                </select>
                             </div>
-                            <div className="p-8 border-l-4 border-slate-900 shadow-sm bg-white">
-                                <h3 className="text-xl font-bold mb-4 text-red-500">무책임한 뒤처리?</h3>
-                                <p className="text-slate-600">"작업 후 끝이 아닙니다. 문제 발생 시 철저한 A/S를 보장합니다."</p>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 mb-2">지역 선택</label>
+                                <input type="text" placeholder="예: 화성시 동탄역 인근" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none" />
                             </div>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 mb-2">연락처</label>
+                                <input type="tel" placeholder="010-0000-0000" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none" />
+                            </div>
+                            <button className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold shadow-lg active:scale-95 transition-all">
+                                견적 요청하기
+                            </button>
                         </div>
                     </section>
 
-                    {/* Section 4: 전문가 프로필 */}
-                    <section className="py-20 bg-slate-900 text-white overflow-hidden">
-                        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center">
-                            <div className="md:w-1/2 mb-10 md:mb-0">
-                                <div className="w-80 h-96 bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 border-2 border-dashed border-slate-700 text-center px-4">
-                                    [아버지 프로필 사진 위치:<br/>깔끔한 유니폼 착용샷 권장]
-                                </div>
-                            </div>
-                            <div className="md:w-1/2 md:pl-16 text-center md:text-left">
-                                <h2 className="text-3xl font-bold mb-6 italic text-amber-400">"내 집 가구를 다루듯 꼼꼼하게"</h2>
-                                <p className="text-xl mb-8 leading-relaxed">
-                                    15년 베테랑 대표가 직접 현장에 나갑니다. <br/>
-                                    하청 업체나 일용직 알바는 절대 사용하지 않는 것이 <br/>
-                                    저희 <strong>'아빠와 아들'</strong>의 자부심입니다.
-                                </p>
-                                <div className="flex justify-center md:justify-start gap-4">
-                                    <span className="bg-slate-800 px-4 py-2 rounded text-sm">#책임시공</span>
-                                    <span className="bg-slate-800 px-4 py-2 rounded text-sm">#정직한견적</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Section 5: 서비스 범위 */}
-                    <section className="py-20 bg-white">
-                        <div className="max-w-6xl mx-auto px-4">
-                            <h2 className="text-3xl font-bold text-center mb-16">전문 가구 케어 서비스</h2>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                {[
-                                    {title: '방간 이동', desc: '안방에서 거실로 가구 재배치'},
-                                    {title: '집간 이동', desc: '용달 기반 안전한 가구 운송'},
-                                    {title: '가구 폐기', desc: '해체부터 수거 장소 배출까지'},
-                                    {title: '중고 설치', desc: '중고거래 가구 운송 및 설치'}
-                                ].map((item, idx) => (
-                                    <div key={idx} className="p-6 border border-slate-100 rounded-xl hover:shadow-md transition-shadow">
-                                        <div className="w-12 h-12 bg-slate-100 rounded-lg mb-4 flex items-center justify-center text-2xl">📦</div>
-                                        <h3 className="font-bold mb-2">{item.title}</h3>
-                                        <p className="text-sm text-slate-500 leading-tight">{item.desc}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Section 6: 가견적 계산기 */}
-                    <section className="py-20 bg-slate-50 px-4">
-                        <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-100">
-                            <h2 className="text-2xl font-bold text-center mb-8">대화형 가견적 계산기</h2>
-                            
-                            <div className="space-y-8">
-                                <div>
-                                    <label className="block text-sm font-semibold mb-3">1. 서비스 선택</label>
-                                    <div className="grid grid-cols-3 gap-2">
-                                        {['moving', 'disposal', 'transport'].map((type) => (
-                                            <button
-                                                key={type}
-                                                onClick={() => setService(type)}
-                                                className={`py-3 rounded-lg text-sm font-medium transition-all ${
-                                                    service === type ? 'bg-slate-900 text-white shadow-md' : 'bg-slate-100 text-slate-500'
-                                                }`}
-                                            >
-                                                {type === 'moving' ? '이동' : type === 'disposal' ? '폐기' : '중고운송'}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold mb-3">2. 가구 개수 선택</label>
-                                    <input 
-                                        type="range" min="1" max="10" 
-                                        value={itemCount} 
-                                        onChange={(e) => setItemCount(parseInt(e.target.value))}
-                                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-900"
-                                    />
-                                    <div className="text-center mt-2 font-bold text-slate-900">{itemCount}개</div>
-                                </div>
-
-                                <div className="bg-slate-900 text-white p-6 rounded-2xl text-center">
-                                    <p className="text-slate-400 text-sm mb-1">예상 가견적</p>
-                                    <h3 className="text-3xl font-bold text-amber-400">약 {totalPrice.toLocaleString()}원</h3>
-                                    <p className="text-xs text-slate-500 mt-2">*실제 환경에 따라 차이가 발생할 수 있습니다.</p>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <button className="py-4 rounded-xl font-bold border border-slate-200 hover:bg-slate-50">사례 보기</button>
-                                    <button className="py-4 rounded-xl font-bold bg-[#FEE500] text-slate-900 hover:bg-[#FDE100]">카톡 상담</button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <footer className="py-10 bg-white border-t border-slate-100 text-center text-slate-400 text-sm px-4">
-                        <p>© 2026 아빠와 아들 가구 서비스. All rights reserved.</p>
-                        <p className="mt-2 text-xs">경기남부 전지역 (화성, 동탄, 수원, 용인 출장 가능)</p>
+                    <footer className="py-12 text-center text-slate-300 text-[10px] px-6">
+                        <p>© 2026 아빠와 아들 가구 서비스</p>
+                        <p>경기남부 (화성, 동탄, 수원, 용인 전지역 출장 가능)</p>
                     </footer>
+
+                    {/* 하단 고정 홈바 (Floating Bottom Bar) */}
+                    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-[430px] z-50">
+                        <div className="bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl p-2 border border-slate-200 flex space-x-2">
+                            <a href="#" className="flex-[1] bg-[#FEE500] hover:bg-[#FDE100] text-slate-900 h-14 rounded-xl flex items-center justify-center font-bold text-sm transition-all active:scale-95">
+                                <span className="mr-2">💬</span> 카톡 문의
+                            </a>
+                            <a href="#quote-form" className="flex-[1.5] bg-slate-900 hover:bg-slate-800 text-white h-14 rounded-xl flex items-center justify-center font-bold text-sm transition-all active:scale-95">
+                                30초 무료 견적 받기
+                            </a>
+                        </div>
+                    </div>
                 </div>
             );
         };
