@@ -271,12 +271,41 @@
 
             if (isSubmitted) {
                 return (
-                    <section className="px-6 py-32 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20 text-center text-white text-center">
-                        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-                            <div className="text-6xl mb-6">✅</div>
-                            <h2 className="text-2xl font-bold mb-2 text-white">접수가 완료되었습니다!</h2>
-                            <p className="text-slate-400">사장님이 확인 후 10분 내로<br/>견적 상담 연락을 드립니다.</p>
-                            <button onClick={() => {setIsSubmitted(false); setStep(1);}} className="mt-10 text-amber-400 underline decoration-amber-400 underline-offset-4">새로 신청하기</button>
+                    <section className="px-6 py-28 bg-slate-900 rounded-t-[40px] -mt-10 relative z-20 text-center text-white">
+                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                            <div className="w-20 h-20 bg-amber-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-8 shadow-lg shadow-amber-400/20">✅</div>
+                            <h2 className="text-2xl font-black mb-3 text-white">견적 접수 성공!</h2>
+                            <p className="text-slate-400 text-[15px] leading-relaxed mb-10">
+                                정보가 안전하게 전달되었습니다.<br/>
+                                <span className="text-amber-400 font-bold">더 빠른 상담</span>을 위해 아래 버튼을 눌러주세요!
+                            </p>
+
+                            {/* [추가] 카카오톡 연결 버튼 */}
+                            <div className="space-y-4 px-2">
+                                <motion.a 
+                                    href="https://open.kakao.com/o/spSfhAbi" 
+                                    target="_blank"
+                                    whileTap={{ scale: 0.95 }}
+                                    className="block w-full h-20 bg-[#FEE500] text-slate-900 rounded-3xl flex items-center justify-center font-black text-lg shadow-xl"
+                                >
+                                    💬 지금 바로 카톡 상담하기
+                                </motion.a>
+                                
+                                <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                                    <p className="text-[13px] text-slate-300">
+                                        💡 채팅방에 들어오신 후<br/>
+                                        <span className="text-white font-bold">"견적서 제출했습니다"</span> 라고 남겨주시면<br/>
+                                        사장님이 <span className="underline decoration-amber-400">우선적으로</span> 상담해 드립니다!
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button 
+                                onClick={() => {setIsSubmitted(false); setStep(1);}} 
+                                className="mt-12 text-slate-500 text-sm font-medium hover:text-slate-300 transition-colors"
+                            >
+                                처음으로 돌아가기
+                            </button>
                         </motion.div>
                     </section>
                 );
@@ -489,6 +518,7 @@
     </script>
 </body>
 </html>
+
 
 
 
