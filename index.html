@@ -242,7 +242,15 @@
                 setLoading(true);
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbysTbOPC5nxyFxLpBGpXim9l5QvpSo93qgU2GuvARXWatrlw76uD3-dnCbs-RKGP0gx5w/exec";
                 try {
-                    await fetch(GAS_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) });
+                    await fetch(GAS_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        cache: 'no-cache',
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8',
+                        },
+                        body: JSON.stringify(formData)
+                    });
                     setIsSubmitted(true);
                 } catch (error) {
                     alert("접수 중 오류가 발생했습니다. 카카오톡으로 직접 문의 부탁드립니다.");
@@ -428,4 +436,5 @@
     </script>
 </body>
 </html>
+
 
