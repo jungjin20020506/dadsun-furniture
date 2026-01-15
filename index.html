@@ -26,7 +26,21 @@
         const { motion, animate, useInView, AnimatePresence } = window.Motion;
 
         // [모듈 1] 숫자 카운터
-        const Counter = ({ target, duration = 2, suffix = "" }) => { const [count, setCount] = useState(0); const ref = useRef(null); const isInView = useInView(ref, { once: true }); useEffect(() => { if (isInView) { const controls = animate(0, target, { duration: duration, onUpdate: (value) => setCount(Math.floor(value * 10) / 10), }); return () => controls.stop(); } }, [isInView, target]); return <span ref={ref}>{count.toLocaleString()}{suffix}</span>; };
+        const Counter = ({ target, duration = 2, suffix = "" }) => { 
+            const [count, setCount] = useState(0); 
+            const ref = useRef(null); 
+            const isInView = useInView(ref, { once: true }); 
+            useEffect(() => { 
+                if (isInView) { 
+                    const controls = animate(0, target, { 
+                        duration: duration, 
+                        onUpdate: (value) => setCount(Math.floor(value)), 
+                    }); 
+                    return () => controls.stop(); 
+                } 
+            }, [isInView, target]); 
+            return <span ref={ref}>{count.toLocaleString()}{suffix}</span>; 
+        };
 
         // [모듈 2] 통계 섹션
         const StatSection = () => { 
@@ -81,7 +95,7 @@
             ); 
         };
 
-        // [모듈 4 - 신규] 포트폴리오 섹션 (자연스럽게 넘어가는 슬라이드)
+        // [모듈 4] 포트폴리오 섹션
         const PortfolioSection = () => {
             const projects = [
                 { title: "거실 가구 완벽 재배치", loc: "동탄 영천동", img: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=400&h=300&fit=crop" },
@@ -307,14 +321,32 @@
                         </div>
                     </div>
 
-                    <header className="py-12 px-6 text-center">
-                        <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-4">가구 이동/폐기,<br/><span className="text-amber-500 underline decoration-slate-900 underline-offset-4 decoration-2">아빠가 직접</span> 갑니다.</h1>
-                        <p className="text-slate-500 text-sm italic">"수수료 0원, 현장 추가금 없는 정찰제 서비스"</p>
+                    {/* [수정된 메인 헤드라인] */}
+                    <header className="py-14 px-6 text-center">
+                        <motion.h1 
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-[26px] font-extrabold text-slate-900 leading-[1.35] mb-4"
+                        >
+                            <span className="text-amber-600">
+                                <Counter target={5740} duration={1.2} />
+                            </span>
+                            가족이 선택한 이유,<br/>
+                            <motion.span 
+                                animate={{ scale: [1, 1.05, 1], color: ["#0f172a", "#f59e0b", "#0f172a"] }}
+                                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                                className="inline-block text-[32px] text-amber-500 my-1"
+                            >
+                                경기남부 1등
+                            </motion.span><br/>
+                            가구 케어 <span className="underline decoration-slate-900 underline-offset-4 decoration-2">'아빠와 아들'</span>
+                        </motion.h1>
+                        <p className="text-slate-500 text-sm font-medium">"수수료 0원, 현장 추가금 없는 정찰제 서비스"</p>
                     </header>
                     
                     <StatSection />
                     <ComparisonSection />
-                    {/* 최적의 위치에 포트폴리오 섹션 배치 */}
                     <PortfolioSection />
                     <ReviewSlider />
                     <ProcessSection />
@@ -330,5 +362,3 @@
     </script>
 </body>
 </html>
-
-
