@@ -261,17 +261,17 @@
             const [isSubmitted, setIsSubmitted] = useState(false);
             const [loading, setLoading] = useState(false);
             const [isTyping, setIsTyping] = useState(false); // [추가] 대표님이 메시지 적는 중인지 여부
-            const [formData, setFormData] = useState({ service: '', province: '', city: '', content: '', date: '', dateNone: false, photoData: null, photoName: '', phone: '' });
+           const [formData, setFormData] = useState({ service: '', province: '', city: '', content: '', date: '', dateNone: false, photoData: null, photoName: '', phone: '' });
 
             // 배경 스크롤 방지 및 타이핑 효과
             useEffect(() => {
                 if (isExpanded) {
-                    document.body.style.overflow = 'hidden'; // 배경 스크롤 차단
+                    document.body.style.overflow = 'hidden'; // 배경 스크롤 완전 차단
                     setIsTyping(true);
                     const timer = setTimeout(() => setIsTyping(false), 1200);
                     return () => clearTimeout(timer);
                 } else {
-                    document.body.style.overflow = 'unset'; // 배경 스크롤 해제
+                    document.body.style.overflow = 'unset'; // 견적서 닫으면 해제
                 }
             }, [step, isExpanded]);
 
@@ -414,29 +414,29 @@
                 );
             }
 
-          return ( 
+         return ( 
                 <section 
                     id="quote-form" 
                     className={`transition-all duration-500 ease-in-out px-6 relative z-[1000] overflow-hidden text-white 
                         ${isExpanded 
-                            ? "fixed inset-0 bg-slate-950 py-6 h-full flex flex-col" 
+                            ? "fixed inset-0 bg-slate-950 py-6 h-full flex flex-col no-scrollbar" 
                             : "py-24 bg-slate-950 rounded-t-[50px] -mt-12 border-t border-white/10"
                         }`}
                 > 
-                    {/* 뒤로가기 헤더 */}
+                    {/* 뒤로가기 헤더 (버튼 크기 확대) */}
                     <AnimatePresence>
                         {isExpanded && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center mb-6">
-                                <button onClick={handleExit} className="w-12 h-12 flex items-center justify-center bg-white/10 rounded-full text-2xl font-bold">←</button>
-                                <span className="ml-4 text-xl font-black">이전으로</span>
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center mb-8">
+                                <button onClick={handleExit} className="w-14 h-14 flex items-center justify-center bg-white/10 rounded-full text-3xl font-bold">←</button>
+                                <span className="ml-4 text-2xl font-black">뒤로가기</span>
                             </motion.div>
                         )}
                     </AnimatePresence>
 
-                    {/* 진행 바 (장식 제거, 시인성 강화) */}
-                    <div className="flex justify-between mb-8 px-1"> 
+                    {/* 진행 상태 바 (시안성 강화) */}
+                    <div className="flex justify-between mb-10 px-1"> 
                         {[1, 2, 3, 4, 5, 6].map(num => ( 
-                            <div key={num} className={`h-2 flex-1 mx-1 rounded-full ${step >= num ? "bg-amber-400" : "bg-slate-800"}`}></div> 
+                            <div key={num} className={`h-2.5 flex-1 mx-1.5 rounded-full ${step >= num ? "bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.6)]" : "bg-slate-800"}`}></div> 
                         ))} 
                     </div>
                    {/* 질문 영역: 폰트 크기 대폭 확대 */}
@@ -746,6 +746,7 @@
     </script>
 </body>
 </html>
+
 
 
 
