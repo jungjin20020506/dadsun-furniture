@@ -343,17 +343,28 @@
             };
 
             const handleSubmit = async () => {
+                if (loading) return;
                 setLoading(true);
+                
+                // 기존 텍스트 파일(22.txt)에 명시된 GAS URL 및 전송 로직 복구
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbzTIfAvR-R5AY91bR2LZX15BumZ0v7L2uDyI7__M2WatINXekf9a75a60xzNf3ZsxNztA/exec";
-               try {
+                
+                // 전송 데이터 구성 (이메일 및 시트 정리에 필요한 포맷)
+                const payload = {
+                    ...formData,
+                    timestamp: new Date().toLocaleString('ko-KR'),
+                    source: "아빠와 아들 웹사이트"
+                };
+
+                try {
                     await fetch(GAS_URL, { 
                         method: 'POST', 
                         mode: 'no-cors', 
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(formData) 
+                        body: JSON.stringify(payload) 
                     });
+                    
                     setIsSubmitted(true);
-                    // [아이디어 30] 제출 성공 시 축하 꽃가루 발사
                     confetti({
                         particleCount: 150,
                         spread: 70,
@@ -361,7 +372,8 @@
                         colors: ['#f59e0b', '#ffffff', '#fbbf24']
                     });
                 } catch (error) {
-                    alert("접수 중 오류가 발생했습니다. 카카오톡으로 직접 문의 부탁드립니다.");
+                    console.error("Submit Error:", error);
+                    alert("시스템 연동 중 오류가 발생했습니다. 카카오톡으로 문의해 주시면 바로 견적을 도와드리겠습니다.");
                 } finally {
                     setLoading(false);
                 }
@@ -414,21 +426,22 @@
                 );
             }
 
-         return ( 
+       return ( 
                <section 
                     id="quote-form" 
                     className={`transition-all duration-500 ease-in-out px-5 relative z-[2000] overflow-hidden text-white 
                         ${isExpanded 
-                            ? "fixed inset-0 bg-slate-950 pt-4 pb-6 h-screen flex flex-col no-scrollbar" 
+                            ? "fixed top-0 left-0 right-0 bottom-0 bg-slate-950 pt-6 pb-8 h-[100dvh] flex flex-col no-scrollbar" 
                             : "py-24 bg-slate-950 rounded-t-[50px] -mt-12 border-t border-white/10"
                         }`}
+                    style={isExpanded ? { position: 'fixed', top: 0, left: 0, height: '100dvh', zIndex: 9999 } : {}}
                 > 
-                    {/* 뒤로가기 헤더 (모바일 최적화 크기 조정) */}
+                    {/* 뒤로가기 헤더 (위치 고정 및 여백 최적화) */}
                     <AnimatePresence>
                         {isExpanded && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center mb-4">
-                                <button onClick={handleExit} className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full text-xl font-bold">←</button>
-                                <span className="ml-3 text-lg font-black">뒤로가기</span>
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center mb-6 mt-2">
+                                <button onClick={handleExit} className="w-12 h-12 flex items-center justify-center bg-white/10 rounded-full text-2xl font-bold">←</button>
+                                <span className="ml-4 text-xl font-black">뒤로가기</span>
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -573,39 +586,67 @@
                                 <button onClick={prev} className="w-full py-2 text-slate-500 text-sm w-full text-center">이전으로</button>
                             </motion.div> 
                         )}
-                       {step === 5 && ( 
-                            <motion.div key="step5" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4"> 
-                                <div className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-[25px] relative ${formData.photoData ? "border-amber-400 bg-amber-400/10" : "border-white/20 bg-white/5"}`}>
-                                    <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 z-10" multiple />
-                                    <div className="text-4xl mb-2">{formData.photoData ? "✅" : "📸"}</div>
-                                    <p className="text-lg font-black">{formData.photoData ? "사진 등록 완료!" : "여기를 눌러 사진 등록"}</p>
-                                    {formData.photoName && <p className="mt-1 text-amber-400 text-[12px] font-bold">{formData.photoName}</p>}
+                      {step === 5 && ( 
+                            <motion.div key="step5" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-5"> 
+                                <div className="grid grid-cols-2 gap-4">
+                                    {/* 사진 촬영 버튼 */}
+                                    <div className="relative h-32 bg-white/10 border-2 border-dashed border-white/20 rounded-[25px] flex flex-col items-center justify-center">
+                                        <input type="file" accept="image/*" capture="environment" onChange={handleFileChange} className="absolute inset-0 opacity-0 z-10" multiple />
+                                        <div className="text-3xl mb-1">📸</div>
+                                        <p className="text-sm font-bold">사진 촬영</p>
+                                    </div>
+                                    {/* 앨범 선택 버튼 */}
+                                    <div className="relative h-32 bg-white/10 border-2 border-dashed border-white/20 rounded-[25px] flex flex-col items-center justify-center">
+                                        <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 z-10" multiple />
+                                        <div className="text-3xl mb-1">🖼️</div>
+                                        <p className="text-sm font-bold">앨범 선택</p>
+                                    </div>
                                 </div>
-                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-[20px] font-black text-lg">
-                                    {formData.photoData ? "다음 단계로" : "사진 없이 계속하기"}
+                                
+                                {formData.photoData && (
+                                    <div className="bg-amber-400/20 border border-amber-400/50 p-4 rounded-2xl flex items-center justify-between">
+                                        <span className="text-amber-400 font-bold text-sm">✅ {formData.photoName}</span>
+                                        <button onClick={() => setFormData({...formData, photoData: null, photoName: ''})} className="text-xs text-white/50 underline">다시 선택</button>
+                                    </div>
+                                )}
+
+                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-[25px] font-black text-lg shadow-lg">
+                                    {formData.photoData ? "선택 완료 (다음으로)" : "사진 없이 계속하기"}
                                 </button>
                             </motion.div> 
                         )}
-                       {step === 6 && ( 
-                            <motion.div key="step6" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-5"> 
-                                <input 
-                                    type="tel" 
-                                    value={formData.phone}
-                                    onChange={handlePhoneChange} 
-                                    placeholder="010-0000-0000" 
-                                    className="w-full py-6 bg-white/10 border-2 border-amber-400 rounded-[25px] text-white text-center text-3xl font-black outline-none" 
-                                />
-                                <button 
-                                    disabled={loading || !formData.phone} 
-                                    onClick={handleSubmit} 
-                                    className="w-full h-20 bg-amber-400 text-slate-900 rounded-[25px] font-black text-xl shadow-2xl transition-all active:scale-95"
-                                >
-                                    {loading ? "접수 중..." : "무료 견적 신청하기"}
-                                </button> 
-                                <div className="mt-6 flex items-center justify-center space-x-2 text-slate-600 mb-4">
-                                    <span className="text-[11px] font-medium tracking-wide">🛡️ 개인정보는 상담 완료 후 즉시 파기됩니다.</span>
+                      {step === 6 && ( 
+                            <motion.div key="step6" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6"> 
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-24 h-20 bg-white/5 border-2 border-white/10 rounded-[25px] flex items-center justify-center text-2xl font-black text-white/50">
+                                        010
+                                    </div>
+                                    <div className="flex-1 relative">
+                                        <input 
+                                            type="tel" 
+                                            value={formData.phone.replace('010-', '')}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/[^\d]/g, '').slice(0, 8);
+                                                let formatted = val;
+                                                if (val.length > 4) formatted = val.slice(0, 4) + '-' + val.slice(4);
+                                                setFormData({ ...formData, phone: '010-' + formatted });
+                                            }} 
+                                            placeholder="0000-0000" 
+                                            className="w-full h-20 bg-white/10 border-2 border-amber-400 rounded-[25px] text-white text-center text-3xl font-black outline-none focus:bg-white/20 transition-all" 
+                                        />
+                                    </div>
                                 </div>
-                                <button onClick={prev} className="w-full py-4 text-slate-700 text-sm font-bold text-center">이전 단계로</button>
+                                <button 
+                                    disabled={loading || formData.phone.length < 12} 
+                                    onClick={handleSubmit} 
+                                    className="w-full h-20 bg-amber-400 text-slate-900 rounded-[30px] font-black text-xl shadow-[0_15px_30px_rgba(245,158,11,0.3)] transition-all active:scale-95 disabled:opacity-50"
+                                >
+                                    {loading ? "상담 접수 중..." : "무료 견적 신청하기"}
+                                </button> 
+                                <div className="text-center">
+                                    <span className="text-[12px] text-slate-500 font-medium">🛡️ 정보는 견적 안내 후 안전하게 파기됩니다.</span>
+                                </div>
+                                <button onClick={prev} className="w-full py-2 text-slate-600 text-sm font-bold">이전 단계로</button>
                             </motion.div> 
                         )}
                         </AnimatePresence>
@@ -727,6 +768,7 @@
     </script>
 </body>
 </html>
+
 
 
 
