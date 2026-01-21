@@ -12,9 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
-        body { font-family: "Pretendard Variable", sans-serif; }
+        body { font-family: "Pretendard Variable", sans-serif; background-color: #f8fafc; color: #0f172a; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         html { scroll-behavior: smooth; }
+        /* 전문직 스타일의 정교한 타이포그래피 */
+        h1, h2, h3 { letter-spacing: -0.02em; }
+        .expert-border { border-color: rgba(15, 23, 42, 0.08); }
+        .gold-gradient { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); }
         input[type="date"]::-webkit-inner-spin-button,
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
     </style>
@@ -59,19 +63,23 @@
         // [모듈 2] 통계 섹션
         const StatSection = () => { 
             const stats = [ 
-                { label: "함께한 시간", value: 15, suffix: "년+", icon: "⏳", decimals: 0 }, 
-                { label: "누적 작업", value: 5742, suffix: "건", icon: "🚚", decimals: 0 }, 
-                { label: "고객 만족도", value: 4.9, suffix: "/5.0", icon: "⭐", decimals: 1 }, 
-                { label: "가구 파손율", value: 0, suffix: "%", icon: "🛡️", decimals: 0 } 
+                { label: "현장 경력", value: 15, suffix: "년", sub: "15년간 쌓아온 숙련도" }, 
+                { label: "누적 해결 사례", value: 5742, suffix: "건", sub: "다양한 가구 구조 데이터" }, 
+                { label: "시공 만족도", value: 4.9, suffix: "/5.0", sub: "실제 고객이 증명하는 품질" }, 
+                { label: "하자 발생율", value: 0, suffix: "%", sub: "완벽을 기하는 책임 시공" } 
             ]; 
             return ( 
-                <section className="px-6 py-12 bg-white"> 
-                    <div className="grid grid-cols-2 gap-4"> 
+                <section className="px-6 py-20 bg-white border-y expert-border"> 
+                    <div className="grid grid-cols-2 gap-y-12 gap-x-8"> 
                         {stats.map((stat, idx) => ( 
-                            <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-slate-50 p-5 rounded-3xl border border-slate-100 text-center"> 
-                                <div className="text-2xl mb-2">{stat.icon}</div> 
-                                <div className="text-2xl font-black text-slate-900 mb-1"><Counter target={stat.value} suffix={stat.suffix} decimals={stat.decimals} /></div> 
-                                <div className="text-[12px] text-slate-500 font-bold">{stat.label}</div> 
+                            <motion.div key={idx} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: idx * 0.1 }} className="text-left group"> 
+                                <div className="text-amber-500 text-[10px] font-black tracking-widest uppercase mb-2">Performance {idx + 1}</div>
+                                <div className="text-3xl font-light text-slate-900 mb-1 border-b expert-border pb-2 flex justify-between items-end">
+                                    <Counter target={stat.value} suffix={stat.suffix} decimals={stat.label === "시공 만족도" ? 1 : 0} />
+                                    <span className="text-slate-200 group-hover:text-amber-200 transition-colors">↗</span>
+                                </div> 
+                                <div className="text-sm font-bold text-slate-800 mt-2">{stat.label}</div> 
+                                <div className="text-[11px] text-slate-400 font-medium leading-none mt-1">{stat.sub}</div>
                             </motion.div> 
                         ))} 
                     </div> 
@@ -115,7 +123,7 @@
         };
 
        // [모듈 4] 포트폴리오 섹션 (서비스별 필터링 기능 추가)
-        const PortfolioSection = ({ type }) => {
+      const PortfolioSection = ({ type }) => {
             const allProjects = [
                 { title: "옷장 방간이동", loc: "용인 수지구", img: "clo.jpg", category: "moving" },
                 { title: "침대 프레임 해체", loc: "동탄 영천동", img: "bedframe.jpg", category: "disposal" },
@@ -128,34 +136,36 @@
                 { title: "흙침대 폐기", loc: "수원 권선동", img: "stonebad.jpg", category: "disposal" }          
             ];
             
-            // 현재 서비스 타입에 맞는 사진만 거르기 (타입이 없으면 전체 다 보여줌)
-            const filtered = type ? allProjects.filter(p => p.category === type) : allProjects;
-            const doubledProjects = [...filtered, ...filtered];
-            const moveDist = (240 + 16) * filtered.length;
+           const filtered = type ? allProjects.filter(p => p.category === type) : allProjects.slice(0, 3);
 
             return (
-                <section className="py-16 bg-white overflow-hidden">
-                    <div className="px-6 mb-8 text-left">
-                        <h2 className="text-2xl font-bold text-slate-900 mb-2">실제 작업 현장</h2>
-                        <p className="text-slate-500 text-sm text-left">아빠와 아들의 이름을 걸고 직접 작업한 결과물입니다.</p>
+                <section className="py-24 bg-[#f8fafc]">
+                    <div className="px-6 mb-12">
+                        <div className="text-amber-600 text-[11px] font-black tracking-[0.3em] uppercase mb-3">Case Study</div>
+                        <h2 className="text-3xl font-light text-slate-900 leading-tight">전문가로서 증명하는 <br/><strong className="font-black">공간의 재구성</strong></h2>
                     </div>
-                    <motion.div className="flex space-x-4" animate={{ x: [0, -moveDist] }} transition={{ repeat: Infinity, duration: filtered.length * 3, ease: "linear" }}>
-                        {doubledProjects.map((p, i) => (
-                            <div key={i} className="flex-shrink-0 w-[240px] group">
-                                <div className="h-[240px] rounded-3xl overflow-hidden mb-3 relative shadow-md">
-                                    <img src={p.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                                    <div className="absolute bottom-3 left-4">
-                                        <p className="text-white text-[10px] font-bold opacity-80">{p.loc}</p>
-                                        <p className="text-white text-[14px] font-bold">{p.title}</p>
+                    <div className="px-6 space-y-12">
+                        {filtered.map((p, i) => (
+                            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} className="group">
+                                <div className="aspect-[16/10] rounded-sm overflow-hidden mb-5 border expert-border shadow-sm">
+                                    <img src={p.img} className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
+                                </div>
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <span className="text-[10px] text-slate-400 font-bold tracking-widest uppercase">{p.loc}</span>
+                                        <h3 className="text-xl font-bold text-slate-900 mt-1">{p.title}</h3>
+                                        <p className="text-slate-500 text-[13px] mt-2 font-medium">{p.desc}</p>
+                                    </div>
+                                    <div className="w-10 h-10 border expert-border rounded-full flex items-center justify-center text-slate-300 group-hover:border-amber-500 group-hover:text-amber-500 transition-all">
+                                        →
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
-                    </motion.div>
+                    </div>
                 </section>
             );
-            };
+        };
         // [모듈 5] 리뷰 슬라이더
         const ReviewSlider = () => { 
             const reviewImages = [ 
@@ -788,6 +798,7 @@
     </script>
 </body>
 </html>
+
 
 
 
