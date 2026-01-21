@@ -499,15 +499,12 @@
                                                 {c}
                                             </button>
                                         ))}
-                                    </div>
+                               </div>
                                 )}
+                                <button onClick={prev} className="w-full py-4 text-slate-600 text-sm font-bold text-center">이전 단계로</button>
                             </motion.div> 
                         )}
-
-        <button onClick={prev} className="w-full py-4 text-slate-600 text-sm font-bold text-center">이전 단계로</button>
-    </motion.div> 
-)}
-                     {step === 3 && !isTyping && ( 
+                        {step === 3 && !isTyping && (
                             <motion.div key="step3" initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="space-y-4"> 
                                 <div className="grid grid-cols-2 gap-3 mb-2">
                                     {["옷장", "침대", "서랍장", "시스템행거", "쇼파", "기타"].map(item => {
@@ -603,28 +600,14 @@
                                 <button 
                                     disabled={loading || !formData.phone} 
                                     onClick={handleSubmit} 
-                                    className="w-full py-8 bg-amber-400 text-slate-900 rounded-[35px] font-black text-2xl shadow-2xl"
+                                    className="w-full py-8 bg-amber-400 text-slate-900 rounded-[35px] font-black text-2xl shadow-2xl transition-all active:scale-95"
                                 >
                                     {loading ? "접수 중..." : "무료 견적 신청하기"}
                                 </button> 
-                            </motion.div> 
-                        )}
-                                    <div className="mt-6 flex items-center justify-center space-x-2 text-slate-600 mb-4">
-                                        <span className="text-[11px] font-medium tracking-wide">🛡️ 개인정보는 상담 완료 후 즉시 파기됩니다.</span>
-                                    </div>
+                                <div className="mt-6 flex items-center justify-center space-x-2 text-slate-600 mb-4">
+                                    <span className="text-[11px] font-medium tracking-wide">🛡️ 개인정보는 상담 완료 후 즉시 파기됩니다.</span>
                                 </div>
-                                <div className="pt-2">
-                                    <motion.button 
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        disabled={loading || !formData.phone} 
-                                        onClick={handleSubmit} 
-                                        className="w-full h-24 bg-amber-400 text-slate-900 rounded-[35px] font-black text-xl shadow-[0_20px_40px_rgba(245,158,11,0.3)] disabled:opacity-50 disabled:shadow-none transition-all"
-                                    >
-                                        {loading ? "상담 접수 중..." : "무료 견적 상담 신청"}
-                                    </motion.button> 
-                                </div>
-                                <button onClick={prev} className="w-full py-4 text-slate-700 text-sm font-bold">입력 내용 수정하기</button>
+                                <button onClick={prev} className="w-full py-4 text-slate-700 text-sm font-bold text-center">이전 단계로</button>
                             </motion.div> 
                         )}
                         </AnimatePresence>
@@ -746,6 +729,7 @@
     </script>
 </body>
 </html>
+
 
 
 
