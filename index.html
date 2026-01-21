@@ -415,39 +415,39 @@
             }
 
          return ( 
-                <section 
+               <section 
                     id="quote-form" 
-                    className={`transition-all duration-500 ease-in-out px-6 relative z-[1000] overflow-hidden text-white 
+                    className={`transition-all duration-500 ease-in-out px-5 relative z-[2000] overflow-hidden text-white 
                         ${isExpanded 
-                            ? "fixed inset-0 bg-slate-950 py-6 h-full flex flex-col no-scrollbar" 
+                            ? "fixed inset-0 bg-slate-950 pt-4 pb-6 h-screen flex flex-col no-scrollbar" 
                             : "py-24 bg-slate-950 rounded-t-[50px] -mt-12 border-t border-white/10"
                         }`}
                 > 
-                    {/* 뒤로가기 헤더 (버튼 크기 확대) */}
+                    {/* 뒤로가기 헤더 (모바일 최적화 크기 조정) */}
                     <AnimatePresence>
                         {isExpanded && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center mb-8">
-                                <button onClick={handleExit} className="w-14 h-14 flex items-center justify-center bg-white/10 rounded-full text-3xl font-bold">←</button>
-                                <span className="ml-4 text-2xl font-black">뒤로가기</span>
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center mb-4">
+                                <button onClick={handleExit} className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full text-xl font-bold">←</button>
+                                <span className="ml-3 text-lg font-black">뒤로가기</span>
                             </motion.div>
                         )}
                     </AnimatePresence>
 
-                    {/* 진행 상태 바 (시안성 강화) */}
-                    <div className="flex justify-between mb-10 px-1"> 
+                    {/* 진행 상태 바 (간격 축소) */}
+                    <div className="flex justify-between mb-6 px-1">
                         {[1, 2, 3, 4, 5, 6].map(num => ( 
                             <div key={num} className={`h-2.5 flex-1 mx-1.5 rounded-full ${step >= num ? "bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.6)]" : "bg-slate-800"}`}></div> 
                         ))} 
                     </div>
                    {/* 질문 영역: 폰트 크기 대폭 확대 */}
-                    <div className="mb-8">
+                   <div className="mb-6">
                         {isTyping ? (
                             <TypingIndicator />
                         ) : (
                             <motion.h2 
                                 initial={{ opacity: 0, y: 10 }} 
                                 animate={{ opacity: 1, y: 0 }}
-                                className="text-3xl font-black text-white leading-tight"
+                                className="text-2xl font-black text-white leading-tight"
                             >
                                 {step === 1 && "어떤 도움이\n필요하신가요?"}
                                 {step === 2 && "작업하실 지역은\n어디인가요?"}
@@ -504,9 +504,9 @@
                                 <button onClick={prev} className="w-full py-4 text-slate-600 text-sm font-bold text-center">이전 단계로</button>
                             </motion.div> 
                         )}
-                        {step === 3 && !isTyping && (
-                            <motion.div key="step3" initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="space-y-4"> 
-                                <div className="grid grid-cols-2 gap-3 mb-2">
+                       {step === 3 && !isTyping && ( 
+                            <motion.div key="step3" initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="space-y-3"> 
+                                <div className="grid grid-cols-2 gap-2 mb-1">
                                     {["옷장", "침대", "서랍장", "시스템행거", "쇼파", "기타"].map(item => {
                                         const isSelected = formData.content.includes(item);
                                         return (
@@ -517,7 +517,7 @@
                                                     const nextItems = isSelected ? current.filter(c => c !== item) : [...current, item];
                                                     setFormData({...formData, content: nextItems.join(', ')});
                                                 }}
-                                                className={`h-16 rounded-[20px] font-bold text-[15px] transition-all flex items-center justify-center border-2 ${isSelected ? "bg-amber-400 border-amber-400 text-slate-900" : "bg-white/5 border-white/10 text-slate-400"}`}
+                                                className={`h-12 rounded-[15px] font-bold text-[14px] transition-all flex items-center justify-center border-2 ${isSelected ? "bg-amber-400 border-amber-400 text-slate-900" : "bg-white/5 border-white/10 text-slate-400"}`}
                                             >
                                                 {item} {isSelected && "✓"}
                                             </button>
@@ -525,14 +525,12 @@
                                     })}
                                 </div>
                                 
-                                <p className="text-[12px] text-slate-500 text-center font-bold mb-4">해당되는 품목을 모두 선택해주세요.</p>
-
                                 <div className="relative group">
                                     <textarea 
                                         value={formData.content}
                                         onChange={(e) => setFormData({...formData, content: e.target.value})} 
-                                        className="w-full h-24 bg-slate-900/50 border border-white/10 rounded-[20px] p-4 text-white text-[14px] outline-none focus:border-amber-400/50" 
-                                        placeholder={"기타 세부사항이 있다면 적어주세요."}
+                                        className="w-full h-20 bg-slate-900/50 border border-white/10 rounded-[15px] p-3 text-white text-[13px] outline-none focus:border-amber-400/50" 
+                                        placeholder={"기타 세부사항을 적어주세요."}
                                     ></textarea>
                                 </div>
                                 
@@ -540,7 +538,7 @@
                                     whileTap={{ scale: 0.95 }} 
                                     disabled={!formData.content}
                                     onClick={next} 
-                                    className="w-full h-16 bg-amber-400 text-slate-900 rounded-[22px] font-black text-lg shadow-xl shadow-amber-400/10 disabled:opacity-50"
+                                    className="w-full h-14 bg-amber-400 text-slate-900 rounded-[18px] font-black text-lg shadow-xl disabled:opacity-50"
                                 >
                                     선택 완료
                                 </motion.button>
@@ -576,31 +574,31 @@
                             </motion.div> 
                         )}
                        {step === 5 && ( 
-                            <motion.div key="step5" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-6"> 
-                                <div className={`flex flex-col items-center justify-center w-full h-56 border-4 border-dashed rounded-[40px] relative ${formData.photoData ? "border-amber-400 bg-amber-400/10" : "border-white/20 bg-white/5"}`}>
+                            <motion.div key="step5" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-4"> 
+                                <div className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-[25px] relative ${formData.photoData ? "border-amber-400 bg-amber-400/10" : "border-white/20 bg-white/5"}`}>
                                     <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 opacity-0 z-10" multiple />
-                                    <div className="text-6xl mb-4">{formData.photoData ? "✅" : "📸"}</div>
-                                    <p className="text-xl font-black">{formData.photoData ? "사진 등록 완료!" : "여기를 눌러 사진 등록"}</p>
-                                    {formData.photoName && <p className="mt-2 text-amber-400 font-bold">{formData.photoName}</p>}
+                                    <div className="text-4xl mb-2">{formData.photoData ? "✅" : "📸"}</div>
+                                    <p className="text-lg font-black">{formData.photoData ? "사진 등록 완료!" : "여기를 눌러 사진 등록"}</p>
+                                    {formData.photoName && <p className="mt-1 text-amber-400 text-[12px] font-bold">{formData.photoName}</p>}
                                 </div>
-                                <button onClick={next} className="w-full py-6 bg-amber-400 text-slate-900 rounded-[30px] font-black text-2xl">
+                                <button onClick={next} className="w-full h-16 bg-amber-400 text-slate-900 rounded-[20px] font-black text-lg">
                                     {formData.photoData ? "다음 단계로" : "사진 없이 계속하기"}
                                 </button>
                             </motion.div> 
                         )}
-                        {step === 6 && ( 
-                            <motion.div key="step6" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-8"> 
+                       {step === 6 && ( 
+                            <motion.div key="step6" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="space-y-5"> 
                                 <input 
                                     type="tel" 
                                     value={formData.phone}
                                     onChange={handlePhoneChange} 
                                     placeholder="010-0000-0000" 
-                                    className="w-full py-8 bg-white/10 border-4 border-amber-400/50 rounded-[35px] text-white text-center text-4xl font-black outline-none" 
+                                    className="w-full py-6 bg-white/10 border-2 border-amber-400 rounded-[25px] text-white text-center text-3xl font-black outline-none" 
                                 />
                                 <button 
                                     disabled={loading || !formData.phone} 
                                     onClick={handleSubmit} 
-                                    className="w-full py-8 bg-amber-400 text-slate-900 rounded-[35px] font-black text-2xl shadow-2xl transition-all active:scale-95"
+                                    className="w-full h-20 bg-amber-400 text-slate-900 rounded-[25px] font-black text-xl shadow-2xl transition-all active:scale-95"
                                 >
                                     {loading ? "접수 중..." : "무료 견적 신청하기"}
                                 </button> 
@@ -729,6 +727,7 @@
     </script>
 </body>
 </html>
+
 
 
 
