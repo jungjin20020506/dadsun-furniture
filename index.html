@@ -322,23 +322,14 @@
                 return messages[step] || "";
             };
 
-           const handleFileChange = (e) => {
-                const files = Array.from(e.target.files);
-                if (files.length > 0) {
-                    // [아이디어 13] 여러 장의 사진을 처리하기 위해 Promise.all 사용
-                    Promise.all(files.map(file => {
-                        return new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.onloadend = () => resolve({ data: reader.result, name: file.name });
-                            reader.readAsDataURL(file);
-                        });
-                    })).then(results => {
-                        setFormData({ 
-                            ...formData, 
-                            photoData: results.map(r => r.data), // 데이터 URL 배열로 저장
-                            photoName: `${results.length}장의 사진 선택됨` 
-                        });
-                    });
+          const handleFileChange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFormData({ ...formData, photoData: reader.result, photoName: file.name });
+                    };
+                    reader.readAsDataURL(file);
                 }
             };
 
@@ -346,22 +337,14 @@
                 if (loading) return;
                 setLoading(true);
                 
-                // 기존 텍스트 파일(22.txt)에 명시된 GAS URL 및 전송 로직 복구
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbzTIfAvR-R5AY91bR2LZX15BumZ0v7L2uDyI7__M2WatINXekf9a75a60xzNf3ZsxNztA/exec";
-                
-                // 전송 데이터 구성 (이메일 및 시트 정리에 필요한 포맷)
-                const payload = {
-                    ...formData,
-                    timestamp: new Date().toLocaleString('ko-KR'),
-                    source: "아빠와 아들 웹사이트"
-                };
 
                 try {
                     await fetch(GAS_URL, { 
                         method: 'POST', 
                         mode: 'no-cors', 
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(payload) 
+                        body: JSON.stringify(formData) 
                     });
                     
                     setIsSubmitted(true);
@@ -373,7 +356,7 @@
                     });
                 } catch (error) {
                     console.error("Submit Error:", error);
-                    alert("시스템 연동 중 오류가 발생했습니다. 카카오톡으로 문의해 주시면 바로 견적을 도와드리겠습니다.");
+                    alert("접수 중 오류가 발생했습니다. 카카오톡으로 직접 문의 부탁드립니다.");
                 } finally {
                     setLoading(false);
                 }
@@ -768,6 +751,7 @@
     </script>
 </body>
 </html>
+
 
 
 
