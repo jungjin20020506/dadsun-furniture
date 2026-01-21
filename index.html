@@ -41,6 +41,20 @@
             return <span ref={ref}>{count.toLocaleString(undefined, {minimumFractionDigits: decimals, maximumFractionDigits: decimals})}{suffix}</span>; 
         };
 
+        // [추가] 채팅 입력 중 애니메이션 컴포넌트
+        const TypingIndicator = () => (
+            <div className="flex space-x-1.5 p-3 bg-white/10 rounded-2xl w-16 mb-4">
+                {[0, 1, 2].map((i) => (
+                    <motion.div
+                        key={i}
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }}
+                        className="w-1.5 h-1.5 bg-amber-400 rounded-full"
+                    />
+                ))}
+            </div>
+        );
+
         // [모듈 2] 통계 섹션
         const StatSection = () => { 
             const stats = [ 
@@ -242,13 +256,48 @@
         // [모듈 8] 견적 신청 폼 (업그레이드된 사진 전송 포함)
        const MultiStepQuoteForm = () => { 
             const [step, setStep] = useState(1); 
+            const [isExpanded, setIsExpanded] = useState(false); // [추가] 폼 확장 상태 관리
             const [isSubmitted, setIsSubmitted] = useState(false);
             const [loading, setLoading] = useState(false);
             const [formData, setFormData] = useState({ service: '', province: '', city: '', content: '', date: '', dateNone: false, photoData: null, photoName: '', phone: '' });
 
-            const next = () => setStep(s => s + 1); 
+            // [아이디어 3, 4] 오늘 견적 확인 인원 (심리적 안심 부여)
+            const [todayCount] = useState(Math.floor(Math.random() * 10) + 18);
+
+            const next = () => {
+                if (!isExpanded) setIsExpanded(true); // 첫 클릭 시 화면 확장
+                setStep(s => s + 1);
+            };
             const prev = () => setStep(s => Math.max(1, s - 1));
 
+            // [아이디어 16, 17] 전화번호 자동 하이픈 포맷팅
+            const handlePhoneChange = (e) => {
+                const val = e.target.value.replace(/[^\d]/g, '');
+                let formatted = val;
+                if (val.length > 3 && val.length <= 7) {
+                    formatted = `${val.slice(0, 3)}-${val.slice(3)}`;
+                } else if (val.length > 7) {
+                    formatted = `${val.slice(0, 3)}-${val.slice(3, 7)}-${val.slice(7, 11)}`;
+                }
+                setFormData({ ...formData, phone: formatted });
+            };
+
+            // [아이디어 7] 키워드 태그 클릭 시 자동 입력
+            const addKeyword = (tag) => {
+                const currentContent = (formData.content || "").trim();
+                const newContent = currentContent ? `${currentContent}, ${tag}` : tag;
+                setFormData({ ...formData, content: newContent });
+            };
+
+            // [추가 요청] 뒤로가기 클릭 시 이탈 방지 컨펌 로직
+            const handleExit = () => {
+                if (window.confirm("비용 확인이 거의 다 됐습니다! 정말로 나가시겠습니까?")) {
+                    setIsExpanded(false);
+                    setStep(1);
+                    setFormData({ service: '', province: '', city: '', content: '', date: '', dateNone: false, photoData: null, photoName: '', phone: '' });
+                    window.scrollTo({ top: document.getElementById('quote-form').offsetTop - 100, behavior: 'smooth' });
+                }
+            };
             // [아이디어 4] 단계별 격려 메시지
             const getEncouragement = (step) => {
                 const messages = {
@@ -333,19 +382,49 @@
                 );
             }
 
-           return ( 
-                <section id="quote-form" className="px-6 py-24 bg-slate-950 rounded-t-[50px] -mt-12 relative z-20 overflow-hidden text-white border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.5)]"> 
+          return ( 
+                <section 
+                    id="quote-form" 
+                    className={`transition-all duration-700 ease-in-out px-6 relative z-[100] overflow-hidden text-white shadow-[0_-20px_50px_rgba(0,0,0,0.5)] 
+                        ${isExpanded 
+                            ? "fixed inset-0 bg-slate-950 z-[1000] py-12 overflow-y-auto" 
+                            : "py-24 bg-slate-950 rounded-t-[50px] -mt-12 border-t border-white/10"
+                        }`}
+                > 
+                    {/* [아이디어 21] 뒤로가기 헤더 (확장 시에만 노출) */}
+                    <AnimatePresence>
+                        {isExpanded && (
+                            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="fixed top-0 left-0 right-0 p-6 flex items-center bg-slate-950/80 backdrop-blur-md z-[1100]">
+                                <button onClick={handleExit} className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full text-xl">←</button>
+                                <div className="ml-4 flex flex-col">
+                                    <span className="text-[10px] text-amber-400 font-black tracking-widest uppercase">Estimate Form</span>
+                                    <span className="text-sm font-bold">비용 확인하기</span>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     {/* 배경 장식 글로우 */}
                     <div className="absolute top-0 left-1/4 w-64 h-64 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-                    {/* 프리미엄 브랜드 카드 */}
-                    <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="mb-10 p-6 bg-white/5 backdrop-blur-md rounded-[32px] border border-white/10 shadow-2xl relative overflow-hidden text-left">
-                        <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-400"></div>
-                        <p className="text-amber-400 text-[10px] font-black mb-2 tracking-[0.2em] uppercase">Premium Trust</p>
-                        <p className="text-[14px] text-slate-200 leading-relaxed font-medium">
-                            "아빠와 아들의 이름을 걸고 <span className="text-white font-bold underline decoration-amber-500/50 underline-offset-4">정직한 정찰제</span>로 모시겠습니다. 모든 상담은 무료입니다."
-                        </p>
-                    </motion.div>
+                    {/* [아이디어 3, 4] 실시간 사회적 증거 노출 (확장 전후 모두 노출) */}
+                    <div className="mb-6 flex items-center justify-center space-x-2">
+                        <div className="flex -space-x-2">
+                            {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border-2 border-slate-950 bg-slate-800 flex items-center justify-center text-[10px]">👤</div>)}
+                        </div>
+                        <p className="text-[12px] text-slate-400 font-medium">오늘만 <span className="text-amber-400 font-bold">{todayCount}명</span>이 견적을 확인했습니다.</p>
+                    </div>
+
+                    {/* 프리미엄 브랜드 카드 (확장 전 초기 화면에만 노출) */}
+                    {!isExpanded && (
+                        <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="mb-10 p-6 bg-white/5 backdrop-blur-md rounded-[32px] border border-white/10 shadow-2xl relative overflow-hidden text-left">
+                            <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-400"></div>
+                            <p className="text-amber-400 text-[10px] font-black mb-2 tracking-[0.2em] uppercase">Premium Trust</p>
+                            <p className="text-[14px] text-slate-200 leading-relaxed font-medium">
+                                "아빠와 아들의 이름을 걸고 <span className="text-white font-bold underline decoration-amber-500/50 underline-offset-4">정직한 정찰제</span>로 모시겠습니다. 모든 상담은 무료입니다."
+                            </p>
+                        </motion.div>
+                    )}
 
                     {/* 바 형태의 진행 표시선 */}
                     <div className="flex justify-between mb-6 px-1"> 
@@ -354,9 +433,27 @@
                         ))} 
                     </div> 
 
-                    <p className="text-center text-amber-200/50 text-[11px] font-black tracking-tighter mb-10 h-4 uppercase">
+                   <p className="text-center text-amber-200/50 text-[11px] font-black tracking-tighter mb-8 h-4 uppercase">
                         {getEncouragement(step)}
                     </p>
+
+                    {/* [아이디어 28] 대화형 프로필 섹션 */}
+                    <div className="flex items-start space-x-3 mb-6">
+                        <div className="w-10 h-10 rounded-full border border-white/20 overflow-hidden flex-shrink-0 bg-slate-800">
+                            <img src="father.png" className="w-full h-full object-cover" alt="대표님" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-[11px] text-slate-500 font-bold mb-1">정용원 대표</span>
+                            {/* [아이디어 28] 로딩 중 애니메이션 표시 로직 */}
+                            {loading ? (
+                                <TypingIndicator />
+                            ) : (
+                                <div className="bg-white/10 p-3 rounded-2xl rounded-tl-none text-[13px] text-slate-300 max-w-[240px]">
+                                    친절하고 정확하게 안내해 드릴게요.
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
                     <div className="min-h-[420px]">
                         <AnimatePresence mode="wait">
@@ -415,14 +512,29 @@
         <button onClick={prev} className="w-full py-4 text-slate-600 text-sm font-bold text-center">이전 단계로</button>
     </motion.div> 
 )}
-                        {step === 3 && ( 
+                       {step === 3 && ( 
                             <motion.div key="step3" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="space-y-6 text-left"> 
                                 <p className="font-black text-2xl text-white tracking-tight leading-tight">구체적인 내용을<br/>자유롭게 알려주세요.</p>
+                                
+                                {/* [아이디어 7] 빠른 입력을 돕는 키워드 태그 */}
+                                <div className="flex flex-wrap gap-2 mb-2">
+                                    {["#장농", "#침대", "#방간이동", "#폐기", "#수평조절"].map(tag => (
+                                        <button 
+                                            key={tag}
+                                            onClick={() => addKeyword(tag)}
+                                            className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-[12px] text-slate-400 hover:bg-amber-400 hover:text-slate-900 transition-colors"
+                                        >
+                                            {tag}
+                                        </button>
+                                    ))}
+                                </div>
+
                                 <div className="relative group">
                                     <textarea 
+                                        value={formData.content}
                                         onChange={(e) => setFormData({...formData, content: e.target.value})} 
-                                        className="w-full h-48 bg-slate-900/50 backdrop-blur-sm border-2 border-white/5 rounded-[32px] p-7 text-white text-[16px] outline-none focus:border-amber-400/50 focus:bg-slate-900 transition-all shadow-inner" 
-                                        placeholder={"예: 옷장 1개 안방에서 거실로 이동, 5단 서랍장 1개 폐기 등"}
+                                        className="w-full h-40 bg-slate-900/50 backdrop-blur-sm border-2 border-white/5 rounded-[32px] p-7 text-white text-[16px] outline-none focus:border-amber-400/50 focus:bg-slate-900 transition-all shadow-inner" 
+                                        placeholder={"직접 입력하거나 위 태그를 클릭해보세요."}
                                     ></textarea>
                                     <div className="absolute bottom-6 right-8 text-[10px] text-slate-600 font-black tracking-widest uppercase group-focus-within:text-amber-400/50 transition-colors">Detail Info</div>
                                 </div>
@@ -477,13 +589,16 @@
                                     <p className="font-black text-2xl text-white tracking-tight leading-tight mb-2">상담 받으실<br/>연락처를 남겨주세요.</p> 
                                     <p className="text-slate-500 text-[14px]">사장님이 직접 확인 후 <span className="text-amber-400 font-bold underline underline-offset-4 decoration-amber-400/30">10분 내로</span> 안내드립니다.</p>
                                 </div>
-                                <div className="relative">
+                               <div className="relative">
                                     <input 
                                         type="tel" 
-                                        onChange={(e) => setFormData({...formData, phone: e.target.value})} 
+                                        inputMode="numeric"
+                                        value={formData.phone}
+                                        onFocus={(e) => { if(!formData.phone) setFormData({...formData, phone: '010-'}); }}
+                                        onChange={handlePhoneChange} 
                                         placeholder="010-0000-0000" 
                                         className="w-full h-24 bg-white/5 border-2 border-white/10 rounded-[35px] px-8 text-white text-center text-3xl font-black outline-none focus:border-amber-400 focus:bg-white/10 transition-all shadow-2xl" 
-                                    /> 
+                                    />
                                     <div className="mt-6 flex items-center justify-center space-x-2 text-slate-600 mb-4">
                                         <span className="text-[11px] font-medium tracking-wide">🛡️ 개인정보는 상담 완료 후 즉시 파기됩니다.</span>
                                     </div>
@@ -621,6 +736,7 @@
     </script>
 </body>
 </html>
+
 
 
 
