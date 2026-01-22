@@ -73,11 +73,11 @@
                     <div className="grid grid-cols-2 gap-y-12 gap-x-8"> 
                         {stats.map((stat, idx) => ( 
                             <motion.div key={idx} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: idx * 0.1 }} className="text-left group"> 
-                                <div className="text-amber-500 text-[10px] font-black tracking-widest uppercase mb-2">Performance {idx + 1}</div>
+                                <div className="text-amber-500 text-[10px] font-black tracking-widest uppercase mb-2">핵심 지표 {idx + 1}</div>
                                 <div className="text-3xl font-light text-slate-900 mb-1 border-b expert-border pb-2 flex justify-between items-end">
                                     <Counter target={stat.value} suffix={stat.suffix} decimals={stat.label === "시공 만족도" ? 1 : 0} />
-                                    <span className="text-slate-200 group-hover:text-amber-200 transition-colors">↗</span>
-                                </div> 
+                                    <span className="text-slate-200 group-hover:text-amber-200 transition-colors">●</span>
+                                </div>
                                 <div className="text-sm font-bold text-slate-800 mt-2">{stat.label}</div> 
                                 <div className="text-[11px] text-slate-400 font-medium leading-none mt-1">{stat.sub}</div>
                             </motion.div> 
@@ -146,13 +146,13 @@
                     <div className="px-6 mb-12 text-left">
                         <div className="flex items-center space-x-2 mb-3">
                             <div className="w-8 h-[1px] bg-amber-500"></div>
-                            <div className="text-amber-600 text-[10px] font-black tracking-[0.4em] uppercase">Verified Portfolios</div>
+                            <div className="text-amber-600 text-[10px] font-black tracking-[0.4em] uppercase">검증된 시공 실적</div>
                         </div>
-                        <h2 className="text-[28px] font-black text-slate-900 tracking-tight leading-none">시공 실적 리포트</h2>
-                        <p className="text-slate-400 text-xs mt-3 font-medium">엄격한 공정 관리와 정밀한 시공으로 증명된 데이터입니다.</p>
+                        <h2 className="text-[28px] font-black text-slate-900 tracking-tight leading-none">포트폴리오 리포트</h2>
+                        <p className="text-slate-400 text-xs mt-3 font-medium">엄격한 공정 관리와 정밀한 시공으로 기록된 실제 현장 데이터입니다.</p>
                     </div>
 
-                    {/* [전문가형 그리드] 법무/회계법인 스타일의 정갈한 레이아웃 */}
+                    {/* [전문가형 그리드] */}
                     <div className="px-5 grid grid-cols-2 gap-3 mb-16">
                         {selected.main.map((img, i) => (
                             <motion.div 
@@ -166,9 +166,9 @@
                                 {/* 전문적인 오버레이 및 태그 */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80"></div>
                                 <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
-                                    <div>
-                                        <div className="text-[9px] text-amber-400 font-black tracking-widest uppercase mb-0.5">Report No.</div>
-                                        <div className="text-white text-[13px] font-bold tracking-tighter">CASE STUDY #{String(i + 1).padStart(2, '0')}</div>
+                                   <div>
+                                        <div className="text-[9px] text-amber-400 font-black tracking-widest uppercase mb-0.5">문서 번호</div>
+                                        <div className="text-white text-[13px] font-bold tracking-tighter">시공 사례 #{String(i + 1).padStart(2, '0')}</div>
                                     </div>
                                     <div className="w-5 h-5 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-[10px] text-white">✓</div>
                                 </div>
@@ -178,20 +178,20 @@
                         ))}
                     </div>
 
-                    {/* [고속 자동 슬라이더] 8장 고속 회전 */}
+                   {/* [고속 자동 슬라이더] */}
                     <div className="bg-slate-900 py-10 border-y-4 border-amber-500/10 overflow-hidden relative">
                         <div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-slate-900 to-transparent z-10"></div>
                         <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-slate-900 to-transparent z-10"></div>
                         
-                        <p className="px-6 text-[10px] font-black text-amber-500/50 mb-6 tracking-[0.3em] uppercase text-center">Live Site ongoing Projects</p>
+                        <p className="px-6 text-[10px] font-black text-amber-500/50 mb-6 tracking-[0.3em] uppercase text-center">실시간 작업 현장 스냅</p>
                         
                         <motion.div 
                             className="flex space-x-2 px-2"
-                            animate={{ x: [0, -((128 + 8) * 8)] }} // 이미지 너비(w-32=128px) + 간격(space-x-2=8px) * 8장
-                            transition={{ repeat: Infinity, duration: 12, ease: "linear" }} // duration을 낮춰 더 빠르게 설정
+                            animate={{ x: [0, -((128 + 8) * 8)] }}
+                            transition={{ repeat: Infinity, duration: 10, ease: "linear" }} // 속도를 살짝 더 빠르게 상향
                         >
                             {doubledScroll.map((img, i) => (
-                                <div key={i} className="flex-shrink-0 w-32 h-40 rounded-sm overflow-hidden border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
+                                <div key={i} className="flex-shrink-0 w-32 h-40 rounded-sm overflow-hidden border border-white/10 transition-all duration-500">
                                     <img src={img} className="w-full h-full object-cover" />
                                 </div>
                             ))}
@@ -737,9 +737,9 @@
                         <div className="relative z-10">
                             {/* 헤더 부분: 브랜드 정체성 강화 */}
                             <div className="text-center mb-12">
-                                <h3 className="text-amber-500 font-bold text-xs tracking-[0.2em] mb-3 uppercase">Professional Furniture Experts</h3>
+                                <h3 className="text-amber-500 font-bold text-xs tracking-[0.2em] mb-3 uppercase">숙련된 가구 전문가 그룹</h3>
                                 <div className="h-[1px] w-12 bg-amber-500/30 mx-auto mb-4"></div>
-                                <h2 className="text-white text-2xl font-light tracking-tight">가구의 가치를 지키는 <br/><strong className="font-black text-amber-400">전문가 그룹</strong></h2>
+                                <h2 className="text-white text-2xl font-light tracking-tight">가구의 가치를 지키는 <br/><strong className="font-black text-amber-400">가족 전문가팀</strong></h2>
                             </div>
 
                             {/* 프로필 그리드 레이아웃 */}
@@ -752,7 +752,7 @@
                                             <img src="father.png" className="w-full h-full object-cover" alt="정용원 대표" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent opacity-80"></div>
                                             <div className="absolute bottom-6 left-6 text-left">
-                                                <span className="text-amber-500 text-[10px] font-bold tracking-[0.3em] uppercase mb-2 inline-block">CEO / Chief Engineer</span>
+                                                <span className="text-amber-500 text-[10px] font-bold tracking-[0.3em] uppercase mb-2 inline-block">대표 / 수석 기술자</span>
                                                 <h4 className="text-white text-4xl font-black tracking-tighter">
                                                     <span className="text-sm font-normal mr-2 opacity-70">아빠</span>정용원
                                                 </h4>
@@ -782,9 +782,9 @@
                                         <div className="w-full aspect-[3/4] rounded-sm overflow-hidden bg-slate-800 mb-3 border border-white/5">
                                             <img src="uncle.png.png" className="w-full h-full object-cover" alt="삼촌 실장" />
                                         </div>
-                                        <h5 className="text-white text-sm font-bold tracking-tight">
+                                       <h5 className="text-white text-sm font-bold tracking-tight">
                                             <span className="text-[10px] font-normal mr-1 opacity-70">삼촌</span>김승욱 실장 
-                                            <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">Field Manager</span>
+                                            <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">현장 관리 실장</span>
                                         </h5>
                                     </div>
                                     <div className="flex flex-col text-left">
@@ -793,7 +793,7 @@
                                         </div>
                                         <h5 className="text-white text-sm font-bold tracking-tight">
                                             <span className="text-[10px] font-normal mr-1 opacity-70">아들</span>정형진 실장 
-                                            <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">Project Director</span>
+                                            <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">운영 총괄 실장</span>
                                         </h5>
                                     </div>
                            </div>
@@ -924,6 +924,7 @@
     </script>
 </body>
 </html>
+
 
 
 
