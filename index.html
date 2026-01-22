@@ -709,15 +709,17 @@
                             {/* 프로필 그리드 레이아웃 */}
                             <div className="flex flex-col gap-10">
                                 
-                               {/* 1. 메인: 아빠 대표님 (크기 대폭 확대) */}
+                              {/* 1. 메인: 아빠 대표님 (크기 대폭 확대) */}
                                 <div className="flex flex-col gap-6">
                                     <div className="w-full relative">
                                         <div className="aspect-[4/5] rounded-sm overflow-hidden border border-white/10 shadow-2xl relative bg-slate-800">
-                                            <img src="father.png" className="w-full h-full object-cover grayscale-[10%]" alt="정용원 대표" />
+                                            <img src="father.png" className="w-full h-full object-cover" alt="정용원 대표" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent opacity-80"></div>
                                             <div className="absolute bottom-6 left-6 text-left">
                                                 <span className="text-amber-500 text-[10px] font-bold tracking-[0.3em] uppercase mb-2 inline-block">CEO / Chief Engineer</span>
-                                                <h4 className="text-white text-4xl font-black tracking-tighter">정용원</h4>
+                                                <h4 className="text-white text-4xl font-black tracking-tighter">
+                                                    <span className="text-sm font-normal mr-2 opacity-70">아빠</span>정용원
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
@@ -738,20 +740,48 @@
                                     </div>
                                 </div>
 
-                                {/* 2 & 3. 실장님 라인업 (컴팩트하게 축소) */}
+                                {/* 2 & 3. 실장님 라인업 (비율 조정 및 컬러 반영) */}
                                 <div className="grid grid-cols-2 gap-3 border-t border-white/10 pt-8 opacity-80">
                                     <div className="flex flex-col text-left">
-                                        <div className="w-full aspect-square rounded-sm overflow-hidden grayscale bg-slate-800 mb-3 border border-white/5">
+                                        <div className="w-full aspect-[3/4] rounded-sm overflow-hidden bg-slate-800 mb-3 border border-white/5">
                                             <img src="uncle.png.png" className="w-full h-full object-cover" alt="삼촌 실장" />
                                         </div>
-                                        <h5 className="text-white text-sm font-bold tracking-tight">김승욱 실장 <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">Field Manager</span></h5>
+                                        <h5 className="text-white text-sm font-bold tracking-tight">
+                                            <span className="text-[10px] font-normal mr-1 opacity-70">삼촌</span>김승욱 실장 
+                                            <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">Field Manager</span>
+                                        </h5>
                                     </div>
                                     <div className="flex flex-col text-left">
-                                        <div className="w-full aspect-square rounded-sm overflow-hidden grayscale bg-slate-800 mb-3 border border-white/5">
+                                        <div className="w-full aspect-[3/4] rounded-sm overflow-hidden bg-slate-800 mb-3 border border-white/5">
                                             <img src="son.png.png" className="w-full h-full object-cover" alt="아들 실장" />
                                         </div>
-                                        <h5 className="text-white text-sm font-bold tracking-tight">정형진 실장 <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">Project Director</span></h5>
+                                        <h5 className="text-white text-sm font-bold tracking-tight">
+                                            <span className="text-[10px] font-normal mr-1 opacity-70">아들</span>정형진 실장 
+                                            <span className="text-slate-500 text-[10px] font-normal block mt-0.5 tracking-wider">Project Director</span>
+                                        </h5>
                                     </div>
+                           </div>
+                            </div>
+                            
+                            {/* 4. 인증 및 사업자 정보 추가 */}
+                            <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-3 gap-3">
+                                <div className="flex flex-col items-center">
+                                    <div className="w-full aspect-square bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center p-2">
+                                        <img src="soomgo_profile.png" className="w-full h-full object-contain" alt="숨고 프로필" />
+                                    </div>
+                                    <span className="text-[9px] text-slate-500 mt-2 font-bold uppercase tracking-tighter">Soomgo Profile</span>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-full aspect-square bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center p-2">
+                                        <img src="daangn_profile.png" className="w-full h-full object-contain" alt="당근 프로필" />
+                                    </div>
+                                    <span className="text-[9px] text-slate-500 mt-2 font-bold uppercase tracking-tighter">Karrot Profile</span>
+                                </div>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-full aspect-square bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center p-2">
+                                        <img src="business_license.png" className="w-full h-full object-contain" alt="사업자 등록증" />
+                                    </div>
+                                    <span className="text-[9px] text-slate-500 mt-2 font-bold uppercase tracking-tighter">Business License</span>
                                 </div>
                             </div>
                         </div>
@@ -801,6 +831,7 @@
     </script>
 </body>
 </html>
+
 
 
 
