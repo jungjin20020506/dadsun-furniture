@@ -123,7 +123,6 @@
         };
 
        const PortfolioSection = ({ type = 'moving' }) => {
-            // 카테고리별 데이터 (사용자님께서 사진을 채우실 수 있도록 구조화)
             const data = {
                 'moving': {
                     main: ["clo.jpg", "stone2.jpg", "clo.jpg", "stone2.jpg"],
@@ -140,34 +139,71 @@
             };
 
             const selected = data[type] || data['moving'];
+            const doubledScroll = [...selected.scroll, ...selected.scroll];
 
             return (
-                <section className="py-20 bg-white">
-                    <div className="px-6 mb-10 text-left">
-                        <div className="text-amber-600 text-[10px] font-black tracking-[0.3em] uppercase mb-2">Technical Report</div>
-                        <h2 className="text-2xl font-black text-slate-900">전문가 실적 데이터</h2>
+                <section className="py-24 bg-white">
+                    <div className="px-6 mb-12 text-left">
+                        <div className="flex items-center space-x-2 mb-3">
+                            <div className="w-8 h-[1px] bg-amber-500"></div>
+                            <div className="text-amber-600 text-[10px] font-black tracking-[0.4em] uppercase">Verified Portfolios</div>
+                        </div>
+                        <h2 className="text-[28px] font-black text-slate-900 tracking-tight leading-none">시공 실적 리포트</h2>
+                        <p className="text-slate-400 text-xs mt-3 font-medium">엄격한 공정 관리와 정밀한 시공으로 증명된 데이터입니다.</p>
                     </div>
 
-                    {/* 대표 사진 4장 그리드 */}
-                    <div className="px-4 grid grid-cols-2 gap-2 mb-10">
+                    {/* [전문가형 그리드] 법무/회계법인 스타일의 정갈한 레이아웃 */}
+                    <div className="px-5 grid grid-cols-2 gap-3 mb-16">
                         {selected.main.map((img, i) => (
-                            <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="aspect-square bg-slate-100 rounded-sm overflow-hidden border expert-border shadow-sm">
-                                <img src={img} className="w-full h-full object-cover grayscale-[10%]" />
+                            <motion.div 
+                                key={i} 
+                                initial={{ opacity: 0, y: 10 }} 
+                                whileInView={{ opacity: 1, y: 0 }} 
+                                transition={{ delay: i * 0.1 }}
+                                className="group relative aspect-[4/5] bg-slate-100 rounded-sm overflow-hidden border-2 border-slate-900/5 shadow-md"
+                            >
+                                <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                {/* 전문적인 오버레이 및 태그 */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80"></div>
+                                <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+                                    <div>
+                                        <div className="text-[9px] text-amber-400 font-black tracking-widest uppercase mb-0.5">Report No.</div>
+                                        <div className="text-white text-[13px] font-bold tracking-tighter">CASE STUDY #{String(i + 1).padStart(2, '0')}</div>
+                                    </div>
+                                    <div className="w-5 h-5 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-[10px] text-white">✓</div>
+                                </div>
+                                {/* 얇은 프레임 효과 */}
+                                <div className="absolute inset-2 border border-white/10 pointer-events-none"></div>
                             </motion.div>
                         ))}
                     </div>
 
-                    {/* 빠른 가로 스크롤 섹션 */}
-                    <div className="bg-slate-50 py-8 border-y expert-border">
-                        <p className="px-6 text-[11px] font-bold text-slate-400 mb-4 tracking-widest uppercase">Ongoing Projects</p>
-                        <div className="flex overflow-x-auto no-scrollbar gap-2 px-4">
-                            {selected.scroll.map((img, i) => (
-                                <div key={i} className="flex-shrink-0 w-32 h-32 rounded-sm overflow-hidden border expert-border shadow-inner">
+                    {/* [고속 자동 슬라이더] 8장 고속 회전 */}
+                    <div className="bg-slate-900 py-10 border-y-4 border-amber-500/10 overflow-hidden relative">
+                        <div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-slate-900 to-transparent z-10"></div>
+                        <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-slate-900 to-transparent z-10"></div>
+                        
+                        <p className="px-6 text-[10px] font-black text-amber-500/50 mb-6 tracking-[0.3em] uppercase text-center">Live Site ongoing Projects</p>
+                        
+                        <motion.div 
+                            className="flex space-x-2 px-2"
+                            animate={{ x: [0, -((128 + 8) * 8)] }} // 이미지 너비(w-32=128px) + 간격(space-x-2=8px) * 8장
+                            transition={{ repeat: Infinity, duration: 12, ease: "linear" }} // duration을 낮춰 더 빠르게 설정
+                        >
+                            {doubledScroll.map((img, i) => (
+                                <div key={i} className="flex-shrink-0 w-32 h-40 rounded-sm overflow-hidden border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
                                     <img src={img} className="w-full h-full object-cover" />
                                 </div>
                             ))}
+                        </motion.div>
+                        
+                        <div className="px-6 mt-8 flex justify-center items-center space-x-3">
+                            <span className="h-[1px] w-4 bg-slate-700"></span>
+                            <p className="text-[10px] text-slate-500 font-bold italic tracking-tighter">
+                                모든 공정은 <span className="text-slate-300">정용원 대표</span>가 직접 엄격히 관리합니다
+                            </p>
+                            <span className="h-[1px] w-4 bg-slate-700"></span>
                         </div>
-                        <p className="px-6 mt-4 text-[10px] text-slate-300 italic">* 현장의 품질을 위해 전 공정 정용원 대표가 직접 관리합니다.</p>
                     </div>
                 </section>
             );
@@ -831,6 +867,7 @@
     </script>
 </body>
 </html>
+
 
 
 
