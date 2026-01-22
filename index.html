@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
-        body { font-family: "Pretendard Variable", sans-serif; background-color: #f8fafc; color: #0f172a; }
+       body { font-family: "Pretendard Variable", sans-serif; background-color: #f8fafc; color: #0f172a; word-break: keep-all; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         html { scroll-behavior: smooth; }
         /* 전문직 스타일의 정교한 타이포그래피 */
@@ -812,9 +812,9 @@
                                 <div className="flex flex-col gap-16 px-4">
                                     {/* 1. 숨고 공식 파트너 (가로 와이드형) */}
                                     <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="group">
-                                        <div className="relative w-full aspect-[16/8] bg-gradient-to-br from-blue-600/20 to-white/5 rounded-[40px] border border-white/10 overflow-hidden p-5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all group-hover:border-amber-500/50">
-                                            <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-900 border border-white/5 relative">
-                                                <img src="숨고프로필.png" className="w-full h-full object-cover" alt="숨고 공식 파트너" />
+                                        <div className="relative w-full bg-gradient-to-br from-blue-600/20 to-white/5 rounded-[40px] border border-white/10 overflow-hidden p-3 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all group-hover:border-amber-500/50">
+                                            <div className="w-full rounded-2xl overflow-hidden bg-slate-900 border border-white/5 relative">
+                                                <img src="숨고프로필.png" className="w-full h-auto block" alt="숨고 공식 파트너" />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-70"></div>
                                                 <div className="absolute bottom-5 left-8">
                                                     <div className="text-amber-400 text-[11px] font-black tracking-widest uppercase mb-1">Service Excellence</div>
@@ -828,10 +828,10 @@
                                     </motion.div>
 
                                     {/* 2. 당근 단골 (가로 와이드형) */}
-                                    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="group">
-                                        <div className="relative w-full aspect-[16/8] bg-gradient-to-br from-orange-600/20 to-white/5 rounded-[40px] border border-white/10 overflow-hidden p-5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all group-hover:border-amber-500/50">
-                                            <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-900 border border-white/5 relative">
-                                                <img src="당근.png" className="w-full h-full object-cover" alt="당근 단골" />
+                                   <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="group">
+                                        <div className="relative w-full bg-gradient-to-br from-orange-600/20 to-white/5 rounded-[40px] border border-white/10 overflow-hidden p-3 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all group-hover:border-amber-500/50">
+                                            <div className="w-full rounded-2xl overflow-hidden bg-slate-900 border border-white/5 relative">
+                                                <img src="당근.png" className="w-full h-auto block" alt="당근 단골" />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-70"></div>
                                                 <div className="absolute bottom-5 left-8">
                                                     <div className="text-amber-400 text-[11px] font-black tracking-widest uppercase mb-1">Community Trust</div>
@@ -924,6 +924,7 @@
     </script>
 </body>
 </html>
+
 
 
 
