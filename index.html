@@ -799,54 +799,81 @@
                            </div>
                             </div>
                             
-                            {/* 4. 공식 검증 및 인증 데이터 (전문직 스타일) */}
-                            <div className="mt-20 pt-12 border-t border-white/10">
-                                <div className="text-center mb-10">
-                                    <div className="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full mb-4">
-                                        <span className="text-amber-500 text-[10px] font-black tracking-[0.2em] uppercase">Official Credentials</span>
+                          {/* 4. 공식 검증 및 인증 데이터 (세로 배치 및 대형 강조형) */}
+                            <div className="mt-20 pt-16 border-t border-white/10">
+                                <div className="text-center mb-16 px-4">
+                                    <div className="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full mb-5">
+                                        <span className="text-amber-500 text-[10px] font-black tracking-[0.3em] uppercase">Professional Verification</span>
                                     </div>
-                                    <h3 className="text-white text-xl font-bold tracking-tight mb-2">공식 인증 및 검증 내역</h3>
-                                    <p className="text-slate-500 text-[11px] font-medium">아빠와 아들은 투명한 정보 공개를 통해 신뢰의 원칙을 지킵니다.</p>
+                                    <h3 className="text-white text-3xl font-black tracking-tight mb-4 leading-tight">신뢰를 증명하는<br/><span className="text-amber-400">객관적 데이터</span></h3>
+                                    <p className="text-slate-500 text-xs font-medium leading-relaxed">아빠와 아들은 허위 광고를 배제하고,<br/>공인된 플랫폼과 국가의 인증 절차를 마친 정식 업체입니다.</p>
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-4 px-2">
-                                    {[
-                                        { img: "soomgo_profile.png", label: "숨고 공식 파트너", sub: "평점 5.0 만족도 검증", color: "from-blue-500/20" },
-                                        { img: "daangn_profile.png", label: "당근 단골 공식인증", sub: "지역 주민 선정 우수업체", color: "from-orange-500/20" },
-                                        { img: "business_license.png", label: "정식 사업자 등록", sub: "법규 준수 및 책임 시공", color: "from-slate-500/20" }
-                                    ].map((item, i) => (
-                                        <motion.div 
-                                            key={i} 
-                                            whileHover={{ y: -5 }}
-                                            className="flex flex-col items-center group"
-                                        >
-                                            <div className={`relative w-full aspect-[3/4] bg-gradient-to-b ${item.color} to-white/5 rounded-2xl border border-white/10 overflow-hidden p-3 shadow-xl transition-all group-hover:border-amber-500/50`}>
-                                                {/* 돋보기 아이콘 효과 */}
-                                                <div className="absolute top-2 right-2 w-5 h-5 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <span className="text-[10px] text-white">🔍</span>
+                                <div className="flex flex-col gap-16 px-4">
+                                    {/* 1. 숨고 공식 파트너 (가로 와이드형) */}
+                                    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="group">
+                                        <div className="relative w-full aspect-[16/8] bg-gradient-to-br from-blue-600/20 to-white/5 rounded-[40px] border border-white/10 overflow-hidden p-5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all group-hover:border-amber-500/50">
+                                            <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-900 border border-white/5 relative">
+                                                <img src="soomgo_profile.png" className="w-full h-full object-cover" alt="숨고 공식 파트너" />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-70"></div>
+                                                <div className="absolute bottom-5 left-8">
+                                                    <div className="text-amber-400 text-[11px] font-black tracking-widest uppercase mb-1">Service Excellence</div>
+                                                    <div className="text-white text-xl font-black">숨고(Soomgo) 공식 파트너</div>
                                                 </div>
-                                                
-                                                <div className="w-full h-full rounded-lg overflow-hidden bg-slate-900/50 border border-white/5">
-                                                    <img src={item.img} className="w-full h-full object-cover" alt={item.label} />
-                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-5 px-4">
+                                            <p className="text-slate-400 text-sm font-bold leading-snug">"전체 상위 1% 고수에게만 부여되는 공식 인증 파트너 자격 보유"</p>
+                                        </div>
+                                    </motion.div>
 
-                                                {/* 하단 인증 배지 스타일 */}
-                                                <div className="absolute bottom-0 left-0 right-0 h-1 bg-amber-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                                    {/* 2. 당근 단골 (가로 와이드형) */}
+                                    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="group">
+                                        <div className="relative w-full aspect-[16/8] bg-gradient-to-br from-orange-600/20 to-white/5 rounded-[40px] border border-white/10 overflow-hidden p-5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all group-hover:border-amber-500/50">
+                                            <div className="w-full h-full rounded-3xl overflow-hidden bg-slate-900 border border-white/5 relative">
+                                                <img src="daangn_profile.png" className="w-full h-full object-cover" alt="당근 단골" />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-70"></div>
+                                                <div className="absolute bottom-5 left-8">
+                                                    <div className="text-amber-400 text-[11px] font-black tracking-widest uppercase mb-1">Community Trust</div>
+                                                    <div className="text-white text-xl font-black">당근마켓 지역 1위 단골 업체</div>
+                                                </div>
                                             </div>
-                                            
-                                            <div className="mt-4 text-center">
-                                                <div className="text-white text-[11px] font-black tracking-tighter mb-1">{item.label}</div>
-                                                <div className="text-slate-500 text-[9px] font-medium leading-tight break-keep">{item.sub}</div>
+                                        </div>
+                                        <div className="mt-5 px-4 text-right">
+                                            <p className="text-slate-400 text-sm font-bold leading-snug">"경기남부 지역 주민들이 직접 선정하고 추천한 최다 단골 보유"</p>
+                                        </div>
+                                    </motion.div>
+
+                                    {/* 3. 사업자 등록증 (세로형 A4 비율 강조) */}
+                                    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="group max-w-[90%] mx-auto">
+                                        <div className="text-center mb-6">
+                                            <span className="text-[11px] font-black text-slate-500 tracking-[0.3em] uppercase">National Certification</span>
+                                        </div>
+                                        <div className="relative w-full aspect-[210/297] bg-white/5 rounded-[48px] border border-white/10 overflow-hidden p-8 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] transition-all group-hover:border-amber-500/30">
+                                            <div className="w-full h-full rounded-2xl overflow-hidden bg-white/95 border border-white/20 p-2 shadow-inner">
+                                                <img src="business_license.png" className="w-full h-full object-contain" alt="사업자 등록증" />
                                             </div>
-                                        </motion.div>
-                                    ))}
+                                            {/* 인감 도장 형태의 디자인 포인트 */}
+                                            <div className="absolute bottom-12 right-12 opacity-40 group-hover:opacity-100 transition-opacity duration-700">
+                                                <div className="w-16 h-16 border-4 border-amber-600 rounded-full flex items-center justify-center">
+                                                    <span className="text-amber-600 font-black text-xl">誠實</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-8 text-center px-4">
+                                            <div className="text-white text-xl font-black mb-2 tracking-tight">정식 가구 전문 서비스업 등록</div>
+                                            <div className="inline-block px-4 py-2 bg-slate-900 rounded-full border border-white/10">
+                                                <p className="text-slate-400 text-[11px] font-bold tracking-tight">관할 세무서 승인 정식 사업자 | 제 2024-XXXX-XXXXX 호</p>
+                                            </div>
+                                        </div>
+                                    </motion.div>
                                 </div>
 
-                                {/* 하단 공신력 문구 */}
-                                <div className="mt-10 py-4 bg-white/5 rounded-2xl border border-white/5 text-center">
-                                    <p className="text-[10px] text-slate-400 font-medium tracking-tight">
-                                        <span className="text-amber-500 mr-2">●</span> 
-                                        위 데이터는 실제 운영 중인 프로필이며, 요청 시 원본 대조가 가능합니다.
+                                {/* 하단 신뢰 보증 문구 */}
+                                <div className="mt-20 py-6 mx-4 bg-white/5 rounded-3xl border border-white/5 text-center px-6">
+                                    <p className="text-[11px] text-slate-500 font-bold leading-relaxed">
+                                        아빠와 아들은 투명한 정보 공개를 원칙으로 하며,<br/>
+                                        모든 시공 내역에 대해 법적 보호 및 정식 A/S를 보장합니다.
                                     </p>
                                 </div>
                             </div>
@@ -897,6 +924,7 @@
     </script>
 </body>
 </html>
+
 
 
 
