@@ -799,25 +799,55 @@
                            </div>
                             </div>
                             
-                            {/* 4. 인증 및 사업자 정보 추가 */}
-                            <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-3 gap-3">
-                                <div className="flex flex-col items-center">
-                                    <div className="w-full aspect-square bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center p-2">
-                                        <img src="soomgo_profile.png" className="w-full h-full object-contain" alt="숨고 프로필" />
+                            {/* 4. 공식 검증 및 인증 데이터 (전문직 스타일) */}
+                            <div className="mt-20 pt-12 border-t border-white/10">
+                                <div className="text-center mb-10">
+                                    <div className="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full mb-4">
+                                        <span className="text-amber-500 text-[10px] font-black tracking-[0.2em] uppercase">Official Credentials</span>
                                     </div>
-                                    <span className="text-[9px] text-slate-500 mt-2 font-bold uppercase tracking-tighter">Soomgo Profile</span>
+                                    <h3 className="text-white text-xl font-bold tracking-tight mb-2">공식 인증 및 검증 내역</h3>
+                                    <p className="text-slate-500 text-[11px] font-medium">아빠와 아들은 투명한 정보 공개를 통해 신뢰의 원칙을 지킵니다.</p>
                                 </div>
-                                <div className="flex flex-col items-center">
-                                    <div className="w-full aspect-square bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center p-2">
-                                        <img src="daangn_profile.png" className="w-full h-full object-contain" alt="당근 프로필" />
-                                    </div>
-                                    <span className="text-[9px] text-slate-500 mt-2 font-bold uppercase tracking-tighter">Karrot Profile</span>
+
+                                <div className="grid grid-cols-3 gap-4 px-2">
+                                    {[
+                                        { img: "soomgo_profile.png", label: "숨고 공식 파트너", sub: "평점 5.0 만족도 검증", color: "from-blue-500/20" },
+                                        { img: "daangn_profile.png", label: "당근 단골 공식인증", sub: "지역 주민 선정 우수업체", color: "from-orange-500/20" },
+                                        { img: "business_license.png", label: "정식 사업자 등록", sub: "법규 준수 및 책임 시공", color: "from-slate-500/20" }
+                                    ].map((item, i) => (
+                                        <motion.div 
+                                            key={i} 
+                                            whileHover={{ y: -5 }}
+                                            className="flex flex-col items-center group"
+                                        >
+                                            <div className={`relative w-full aspect-[3/4] bg-gradient-to-b ${item.color} to-white/5 rounded-2xl border border-white/10 overflow-hidden p-3 shadow-xl transition-all group-hover:border-amber-500/50`}>
+                                                {/* 돋보기 아이콘 효과 */}
+                                                <div className="absolute top-2 right-2 w-5 h-5 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <span className="text-[10px] text-white">🔍</span>
+                                                </div>
+                                                
+                                                <div className="w-full h-full rounded-lg overflow-hidden bg-slate-900/50 border border-white/5">
+                                                    <img src={item.img} className="w-full h-full object-cover" alt={item.label} />
+                                                </div>
+
+                                                {/* 하단 인증 배지 스타일 */}
+                                                <div className="absolute bottom-0 left-0 right-0 h-1 bg-amber-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                                            </div>
+                                            
+                                            <div className="mt-4 text-center">
+                                                <div className="text-white text-[11px] font-black tracking-tighter mb-1">{item.label}</div>
+                                                <div className="text-slate-500 text-[9px] font-medium leading-tight break-keep">{item.sub}</div>
+                                            </div>
+                                        </motion.div>
+                                    ))}
                                 </div>
-                                <div className="flex flex-col items-center">
-                                    <div className="w-full aspect-square bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center p-2">
-                                        <img src="business_license.png" className="w-full h-full object-contain" alt="사업자 등록증" />
-                                    </div>
-                                    <span className="text-[9px] text-slate-500 mt-2 font-bold uppercase tracking-tighter">Business License</span>
+
+                                {/* 하단 공신력 문구 */}
+                                <div className="mt-10 py-4 bg-white/5 rounded-2xl border border-white/5 text-center">
+                                    <p className="text-[10px] text-slate-400 font-medium tracking-tight">
+                                        <span className="text-amber-500 mr-2">●</span> 
+                                        위 데이터는 실제 운영 중인 프로필이며, 요청 시 원본 대조가 가능합니다.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -867,6 +897,7 @@
     </script>
 </body>
 </html>
+
 
 
 
