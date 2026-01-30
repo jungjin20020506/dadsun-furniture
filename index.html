@@ -690,22 +690,57 @@
             ); 
         };
 
-        // [모듈 9] 플로팅 바
+        // [모듈 9] 플로팅 바 (강조 및 애니메이션 강화 버전)
         const FloatingBottomBar = () => { 
             return ( 
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-[440px] z-[100]"> 
-                    <div className="flex justify-center mb-3 text-center"> 
-                        <div className="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-100 flex items-center space-x-2"> 
-                            <span className="relative flex h-2 w-2"> 
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[460px] z-[100]"> 
+                    {/* 상단 상태 바: 현재 상담 가능 안내 */}
+                    <div className="flex justify-center mb-4 text-center"> 
+                        <motion.div 
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            className="bg-white/95 backdrop-blur-md px-5 py-2 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-slate-100 flex items-center space-x-2.5"
+                        > 
+                            <span className="relative flex h-2.5 w-2.5"> 
                                 <span className="animate-ping absolute h-full w-full rounded-full bg-green-400 opacity-75"></span> 
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span> 
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span> 
                             </span> 
-                            <span className="text-[11px] font-bold text-slate-600">현재 상담 가능 <span className="text-slate-400 font-medium">(응답 10분 내)</span></span> 
-                        </div> 
+                            <span className="text-[12px] font-black text-slate-700">지금 바로 상담 가능 <span className="text-amber-600 font-black ml-1">(평균 10분 내 답변)</span></span> 
+                        </motion.div> 
                     </div> 
-                    <div className="bg-slate-900/90 backdrop-blur-xl shadow-2xl rounded-3xl p-2.5 flex gap-2 border border-white/10"> 
-                        <a href="https://open.kakao.com/o/spSfhAbi" target="_blank" className="flex-1 h-14 bg-[#FEE500] text-slate-900 rounded-2xl flex items-center justify-center font-black text-[14px]">💬 카톡 문의</a> 
-                        <a href="#quote-form" className="flex-[1.4] h-14 bg-amber-400 text-slate-900 rounded-2xl flex items-center justify-center font-black text-[14px]">📋 30초 견적 받기</a> 
+
+                    {/* 메인 액션 버튼 그룹 */}
+                    <div className="bg-slate-950/90 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] rounded-[32px] p-3 flex gap-2.5 border border-white/10"> 
+                        {/* 카톡 문의 버튼: 부드러운 확대/축소 및 내부 광택 효과 */}
+                        <motion.a 
+                            href="https://open.kakao.com/o/spSfhAbi" 
+                            target="_blank" 
+                            animate={{ scale: [1, 1.02, 1] }}
+                            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                            className="flex-1 h-16 bg-[#FEE500] text-slate-900 rounded-[22px] flex items-center justify-center font-black text-[15px] relative overflow-hidden shadow-[0_8px_20px_rgba(254,229,0,0.2)]"
+                        >
+                            <motion.div 
+                                animate={{ x: ['-150%', '150%'] }}
+                                transition={{ repeat: Infinity, duration: 2.5, ease: "linear", repeatDelay: 1.5 }}
+                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -skew-x-12"
+                            />
+                            <span className="relative z-10">💬 카톡 문의</span>
+                        </motion.a> 
+
+                        {/* 견적 받기 버튼: 강렬한 골드 글로우 및 맥박 효과 */}
+                        <motion.a 
+                            href="#quote-form" 
+                            animate={{ scale: [1, 1.04, 1] }}
+                            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                            className="flex-[1.5] h-16 bg-amber-400 text-slate-950 rounded-[22px] flex items-center justify-center font-black text-[15px] relative overflow-hidden shadow-[0_8px_25px_rgba(245,158,11,0.4)]"
+                        >
+                            <motion.div 
+                                animate={{ x: ['-150%', '150%'] }}
+                                transition={{ repeat: Infinity, duration: 2, ease: "linear", repeatDelay: 1 }}
+                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent -skew-x-12"
+                            />
+                            <span className="relative z-10">📋 30초 무료 견적</span>
+                        </motion.a> 
                     </div> 
                 </div> 
             ); 
@@ -960,6 +995,7 @@
     </script>
 </body>
 </html>
+
 
 
 
