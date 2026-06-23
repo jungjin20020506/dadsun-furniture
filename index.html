@@ -5,11 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>아빠와 아들 가구 서비스 | 경기남부 전문</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- React, ReactDOM, Framer Motion을 ES 모듈로 로드해 단일 React 인스턴스를 공유합니다.
+         (framer-motion 배포본은 ES 모듈이라 일반 <script>로는 'Cannot use import statement outside a module' 오류가 납니다) -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.3.1",
+        "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+        "react-dom": "https://esm.sh/react-dom@18.3.1",
+        "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+        "framer-motion": "https://esm.sh/framer-motion@10.16.4?external=react,react-dom"
+      }
+    }
+    </script>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
        body { font-family: "Pretendard Variable", sans-serif; background-color: #f8fafc; color: #0f172a; word-break: keep-all; }
@@ -33,9 +43,10 @@
 <body class="bg-slate-100">
     <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-        const { motion, animate, useInView, AnimatePresence } = window.Motion;
+    <script type="text/babel" data-type="module" data-presets="react">
+        import React, { useState, useEffect, useRef } from "react";
+        import { createRoot } from "react-dom/client";
+        import { motion, animate, useInView, AnimatePresence } from "framer-motion";
 
         // [모듈 1] 숫자 카운터
         const Counter = ({ target, duration = 2, suffix = "", decimals = 0 }) => { 
@@ -1011,7 +1022,7 @@
             );
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
+        const root = createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
 </body>
