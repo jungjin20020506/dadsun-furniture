@@ -201,9 +201,9 @@
                             <span>누적 5,700+ 시공</span>
                         </div>
 
-                        {/* 대표 신뢰 사진 */}
-                        <div className="aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative mb-7 bg-slate-800">
-                            <img src="father.jpg" loading="eager" className="w-full h-full object-cover object-top" alt="아빠와 아들 정용원 대표가 직접 가구를 시공하는 모습" />
+                        {/* 대표 신뢰 사진 (세로 4:5 — 사진 원본이 3:4 세로형이라 얼굴만 잘리지 않도록) */}
+                        <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative mb-7 bg-slate-800">
+                            <img src="father.jpg" loading="eager" className="w-full h-full object-cover object-[center_20%]" alt="아빠와 아들 정용원 대표가 직접 가구를 시공하는 모습" />
                             <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent"></div>
                             <div className="absolute bottom-4 left-5">
                                 <div className="text-amber-400 text-[10px] font-black tracking-[0.2em] uppercase mb-1">대표 · 수석 기술자</div>
