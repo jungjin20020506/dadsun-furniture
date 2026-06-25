@@ -1,0 +1,22 @@
+{
+  "name": "dadsun-furniture",
+  "version": "1.0.0",
+  "private": true,
+  "description": "가구전문가 아빠와 아들 — 경기남부 가구이동·폐기·시스템행거 랜딩페이지",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./styles.css --minify",
+    "build:js": "esbuild src/app.src.jsx --bundle --minify --format=iife --jsx=automatic --target=es2018 --legal-comments=none --outfile=app.js",
+    "build": "npm run build:css && npm run build:js",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./styles.css --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.6.0",
+    "framer-motion": "^10.16.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

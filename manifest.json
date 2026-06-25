@@ -1,0 +1,14 @@
+{
+  "name": "가구전문가 아빠와 아들",
+  "short_name": "아빠와 아들",
+  "description": "경기남부 가구이동·폐기·시스템행거 전문",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "ko-KR",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

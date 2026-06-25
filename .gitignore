@@ -1,0 +1,5 @@
+node_modules/
+*.raw.js
+_verify*.mjs
+*.log
+.DS_Store
