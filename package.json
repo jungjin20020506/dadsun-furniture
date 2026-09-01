@@ -6,7 +6,7 @@
   "scripts": {
     "build:css": "tailwindcss -i ./src/input.css -o ./styles.css --minify",
     "build:js": "esbuild src/app.src.jsx --bundle --minify --format=iife --jsx=automatic --target=es2018 --legal-comments=none --outfile=app.js",
-    "build": "npm run build:css && npm run build:js",
+    "build": "npm run build:css && npm run build:js && node scripts/make-public.mjs",
     "watch:css": "tailwindcss -i ./src/input.css -o ./styles.css --watch"
   },
   "devDependencies": {
