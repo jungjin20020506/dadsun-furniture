@@ -4,9 +4,9 @@ import { motion, animate, useInView, useScroll, useTransform, AnimatePresence, M
 import confetti from "canvas-confetti";
 
 /* ============================================================
-   가구전문가 아빠와 아들 — Premium Editorial v4
-   · 하이엔드 인테리어 스튜디오 무드: 모노크롬 + 세리프 + 헤어라인
-   · 스크롤 리빌 / 패럴랙스 / 대형 텍스트 마키
+   가구전문가 아빠와 아들 — Premium Editorial v5
+   · 카피라이팅 전면 강화, 모바일 풀블리드 히어로
+   · 산세리프 헤비 헤드라인 + 세리프 악센트(숫자·인용·마키)
    · 전화 즉시 연결 전면 배치, 4단계 견적 위저드(자동저장·이탈방지)
    ============================================================ */
 
@@ -18,6 +18,7 @@ const TEL_DISPLAY = "010-2245-9369";
 const INK = "#141210";       // 웜 블랙
 const PAPER = "#F5F3EF";     // 웜 페이퍼
 const ACCENT = "#C75B12";    // 번트 시에나 (CTA 전용)
+const GOLD = "#C89B6D";      // 다크 섹션 포인트
 
 // ─── 공통: 전환 추적 (GA4 + 당근 픽셀, 미설치 시 조용히 무시) ───
 const track = (name, params = {}) => {
@@ -43,7 +44,7 @@ const getBizStatus = () => {
     const open = h >= 8 && h < 21;
     return open
         ? { open: true, text: "지금 상담 가능", sub: "평균 10분 내 회신" }
-        : { open: false, text: "상담 마감 시간", sub: "남겨주시면 아침에 가장 먼저 연락드립니다" };
+        : { open: false, text: "상담 마감", sub: "남겨주시면 아침에 가장 먼저 연락드립니다" };
 };
 
 /* ─── 미니멀 라인 아이콘 ─── */
@@ -105,10 +106,10 @@ const Counter = ({ target, duration = 1.6, suffix = "", decimals = 0 }) => {
 
 // ─── 에디토리얼 섹션 라벨 ───
 const Eyebrow = ({ no, en, dark = false }) => (
-    <div className="flex items-center gap-4 mb-7">
-        <span className={`font-mono text-[11px] font-bold tracking-[0.32em] uppercase ${dark ? "text-stone-500" : "text-stone-400"}`}>( {no} )</span>
-        <span className={`text-[11px] font-bold tracking-[0.32em] uppercase ${dark ? "text-[#C89B6D]" : "text-[#96876F]"}`}>{en}</span>
-        <span className={`h-px flex-1 max-w-[80px] ${dark ? "bg-white/15" : "bg-stone-900/15"}`}></span>
+    <div className="flex items-center gap-4 mb-6 md:mb-7">
+        <span className={`font-display text-[11px] font-bold tracking-[0.28em] uppercase ${dark ? "text-stone-500" : "text-stone-400"}`}>( {no} )</span>
+        <span className={`text-[10.5px] font-bold tracking-[0.32em] uppercase ${dark ? "text-[#C89B6D]" : "text-[#96876F]"}`}>{en}</span>
+        <span className={`h-px flex-1 max-w-[70px] ${dark ? "bg-white/15" : "bg-stone-900/15"}`}></span>
     </div>
 );
 
@@ -116,13 +117,13 @@ const Eyebrow = ({ no, en, dark = false }) => (
    1. 헤더
    ════════════════════════════════════════════ */
 const Header = () => (
-    <header className="sticky top-0 z-[500] backdrop-blur-xl border-b border-white/[0.08]" style={{ backgroundColor: "rgba(20,18,16,0.88)" }}>
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between px-5 md:px-10 h-16 md:h-[74px]">
-            <a href="#top" className="flex items-center gap-3" aria-label="아빠와 아들 홈">
-                <div className="w-8 h-8 md:w-9 md:h-9 border border-white/30 flex items-center justify-center text-white font-black text-[11px] md:text-[12px] tracking-tight">父子</div>
-                <div className="leading-none">
-                    <div className="font-display font-black text-[15px] md:text-[16px] text-white tracking-tight">아빠와 아들</div>
-                    <div className="text-[8.5px] md:text-[9px] font-bold text-stone-500 mt-1 tracking-[0.28em] uppercase">Furniture Care Studio</div>
+    <header className="sticky top-0 z-[500] backdrop-blur-xl border-b border-white/[0.08]" style={{ backgroundColor: "rgba(20,18,16,0.9)" }}>
+        <div className="max-w-[1200px] mx-auto flex items-center justify-between px-4 md:px-10 h-14 md:h-[72px]">
+            <a href="#top" className="flex items-center gap-2.5 min-w-0" aria-label="아빠와 아들 홈">
+                <div className="w-8 h-8 border border-white/30 flex items-center justify-center text-white font-black text-[11px] tracking-tight flex-shrink-0">父子</div>
+                <div className="leading-none min-w-0">
+                    <div className="font-black text-[14px] md:text-[16px] text-white tracking-tight whitespace-nowrap">아빠와 아들</div>
+                    <div className="text-[7.5px] md:text-[9px] font-bold text-stone-500 mt-1 tracking-[0.24em] uppercase whitespace-nowrap">Furniture Care Studio</div>
                 </div>
             </a>
             <nav className="hidden md:flex items-center gap-9 text-[13px] font-semibold text-stone-400" aria-label="주요 메뉴">
@@ -131,19 +132,19 @@ const Header = () => (
                 <a href="#reviews" className="hover:text-white transition-colors">Reviews</a>
                 <a href="#story" className="hover:text-white transition-colors">Story</a>
             </nav>
-            <div className="flex items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
                 <a href={TEL_LINK} onClick={() => track("call_click", { where: "header" })}
                     className="hidden lg:flex items-center gap-2.5 text-stone-300 hover:text-white font-bold text-[14px] tracking-[0.06em] transition-colors" aria-label={`전화 즉시 연결 ${TEL_DISPLAY}`}>
                     <IcPhone className="w-[15px] h-[15px]" />{TEL_DISPLAY}
                 </a>
                 <a href={TEL_LINK} onClick={() => track("call_click", { where: "header" })}
-                    className="lg:hidden flex items-center justify-center w-10 h-10 border border-white/20 text-white active:scale-95 transition-transform" aria-label="전화 즉시 연결">
-                    <IcPhone />
+                    className="lg:hidden flex items-center justify-center w-9 h-9 border border-white/20 text-white active:scale-95 transition-transform" aria-label="전화 즉시 연결">
+                    <IcPhone className="w-[15px] h-[15px]" />
                 </a>
                 <button onClick={() => openQuote()}
-                    className="h-10 md:h-11 px-4 md:px-6 text-[12px] md:text-[13px] font-black text-white tracking-wide active:scale-95 transition-all hover:brightness-110"
+                    className="h-9 md:h-11 px-3.5 md:px-6 text-[12px] md:text-[13px] font-black text-white tracking-wide whitespace-nowrap active:scale-95 transition-all hover:brightness-110"
                     style={{ backgroundColor: ACCENT }}>
-                    견적 문의
+                    <span className="md:hidden">견적</span><span className="hidden md:inline">견적 문의</span>
                 </button>
             </div>
         </div>
@@ -151,87 +152,104 @@ const Header = () => (
 );
 
 /* ════════════════════════════════════════════
-   2. 히어로 — 에디토리얼 스플릿 + 패럴랙스
+   2. 히어로 — 모바일 풀블리드 / 데스크톱 스플릿
    ════════════════════════════════════════════ */
 const Hero = () => {
     const status = getBizStatus();
-    const ref = useRef(null);
     const { scrollY } = useScroll();
     const imgY = useTransform(scrollY, [0, 700], [0, 70]);
-    const textY = useTransform(scrollY, [0, 700], [0, -30]);
     return (
-        <section id="top" ref={ref} className="relative overflow-hidden" style={{ backgroundColor: INK }}>
-            {/* 배경 워터마크 */}
-            <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-                <div className="absolute -bottom-6 -left-4 font-display font-black text-[120px] md:text-[220px] leading-none tracking-tighter text-transparent"
+        <section id="top" className="relative overflow-hidden" style={{ backgroundColor: INK }}>
+            {/* 모바일: 대표 사진 상단 배경 → 아래로 잉크 페이드 */}
+            <div className="absolute inset-x-0 top-0 h-[58%] md:hidden" aria-hidden="true">
+                <img src="father.jpg" loading="eager" fetchpriority="high" className="w-full h-full object-cover object-[center_18%]" alt="" />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(20,18,16,0.62) 0%, rgba(20,18,16,0.12) 26%, rgba(20,18,16,0.45) 58%, rgba(20,18,16,0.92) 82%, #141210 100%)" }}></div>
+            </div>
+            {/* 데스크톱: 워터마크 */}
+            <div className="absolute inset-0 pointer-events-none select-none hidden md:block" aria-hidden="true">
+                <div className="absolute -bottom-6 -left-4 font-display font-black text-[220px] leading-none tracking-tighter text-transparent"
                     style={{ WebkitTextStroke: "1px rgba(255,255,255,0.05)" }}>
                     FATHER&nbsp;&amp;&nbsp;SON
                 </div>
             </div>
 
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10 pt-14 md:pt-24 pb-16 md:pb-28 relative z-10 md:grid md:grid-cols-[1.1fr_0.9fr] md:gap-16 items-center">
-                {/* 좌: 카피 */}
-                <motion.div style={{ y: textY }}>
-                    <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: EASE }}>
-                        <div className="flex items-center gap-4 mb-8">
-                            <span className="text-[10.5px] font-bold tracking-[0.4em] uppercase text-[#C89B6D]">Furniture Care · Since 2011</span>
-                            <span className="h-px w-14 bg-white/20"></span>
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10 relative z-10 md:grid md:grid-cols-[1.05fr_0.95fr] md:gap-16 md:items-center md:pt-24 md:pb-28">
+                {/* 카피 */}
+                <div className="min-h-[86svh] md:min-h-0 flex flex-col justify-end md:justify-start pt-12 pb-12 md:py-0">
+                    <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: EASE }}>
+                        <div className="flex items-center gap-3.5 mb-6 md:mb-8">
+                            <span className="text-[10px] md:text-[10.5px] font-bold tracking-[0.34em] uppercase" style={{ color: GOLD }}>아버지와 아들이 함께하는 가구 케어</span>
+                            <span className="h-px w-10 md:w-14 bg-white/25"></span>
                         </div>
-                        <h1 className="font-display text-[40px] md:text-[64px] font-black text-white leading-[1.16] tracking-[-0.02em]">
-                            가구 하나를<br />옮겨도,<br />
-                            <span className="italic text-[#C89B6D]">가족의 일처럼.</span>
+                        <h1 className="text-[38px] md:text-[58px] font-black text-white leading-[1.18] tracking-[-0.03em]">
+                            무거운 가구도,<br />
+                            무거운 걱정도,<br />
+                            <span className="font-display italic font-bold" style={{ color: GOLD }}>저희가 옮깁니다.</span>
                         </h1>
                     </motion.div>
 
-                    <motion.p initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-                        className="mt-8 text-stone-400 text-[15px] md:text-[16px] leading-[1.9] max-w-[420px] font-light">
-                        용역 알바가 아닌 <strong className="text-stone-200 font-semibold">15년 경력의 아버지와 아들</strong>이 직접 방문합니다.
-                        가구이동 · 이전설치 · 폐기, 사진 한 장이면 <strong className="text-stone-200 font-semibold">추가금 없는 확정 견적</strong>이 도착합니다.
+                    <motion.p initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.14, ease: EASE }}
+                        className="mt-6 md:mt-8 text-stone-300 md:text-stone-400 text-[14.5px] md:text-[16px] leading-[1.85] max-w-[420px]">
+                        용역 알바 없이, <strong className="text-white font-semibold">15년 경력의 아버지와 아들</strong>이 직접 갑니다.
+                        사진 한 장 보내주세요 — <strong className="text-white font-semibold">10분 안에, 추가금 없는 확정 견적</strong>으로 답합니다.
                     </motion.p>
 
-                    <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3, ease: EASE }}
-                        className="mt-10 space-y-3 max-w-[420px]">
+                    {/* 신뢰 지표 미니 라인 */}
+                    <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.24, ease: EASE }}
+                        className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-6 md:mt-8 text-[11.5px] font-bold text-stone-300">
+                        <span>별점 <strong className="font-display text-[13px]" style={{ color: GOLD }}>4.9</strong></span>
+                        <span className="w-px h-3 bg-white/25"></span>
+                        <span>누적 <strong className="font-display text-[13px]" style={{ color: GOLD }}>8,500건</strong></span>
+                        <span className="w-px h-3 bg-white/25"></span>
+                        <span>파손 시 <strong style={{ color: GOLD }}>전액 보상</strong></span>
+                        <span className="w-px h-3 bg-white/25"></span>
+                        <span>현장 추가금 <strong style={{ color: GOLD }}>0원</strong></span>
+                    </motion.div>
+
+                    {/* CTA */}
+                    <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.34, ease: EASE }}
+                        className="mt-8 md:mt-10 space-y-3 max-w-[420px]">
                         <button onClick={() => openQuote()}
-                            className="group w-full h-[60px] text-white font-black text-[15.5px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110"
+                            className="group w-full h-[58px] text-white font-black text-[15.5px] tracking-wide flex items-center justify-center gap-3 transition-all hover:brightness-110 shadow-[0_18px_45px_-12px_rgba(199,91,18,0.7)]"
                             style={{ backgroundColor: ACCENT }}>
-                            사진 한 장으로 1분 견적받기
+                            <IcCamera className="w-[18px] h-[18px]" /> 사진 1장으로 견적 받기 — 1분
                             <IcArrow className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </button>
                         <div className="grid grid-cols-2 gap-3">
                             <a href={TEL_LINK} onClick={() => track("call_click", { where: "hero" })}
-                                className="h-[54px] border border-white/20 text-white flex flex-col items-center justify-center hover:bg-white/[0.06] transition-colors" aria-label={`전화 즉시 연결 ${TEL_DISPLAY}`}>
-                                <span className="flex items-center gap-1.5 text-[10px] font-bold text-stone-500 tracking-[0.15em] uppercase mb-1"><IcPhone className="w-3 h-3" /> Direct Call</span>
-                                <span className="text-[14px] font-black tracking-[0.08em]">{TEL_DISPLAY}</span>
+                                className="h-[52px] border border-white/30 bg-black/20 backdrop-blur-sm text-white flex flex-col items-center justify-center hover:bg-white/[0.08] transition-colors" aria-label={`전화 즉시 연결 ${TEL_DISPLAY}`}>
+                                <span className="flex items-center gap-1.5 text-[9.5px] font-bold text-stone-400 tracking-[0.15em] uppercase mb-1"><IcPhone className="w-3 h-3" /> 지금 바로 통화</span>
+                                <span className="text-[13.5px] font-black tracking-[0.08em]">{TEL_DISPLAY}</span>
                             </a>
                             <a href={KAKAO_URL} target="_blank" rel="noopener" onClick={() => track("kakao_click", { where: "hero" })}
-                                className="h-[54px] bg-[#FEE500] text-stone-900 flex items-center justify-center gap-2 font-black text-[13.5px] hover:brightness-105 transition-all">
-                                <IcChat className="w-4 h-4" /> 카카오톡 상담
+                                className="h-[52px] bg-[#FEE500] text-stone-900 flex items-center justify-center gap-2 font-black text-[13.5px] hover:brightness-105 transition-all">
+                                <IcChat className="w-4 h-4" /> 카톡 상담
                             </a>
                         </div>
-                        <div className="flex items-center gap-2.5 pt-2">
+                        {/* 상담 상태 — 모바일은 하단 고정 바에 이미 표시되므로 데스크톱에서만 */}
+                        <div className="hidden md:flex items-center gap-2.5 pt-1.5">
                             <span className="relative flex h-1.5 w-1.5">
                                 {status.open && <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
                                 <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${status.open ? "bg-emerald-400" : "bg-stone-500"}`}></span>
                             </span>
-                            <span className="text-[11.5px] font-medium text-stone-500 tracking-wide">{status.text} · {status.sub} · 상담은 100% 무료</span>
+                            <span className="text-[11.5px] font-semibold text-stone-400 tracking-wide">{status.text} · {status.sub}</span>
                         </div>
                     </motion.div>
-                </motion.div>
+                </div>
 
-                {/* 우: 대표 포트레이트 (패럴랙스) */}
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2, delay: 0.2 }} className="mt-14 md:mt-0 relative">
+                {/* 데스크톱: 대표 포트레이트 (패럴랙스) */}
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2, delay: 0.2 }} className="hidden md:block relative">
                     <motion.div style={{ y: imgY }} className="relative">
                         <div className="overflow-hidden">
-                            <motion.img src="father.jpg" alt="가구전문가 아빠와 아들 정용원 대표" loading="eager" fetchpriority="high"
+                            <motion.img src="father.jpg" alt="가구전문가 아빠와 아들 정용원 대표" loading="eager"
                                 initial={{ scale: 1.15 }} animate={{ scale: 1 }} transition={{ duration: 1.6, ease: EASE }}
                                 className="w-full aspect-[4/5] object-cover object-[center_18%]" />
                         </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-[#141210] via-transparent to-transparent opacity-80"></div>
-                        {/* 캡션 플레이트 */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex items-end justify-between">
+                        <div className="absolute bottom-0 left-0 right-0 p-8 flex items-end justify-between">
                             <div>
-                                <div className="text-[9.5px] font-bold tracking-[0.35em] uppercase text-[#C89B6D] mb-2.5">Master Craftsman</div>
-                                <div className="font-display text-white text-[26px] md:text-[30px] font-black tracking-tight leading-none">정용원 <span className="text-[13px] font-medium text-stone-400 ml-1">대표 · 수석 기술자</span></div>
+                                <div className="text-[9.5px] font-bold tracking-[0.35em] uppercase mb-2.5" style={{ color: GOLD }}>Master Craftsman</div>
+                                <div className="font-display text-white text-[30px] font-black tracking-tight leading-none">정용원 <span className="text-[13px] font-medium text-stone-400 ml-1">대표 · 수석 기술자</span></div>
                                 <div className="text-stone-400 text-[12px] font-medium mt-2.5 tracking-wide">15년 무사고 시공 — 누적 8,500건</div>
                             </div>
                         </div>
@@ -244,20 +262,19 @@ const Hero = () => {
             </div>
 
             {/* 하단 지표 스트립 */}
-            <div className="border-t border-white/[0.08] relative z-10">
-                <div className="max-w-[1200px] mx-auto px-5 md:px-10 grid grid-cols-2 md:grid-cols-4">
+            <div className="border-t border-white/[0.08] relative z-10" style={{ backgroundColor: INK }}>
+                <div className="max-w-[1200px] mx-auto px-6 md:px-10 grid grid-cols-2 md:grid-cols-4">
                     {[
-                        { value: 15, suffix: "+", label: "Years of Craft", ko: "현장 경력" },
-                        { value: 8500, suffix: "+", label: "Projects Done", ko: "누적 시공" },
-                        { value: 4.9, suffix: "", decimals: 1, label: "Customer Rating", ko: "후기 평점" },
-                        { value: 92, suffix: "%", label: "Repeat & Referral", ko: "재의뢰·소개율" }
+                        { value: 15, suffix: "년+", label: "아버지의 현장 경력" },
+                        { value: 8500, suffix: "+", label: "책임지고 옮긴 살림" },
+                        { value: 4.9, suffix: "", decimals: 1, label: "고객이 남긴 별점" },
+                        { value: 92, suffix: "%", label: "다시 찾는 고객" }
                     ].map((s, i) => (
-                        <div key={i} className={`py-8 md:py-10 px-2 md:px-6 border-white/[0.08] ${i % 2 === 0 ? "border-r" : ""} md:border-r ${i === 3 ? "md:border-r-0" : ""} ${i < 2 ? "border-b md:border-b-0" : ""}`}>
-                            <div className="font-display text-[30px] md:text-[40px] font-black text-white leading-none tracking-tight">
+                        <div key={i} className={`py-7 md:py-10 px-1 md:px-6 border-white/[0.08] ${i % 2 === 0 ? "border-r" : ""} md:border-r ${i === 3 ? "md:border-r-0" : ""} ${i < 2 ? "border-b md:border-b-0" : ""} text-center md:text-left`}>
+                            <div className="font-display text-[28px] md:text-[40px] font-black leading-none tracking-tight" style={{ color: GOLD }}>
                                 <Counter target={s.value} suffix={s.suffix} decimals={s.decimals || 0} />
                             </div>
-                            <div className="text-[9px] md:text-[10px] font-bold text-[#C89B6D] mt-3 tracking-[0.25em] uppercase">{s.label}</div>
-                            <div className="text-[11px] md:text-[12px] font-medium text-stone-500 mt-1">{s.ko}</div>
+                            <div className="text-[10.5px] md:text-[12px] font-bold text-stone-400 mt-2.5 tracking-wide">{s.label}</div>
                         </div>
                     ))}
                 </div>
@@ -273,15 +290,15 @@ const MarqueeBand = () => {
     const words = ["가구이동", "이전설치", "가구폐기", "시스템행거"];
     const row = [...words, ...words, ...words];
     return (
-        <div className="py-10 md:py-14 overflow-hidden border-b border-stone-900/10" style={{ backgroundColor: PAPER }}>
+        <div className="py-8 md:py-14 overflow-hidden border-b border-stone-900/10" style={{ backgroundColor: PAPER }}>
             <motion.div className="flex whitespace-nowrap items-baseline" animate={{ x: ["0%", "-33.333%"] }} transition={{ repeat: Infinity, duration: 30, ease: "linear" }}>
                 {row.map((w, i) => (
                     <React.Fragment key={i}>
-                        <span className={`font-display font-black text-[44px] md:text-[76px] leading-none tracking-tight px-5 ${i % 2 === 0 ? "text-[#141210]" : "text-transparent"}`}
+                        <span className={`font-display font-black text-[40px] md:text-[76px] leading-none tracking-tight px-5 ${i % 2 === 0 ? "text-[#141210]" : "text-transparent"}`}
                             style={i % 2 === 0 ? {} : { WebkitTextStroke: "1.5px rgba(20,18,16,0.35)" }}>
                             {w}
                         </span>
-                        <span className="text-[20px] md:text-[30px] text-stone-300 px-1">●</span>
+                        <span className="text-[16px] md:text-[26px] text-stone-300 px-1">●</span>
                     </React.Fragment>
                 ))}
             </motion.div>
@@ -306,13 +323,13 @@ const LiveTicker = () => {
     }, []);
     return (
         <div className="border-b border-stone-900/10" style={{ backgroundColor: PAPER }}>
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10 py-3.5 flex items-center gap-4">
-                <span className="flex-shrink-0 inline-flex items-center gap-2 text-[9.5px] font-black text-stone-500 tracking-[0.3em] uppercase">
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3.5 flex items-center gap-4">
+                <span className="flex-shrink-0 inline-flex items-center gap-2 text-[9.5px] font-black text-stone-500 tracking-[0.28em] uppercase">
                     <span className="relative flex h-1.5 w-1.5">
                         <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                     </span>
-                    Live Booking
+                    실시간 접수
                 </span>
                 <div className="relative h-5 flex-1 overflow-hidden">
                     <AnimatePresence mode="wait">
@@ -335,50 +352,55 @@ const ServiceSection = () => {
         {
             img: "A7.jpg", no: "01",
             title: "방 ↔ 방 가구이동", en: "Room to Room", price: "3만원부터", formValue: "가구이동 (방 ↔ 방)",
-            desc: "장롱·침대·쇼파를 분해하고, 바닥 보양 후 안전하게 옮겨 수평까지 잡아드립니다.",
-            points: ["분해 — 이동 — 재조립 — 수평 조절", "바닥·벽 전용 보양재 사용"]
+            desc: "“장롱 좀 안방에서 작은방으로…” 가장 많이 받는 부탁입니다. 분해부터 재조립, 수평까지 — 벽지 스침 하나 없이 끝냅니다.",
+            points: ["분해 — 이동 — 재조립 — 수평 조절", "바닥·벽 전용 보양재 시공"]
         },
         {
             img: "A8.jpg", no: "02",
             title: "집 ↔ 집 이전설치", en: "Home to Home", price: "5만원부터", formValue: "가구이동 (집 ↔ 집)",
-            desc: "쓰던 가구 몇 점만 새집으로. 포장이사보다 합리적으로, 용달보다 안전하게 옮깁니다.",
-            points: ["랩핑 포장 + 전용 차량 이동", "새집 원하는 위치에 설치 완료"]
+            desc: "이사업체를 부르기엔 크고, 용달에 맡기기엔 불안한 가구 몇 점. 랩핑 포장해서 새집 원하는 자리까지 놓아드립니다.",
+            points: ["전면 랩핑 포장 + 전용 차량", "새집 배치·설치까지 완료"]
         },
         {
             img: "A6.jpg", no: "03",
             title: "가구 폐기 · 수거", en: "Disposal", price: "2만원부터", formValue: "가구폐기",
-            desc: "돌침대·장롱 같은 대형 가구를 분해해 반출하고, 폐기 신고까지 깔끔하게 마무리합니다.",
-            points: ["돌침대 전문 분해·반출", "행정 신고 · 뒷정리 포함"]
+            desc: "장정 둘이서도 못 드는 돌침대 — 저희에겐 한 시간 일입니다. 분해, 반출, 폐기 신고까지 흔적 없이 정리합니다.",
+            points: ["돌침대·장롱 전문 분해 반출", "폐기 신고 · 뒷정리 포함"]
         },
         {
             img: "sh.jpg", no: "04",
             title: "시스템행거 설치", en: "System Hanger", price: "5만원부터", formValue: "시스템행거",
-            desc: "수평 장비로 흔들림 없이 시공합니다. 이전 설치·부분 수리도 가능합니다.",
-            points: ["레이저 수평 정밀 시공", "이전 재설치 · A/S 가능"]
+            desc: "옷 무게에 무너지지 않는 드레스룸. 레이저 수평으로 잡고, 1mm의 기울어짐도 남기지 않습니다.",
+            points: ["레이저 수평 정밀 시공", "이전 재설치 · 부분 수리 가능"]
         }
     ];
     return (
-        <section className="py-20 md:py-32" id="services" style={{ backgroundColor: PAPER }}>
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10">
+        <section className="py-16 md:py-28" id="services" style={{ backgroundColor: PAPER }}>
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10">
                 <Reveal>
                     <Eyebrow no="01" en="Services" />
-                    <h2 className="font-display text-[32px] md:text-[52px] font-black text-[#141210] leading-[1.15] tracking-[-0.02em] max-w-xl">
-                        이런 일을<br />해드립니다
+                    <h2 className="text-[30px] md:text-[50px] font-black text-[#141210] leading-[1.18] tracking-[-0.03em]">
+                        무엇이든 옮기고,<br />무엇이든 책임집니다
                     </h2>
-                    <p className="mt-5 text-stone-500 text-[14px] md:text-[15px] font-light">모든 서비스는 출장비·견적 상담이 무료입니다.</p>
+                    <p className="mt-4 md:mt-5 text-stone-500 text-[14px] md:text-[15px]">이 네 가지를 가장 잘합니다. 출장비도, 상담도 무료입니다.</p>
                 </Reveal>
 
-                <div className="mt-14 md:mt-20 space-y-0">
+                <div className="mt-10 md:mt-16">
                     {services.map((s, i) => (
                         <Reveal key={i} delay={0.05}>
-                            <div className={`group grid md:grid-cols-[110px_1fr_1fr] gap-6 md:gap-10 py-10 md:py-14 border-t border-stone-900/15 ${i === services.length - 1 ? "border-b" : ""} items-start`}>
-                                <div className="font-display text-[15px] md:text-[17px] font-black text-stone-400 tracking-wide pt-1">( {s.no} )</div>
+                            <div className={`group grid md:grid-cols-[110px_1fr_1fr] gap-5 md:gap-10 py-9 md:py-14 border-t border-stone-900/15 ${i === services.length - 1 ? "border-b" : ""} items-start`}>
+                                <div className="flex items-center justify-between md:block">
+                                    <span className="font-display text-[15px] md:text-[17px] font-black text-stone-400 tracking-wide">( {s.no} )</span>
+                                    <span className="md:hidden text-[9.5px] font-bold tracking-[0.3em] uppercase text-[#96876F]">{s.en}</span>
+                                </div>
                                 <div className="order-3 md:order-2">
-                                    <div className="text-[9.5px] font-bold tracking-[0.3em] uppercase text-[#96876F] mb-3">{s.en}</div>
-                                    <h3 className="font-display text-[26px] md:text-[34px] font-black text-[#141210] tracking-tight leading-tight">{s.title}</h3>
-                                    <div className="mt-2 text-[14px] font-black" style={{ color: ACCENT }}>{s.price}</div>
-                                    <p className="mt-4 text-[13.5px] md:text-[14.5px] text-stone-500 leading-[1.85] font-light max-w-sm">{s.desc}</p>
-                                    <ul className="mt-5 space-y-2">
+                                    <div className="hidden md:block text-[9.5px] font-bold tracking-[0.3em] uppercase text-[#96876F] mb-3">{s.en}</div>
+                                    <div className="flex items-baseline gap-3 flex-wrap">
+                                        <h3 className="text-[24px] md:text-[32px] font-black text-[#141210] tracking-[-0.02em] leading-tight">{s.title}</h3>
+                                        <span className="text-[13.5px] font-black" style={{ color: ACCENT }}>{s.price}</span>
+                                    </div>
+                                    <p className="mt-3.5 text-[13.5px] md:text-[14.5px] text-stone-500 leading-[1.85] max-w-sm">{s.desc}</p>
+                                    <ul className="mt-4 space-y-1.5">
                                         {s.points.map((p, j) => (
                                             <li key={j} className="text-[12px] md:text-[12.5px] font-semibold text-stone-600 flex items-center gap-2.5">
                                                 <IcCheck className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />{p}
@@ -386,7 +408,7 @@ const ServiceSection = () => {
                                         ))}
                                     </ul>
                                     <button onClick={() => openQuote(s.formValue)}
-                                        className="mt-7 inline-flex items-center gap-2.5 text-[13px] font-black text-[#141210] border-b-2 border-[#141210] pb-1 hover:gap-4 transition-all"
+                                        className="mt-6 inline-flex items-center gap-2.5 text-[13px] font-black text-[#141210] border-b-2 border-[#141210] pb-1 hover:gap-4 transition-all"
                                         aria-label={`${s.title} 견적 받아보기`}>
                                         이 작업 견적 받아보기 <IcArrow className="w-3.5 h-3.5" />
                                     </button>
@@ -398,14 +420,14 @@ const ServiceSection = () => {
                         </Reveal>
                     ))}
                 </div>
-                <p className="mt-8 text-[11.5px] text-stone-400 font-light">※ 표시 가격은 최소 기준이며, 사진 확인 후 <strong className="text-stone-600 font-semibold">추가금 없는 확정가</strong>를 안내드립니다.</p>
+                <p className="mt-7 text-[11.5px] text-stone-400">※ 표시 가격은 최소 기준입니다. 사진 확인 후 <strong className="text-stone-600 font-semibold">그대로 청구되는 확정가</strong>를 안내드립니다.</p>
             </div>
         </section>
     );
 };
 
 /* ════════════════════════════════════════════
-   5. 철학 + 비교 — 화이트
+   5. 철학 + 비교
    ════════════════════════════════════════════ */
 const WhySection = () => {
     const compareData = [
@@ -416,20 +438,20 @@ const WhySection = () => {
         { label: "파손 사고 시", us: "전액 책임보상", others: "연락 두절" }
     ];
     return (
-        <section className="bg-white py-20 md:py-32">
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10 md:grid md:grid-cols-[1fr_1.2fr] md:gap-20 md:items-start">
+        <section className="bg-white py-16 md:py-28">
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10 md:grid md:grid-cols-[1fr_1.2fr] md:gap-20 md:items-start">
                 <Reveal>
                     <Eyebrow no="02" en="Philosophy" />
-                    <h2 className="font-display text-[32px] md:text-[46px] font-black text-[#141210] leading-[1.2] tracking-[-0.02em]">
+                    <h2 className="text-[30px] md:text-[44px] font-black text-[#141210] leading-[1.22] tracking-[-0.03em]">
                         싼 곳은 많습니다.<br />
-                        <span className="italic text-stone-400">믿을 곳이</span><br />없을 뿐이죠.
+                        <span className="font-display italic font-bold text-stone-400">믿을 곳이</span><br />없을 뿐이죠.
                     </h2>
-                    <p className="mt-7 text-stone-500 text-[14px] md:text-[15px] leading-[1.9] font-light max-w-sm">
-                        저희가 5년째 재의뢰율 92%를 지키는 이유는 단순합니다.
-                        한 번의 시공이 곧 가족의 간판이기 때문입니다.
+                    <p className="mt-6 text-stone-500 text-[14px] md:text-[15px] leading-[1.9] max-w-sm">
+                        그래서 저희는 가격으로 경쟁하지 않습니다.
+                        <strong className="text-stone-800 font-semibold"> 기록으로 증명합니다.</strong> 5년째 재의뢰율 92% — 한 번 맡긴 분이 다시 찾는 데에는 이유가 있습니다.
                     </p>
                 </Reveal>
-                <Reveal delay={0.12} className="mt-12 md:mt-0">
+                <Reveal delay={0.12} className="mt-10 md:mt-0">
                     <div className="border border-stone-900/15">
                         <div className="grid grid-cols-12 text-[10.5px] md:text-[11.5px] font-black border-b border-stone-900/15">
                             <div className="col-span-3 py-4 pl-4 md:pl-6 text-stone-400 tracking-wide">항목</div>
@@ -438,9 +460,9 @@ const WhySection = () => {
                         </div>
                         {compareData.map((item, idx) => (
                             <div key={idx} className="grid grid-cols-12 items-stretch border-b border-stone-900/10 last:border-0">
-                                <div className="col-span-3 py-4 md:py-5 pl-4 md:pl-6 text-[10.5px] md:text-[12px] font-semibold text-stone-500 flex items-center">{item.label}</div>
+                                <div className="col-span-3 pl-4 md:pl-6 text-[10.5px] md:text-[12px] font-semibold text-stone-500 flex items-center py-4 md:py-5">{item.label}</div>
                                 <div className="col-span-5 py-4 md:py-5 px-2 text-[11.5px] md:text-[13px] font-black text-[#141210] text-center flex items-center justify-center border-x border-stone-900/10" style={{ backgroundColor: PAPER }}>{item.us}</div>
-                                <div className="col-span-4 py-4 md:py-5 px-2 text-[10.5px] md:text-[12px] font-light text-stone-400 text-center flex items-center justify-center">{item.others}</div>
+                                <div className="col-span-4 py-4 md:py-5 px-2 text-[10.5px] md:text-[12px] text-stone-400 text-center flex items-center justify-center">{item.others}</div>
                             </div>
                         ))}
                     </div>
@@ -451,40 +473,42 @@ const WhySection = () => {
 };
 
 /* ════════════════════════════════════════════
-   6. 브랜드 스토리 — 다크 에디토리얼
+   6. 브랜드 스토리
    ════════════════════════════════════════════ */
 const StorySection = () => (
-    <section className="py-20 md:py-32 relative overflow-hidden" id="story" style={{ backgroundColor: INK }}>
+    <section className="py-16 md:py-28 relative overflow-hidden" id="story" style={{ backgroundColor: INK }}>
         <div className="absolute top-10 right-0 font-display font-black text-[100px] md:text-[180px] leading-none tracking-tighter text-transparent select-none pointer-events-none" aria-hidden="true"
             style={{ WebkitTextStroke: "1px rgba(255,255,255,0.045)" }}>
             STORY
         </div>
-        <div className="max-w-[1200px] mx-auto px-5 md:px-10 relative z-10 md:grid md:grid-cols-2 md:gap-20 md:items-center">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-10 relative z-10 md:grid md:grid-cols-2 md:gap-20 md:items-center">
             <div>
                 <Reveal>
                     <Eyebrow no="03" en="Our Story" dark />
-                    <h2 className="font-display text-[30px] md:text-[44px] font-black text-white leading-[1.25] tracking-[-0.02em]">
-                        아버지의 15년 기술에,<br />아들이 약속을<br />더했습니다.
+                    <h2 className="text-[30px] md:text-[42px] font-black text-white leading-[1.24] tracking-[-0.03em]">
+                        간판보다 무거운 것을<br />걸고 일합니다.<br />
+                        <span className="font-display italic font-bold" style={{ color: GOLD }}>가족의 이름입니다.</span>
                     </h2>
                 </Reveal>
                 <Reveal delay={0.1}>
-                    <div className="mt-9 text-stone-400 text-[14px] md:text-[15.5px] leading-[2] space-y-5 font-light max-w-md">
+                    <div className="mt-8 text-stone-400 text-[14px] md:text-[15.5px] leading-[2] space-y-5 max-w-md">
                         <p>
                             아버지는 15년째 남의 집 가구를 제 것처럼 만져온 기술자입니다.
-                            아들인 저는 그 옆에서 하나를 배웠습니다. <strong className="text-white font-semibold">"가구가 아니라, 그 집의 살림을 옮기는 일"</strong>이라는 것을요.
+                            아들인 저는 그 옆에서 하나를 배웠습니다. <strong className="text-white font-semibold">가구가 아니라, 그 집의 살림을 옮기는 일</strong>이라는 것.
                         </p>
                         <p>
-                            그래서 저희는 하청도, 일용직도 쓰지 않습니다.
+                            그래서 하청도, 일용직도 쓰지 않습니다.
                             견적서에 적은 금액 그대로 받고, 바닥에 보양재부터 깔고, 다 옮긴 뒤에는 수평계를 올려봅니다.
+                            저희에겐 <strong className="text-white font-semibold">오늘의 현장 하나가 15년의 평판 전부</strong>이기 때문입니다.
                         </p>
                     </div>
-                    <div className="mt-10 border-l border-[#C89B6D]/60 pl-6">
-                        <p className="font-display text-[#C89B6D] text-[16px] md:text-[18px] font-bold leading-[1.8] italic">"제 아버지가 하는 일이라, 제가 제일 잘 압니다.<br />믿고 맡기셔도 됩니다."</p>
+                    <div className="mt-9 border-l pl-6" style={{ borderColor: "rgba(200,155,109,0.6)" }}>
+                        <p className="font-display text-[15.5px] md:text-[17px] font-bold leading-[1.8] italic" style={{ color: GOLD }}>"제 아버지가 하는 일이라,<br />제가 제일 잘 압니다. 믿고 맡기셔도 됩니다."</p>
                         <p className="text-stone-500 text-[11px] font-semibold mt-4 tracking-[0.15em]">— 아들 정형진</p>
                     </div>
                 </Reveal>
             </div>
-            <div className="mt-14 md:mt-0">
+            <div className="mt-12 md:mt-0">
                 <div className="grid grid-cols-3 gap-3 md:gap-5">
                     {[
                         { img: "father.jpg", role: "아빠", name: "정용원", desc: "대표 · 수석 기술자" },
@@ -492,26 +516,26 @@ const StorySection = () => (
                         { img: "uncle.jpg", role: "삼촌", name: "김승욱", desc: "현장 관리 실장" }
                     ].map((m, i) => (
                         <Reveal key={i} delay={i * 0.12} className={i === 1 ? "md:translate-y-8" : ""}>
-                            <div className="overflow-hidden mb-4">
+                            <div className="overflow-hidden mb-3">
                                 <motion.img src={m.img} loading="lazy" alt={`${m.role} ${m.name} ${m.desc}`}
                                     initial={{ scale: 1.15 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease: EASE }}
                                     className="w-full aspect-[3/4] object-cover object-top" />
                             </div>
-                            <div className="text-white text-[13px] md:text-[15px] font-black"><span className="text-[10px] text-[#C89B6D] font-bold mr-1.5">{m.role}</span>{m.name}</div>
+                            <div className="text-white text-[13px] md:text-[15px] font-black"><span className="text-[10px] font-bold mr-1.5" style={{ color: GOLD }}>{m.role}</span>{m.name}</div>
                             <div className="text-stone-500 text-[10px] md:text-[11px] font-medium mt-1 tracking-wide">{m.desc}</div>
                         </Reveal>
                     ))}
                 </div>
                 <Reveal delay={0.2}>
-                    <div className="mt-10 md:mt-14 grid grid-cols-3 border border-white/10 divide-x divide-white/10">
+                    <div className="mt-8 md:mt-14 grid grid-cols-3 border border-white/10 divide-x divide-white/10">
                         {[
                             { t: "하청 · 용역", s: "0명" },
                             { t: "가족 기술자", s: "3명" },
                             { t: "책임 소재", s: "100%" }
                         ].map((x, i) => (
-                            <div key={i} className="py-6 text-center">
+                            <div key={i} className="py-5 md:py-6 text-center">
                                 <div className="font-display text-white text-[20px] md:text-[26px] font-black">{x.s}</div>
-                                <div className="text-[9.5px] md:text-[10.5px] font-bold text-stone-500 mt-2 tracking-[0.15em]">{x.t}</div>
+                                <div className="text-[9.5px] md:text-[10.5px] font-bold text-stone-500 mt-1.5 tracking-[0.15em]">{x.t}</div>
                             </div>
                         ))}
                     </div>
@@ -522,7 +546,7 @@ const StorySection = () => (
 );
 
 /* ════════════════════════════════════════════
-   7. 시공 사례 — 갤러리
+   7. 시공 사례
    ════════════════════════════════════════════ */
 const PortfolioSection = () => {
     const [tab, setTab] = useState("all");
@@ -549,17 +573,18 @@ const PortfolioSection = () => {
     ];
     const filtered = tab === "all" ? works : works.filter((w) => w.cat === tab);
     return (
-        <section className="py-20 md:py-32" id="portfolio" style={{ backgroundColor: PAPER }}>
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10">
+        <section className="py-16 md:py-28" id="portfolio" style={{ backgroundColor: PAPER }}>
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10">
                 <div className="md:flex md:items-end md:justify-between md:gap-10">
                     <Reveal>
                         <Eyebrow no="04" en="Selected Works" />
-                        <h2 className="font-display text-[32px] md:text-[52px] font-black text-[#141210] leading-[1.15] tracking-[-0.02em]">
-                            말보다 사진으로<br />보여드리겠습니다
+                        <h2 className="text-[30px] md:text-[50px] font-black text-[#141210] leading-[1.18] tracking-[-0.03em]">
+                            연출 없는 현장,<br />보정 없는 기록
                         </h2>
+                        <p className="mt-4 text-stone-500 text-[14px] md:text-[15px]">잘 나온 사진이 아니라, 어제 일한 사진입니다.</p>
                     </Reveal>
                     <Reveal delay={0.1}>
-                        <div className="flex gap-0 overflow-x-auto no-scrollbar mt-8 md:mt-0 border-b border-stone-900/15">
+                        <div className="flex gap-0 overflow-x-auto no-scrollbar mt-7 md:mt-0 border-b border-stone-900/15">
                             {tabs.map((t) => (
                                 <button key={t.id} onClick={() => setTab(t.id)}
                                     className={`flex-shrink-0 px-4 md:px-5 pb-3 text-[12.5px] font-bold transition-colors relative ${tab === t.id ? "text-[#141210]" : "text-stone-400 hover:text-stone-600"}`}>
@@ -571,7 +596,7 @@ const PortfolioSection = () => {
                     </Reveal>
                 </div>
 
-                <div className="mt-10 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+                <div className="mt-8 md:mt-14 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
                     <AnimatePresence mode="popLayout">
                         {filtered.map((w, i) => (
                             <motion.figure key={w.img} layout initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.97 }}
@@ -588,7 +613,7 @@ const PortfolioSection = () => {
                         ))}
                     </AnimatePresence>
                 </div>
-                <Reveal><p className="mt-8 text-center text-[11.5px] text-stone-400 font-light tracking-wide">모든 현장은 <strong className="text-stone-600 font-semibold">정용원 대표가 직접</strong> 시공·관리합니다.</p></Reveal>
+                <Reveal><p className="mt-7 text-center text-[11.5px] text-stone-400 tracking-wide">모든 현장은 <strong className="text-stone-600 font-semibold">정용원 대표가 직접</strong> 시공하고, 직접 기록합니다.</p></Reveal>
             </div>
         </section>
     );
@@ -611,24 +636,24 @@ const ReviewSection = () => {
         { text: "부자가 함께 오셔서 손발이 척척. 바닥 보양까지 해주시고 추가비용 얘기가 한 번도 안 나온 게 제일 좋았습니다.", who: "수원 영통 — 침대 이동" }
     ];
     return (
-        <section className="bg-white py-20 md:py-32 overflow-hidden" id="reviews">
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10">
+        <section className="bg-white py-16 md:py-28 overflow-hidden" id="reviews">
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10">
                 <Reveal>
                     <Eyebrow no="05" en="Reviews" />
-                    <h2 className="font-display text-[32px] md:text-[52px] font-black text-[#141210] leading-[1.15] tracking-[-0.02em]">
-                        저희가 쓴 자랑이 아니라,<br />고객이 남긴 기록입니다
+                    <h2 className="text-[30px] md:text-[50px] font-black text-[#141210] leading-[1.18] tracking-[-0.03em]">
+                        자랑은 여기까지.<br />나머지는 고객님이 쓰셨습니다
                     </h2>
                 </Reveal>
 
                 <Reveal delay={0.1}>
-                    <div className="mt-10 md:mt-14 grid grid-cols-2 md:max-w-xl border border-stone-900/15 divide-x divide-stone-900/15">
+                    <div className="mt-9 md:mt-12 grid grid-cols-2 md:max-w-xl border border-stone-900/15 divide-x divide-stone-900/15">
                         {[
                             { pf: "당근마켓", stat: "5.0", sub: "동네 단골 380+ · 후기 전원 5점" },
                             { pf: "숨고", stat: "5.0", sub: "리뷰 185+ · 본인인증 고수" }
                         ].map((p, i) => (
-                            <div key={i} className="py-6 md:py-7 px-5 md:px-7">
+                            <div key={i} className="py-5 md:py-7 px-4 md:px-7">
                                 <div className="text-[10px] font-bold tracking-[0.25em] uppercase text-stone-400 mb-2.5">{p.pf}</div>
-                                <div className="font-display text-[30px] md:text-[36px] font-black text-[#141210] leading-none">{p.stat}<span className="text-amber-500 text-[15px] md:text-[17px] ml-2 tracking-tight">★★★★★</span></div>
+                                <div className="font-display text-[28px] md:text-[36px] font-black text-[#141210] leading-none">{p.stat}<span className="text-amber-500 text-[13px] md:text-[17px] ml-2 tracking-tight">★★★★★</span></div>
                                 <div className="text-[10.5px] md:text-[11.5px] font-medium text-stone-500 mt-2.5">{p.sub}</div>
                             </div>
                         ))}
@@ -637,7 +662,7 @@ const ReviewSection = () => {
             </div>
 
             {/* 캡처 마키 (풀블리드) */}
-            <div className="mt-12 md:mt-16 relative">
+            <div className="mt-10 md:mt-14 relative">
                 <motion.div className="flex gap-3 md:gap-4" animate={{ x: [0, -(252 + 12) * captures.length] }} transition={{ repeat: Infinity, duration: 48, ease: "linear" }}>
                     {doubled.map((r, i) => (
                         <div key={i} className="flex-shrink-0 w-[252px] relative bg-white border border-stone-900/10">
@@ -650,13 +675,13 @@ const ReviewSection = () => {
                 </motion.div>
             </div>
 
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10 mt-12 md:mt-16 grid md:grid-cols-3 gap-0 md:divide-x divide-stone-900/10 border-t border-b border-stone-900/10 md:border divide-y md:divide-y-0">
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10 mt-10 md:mt-14 grid md:grid-cols-3 gap-0 md:divide-x divide-stone-900/10 border-t border-b border-stone-900/10 md:border divide-y md:divide-y-0">
                 {quotes.map((q, i) => (
                     <Reveal key={i} delay={i * 0.08}>
-                        <blockquote className="py-7 md:p-8">
-                            <div className="text-amber-500 text-[12px] mb-4 tracking-[0.2em]" aria-label="별점 5점">★★★★★</div>
+                        <blockquote className="py-6 md:p-8">
+                            <div className="text-amber-500 text-[12px] mb-3.5 tracking-[0.2em]" aria-label="별점 5점">★★★★★</div>
                             <p className="font-display text-[14.5px] md:text-[15.5px] text-stone-700 leading-[1.95]">"{q.text}"</p>
-                            <footer className="text-[10.5px] font-bold text-stone-400 mt-5 tracking-[0.12em]">{q.who}</footer>
+                            <footer className="text-[10.5px] font-bold text-stone-400 mt-4 tracking-[0.12em]">{q.who}</footer>
                         </blockquote>
                     </Reveal>
                 ))}
@@ -669,16 +694,16 @@ const ReviewSection = () => {
    9. 공식 인증
    ════════════════════════════════════════════ */
 const CertSection = () => (
-    <section className="py-20 md:py-32" style={{ backgroundColor: PAPER }}>
-        <div className="max-w-[1200px] mx-auto px-5 md:px-10">
+    <section className="py-16 md:py-28" style={{ backgroundColor: PAPER }}>
+        <div className="max-w-[1200px] mx-auto px-6 md:px-10">
             <Reveal>
                 <Eyebrow no="06" en="Credentials" />
-                <h2 className="font-display text-[32px] md:text-[46px] font-black text-[#141210] leading-[1.2] tracking-[-0.02em]">
-                    그래도 못 믿으시겠다면,<br />서류로 보여드립니다
+                <h2 className="text-[30px] md:text-[44px] font-black text-[#141210] leading-[1.22] tracking-[-0.03em]">
+                    의심되시나요? 당연합니다.<br />그래서 서류를 준비했습니다
                 </h2>
-                <p className="mt-5 text-stone-500 text-[14px] font-light">정식 사업자 등록과 플랫폼 인증을 모두 마친 업체입니다.</p>
+                <p className="mt-4 text-stone-500 text-[14px]">정식 사업자 등록부터 플랫폼 인증까지, 전부 공개합니다.</p>
             </Reveal>
-            <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-6 md:items-start">
+            <div className="mt-10 md:mt-14 grid md:grid-cols-3 gap-4 md:gap-6 md:items-start">
                 {[
                     { img: "숨고프로필.png", title: "숨고 본인인증 고수", sub: "가구이동·재배치 분야 — 리뷰 5.0 (185+)" },
                     { img: "당근.png", title: "당근마켓 공식 동네업체", sub: "화성 병점 기반 — 단골 380+ · 별점 5.0" }
@@ -688,7 +713,7 @@ const CertSection = () => (
                             <div className="overflow-hidden">
                                 <img src={c.img} loading="lazy" className="w-full h-auto block" alt={c.title + " 화면 캡처"} />
                             </div>
-                            <div className="px-5 py-5 flex items-center justify-between border-t border-stone-900/10">
+                            <div className="px-5 py-4 flex items-center justify-between border-t border-stone-900/10">
                                 <div>
                                     <div className="text-[13.5px] font-black text-[#141210]">{c.title}</div>
                                     <div className="text-[10.5px] font-medium text-stone-400 mt-1.5 tracking-wide">{c.sub}</div>
@@ -703,10 +728,10 @@ const CertSection = () => (
                         <div className="border border-stone-900/10 overflow-hidden">
                             <img src="사업자.png" loading="lazy" className="w-full h-auto block" alt="가구전문가 아빠와 아들 사업자등록증" />
                         </div>
-                        <div className="mt-5">
+                        <div className="mt-4">
                             <div className="text-[13.5px] font-black text-[#141210]">정식 사업자 등록 업체</div>
                             <div className="text-[10.5px] font-medium text-stone-400 mt-1.5 tracking-wide">사업자등록번호 715-03-03416 — 대표 정용원</div>
-                            <p className="text-[10.5px] text-stone-400 font-light mt-3 leading-relaxed">모든 시공은 법적 보호와 정식 A/S가 보장됩니다.</p>
+                            <p className="text-[10.5px] text-stone-400 mt-2.5 leading-relaxed">모든 시공은 법적 보호와 정식 A/S가 보장됩니다.</p>
                         </div>
                     </div>
                 </Reveal>
@@ -720,30 +745,34 @@ const CertSection = () => (
    ════════════════════════════════════════════ */
 const ProcessSection = () => {
     const steps = [
-        { no: "01", title: "사진 1장 보내기", desc: "1분 견적 신청 또는 카톡·전화로 가구 사진을 보내주세요.", time: "1분" },
-        { no: "02", title: "확정 견적 안내", desc: "사진 확인 후 추가금 없는 확정 금액을 알려드립니다.", time: "10분 내" },
-        { no: "03", title: "보양 후 시공", desc: "약속한 날짜에 방문, 바닥 보양부터 시작합니다.", time: "약속일" },
-        { no: "04", title: "확인 · 사후관리", desc: "수평·마감을 함께 확인하고, 이후 A/S까지 책임집니다.", time: "시공 후" }
+        { no: "01", title: "사진 1장 보내기", desc: "견적 신청, 카톡, 전화 — 편한 방법으로 가구 사진만 보내주세요.", time: "1분" },
+        { no: "02", title: "확정 견적 도착", desc: "대표가 직접 확인하고, 추가금 없는 확정 금액으로 답합니다.", time: "10분 내" },
+        { no: "03", title: "보양 먼저, 시공은 그다음", desc: "약속한 날짜에 방문해 바닥 보양부터 깔고 시작합니다.", time: "약속일" },
+        { no: "04", title: "같이 확인하고 끝", desc: "수평과 마감을 고객님과 함께 확인합니다. A/S까지 책임집니다.", time: "시공 후" }
     ];
     return (
-        <section className="bg-white py-20 md:py-32">
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10">
+        <section className="bg-white py-16 md:py-28">
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10">
                 <Reveal>
                     <Eyebrow no="07" en="Process" />
-                    <h2 className="font-display text-[32px] md:text-[46px] font-black text-[#141210] leading-[1.2] tracking-[-0.02em]">
-                        신청부터 시공까지,<br />이렇게 진행됩니다
+                    <h2 className="text-[30px] md:text-[44px] font-black text-[#141210] leading-[1.22] tracking-[-0.03em]">
+                        좋은 시공은<br />예측 가능해야 합니다
                     </h2>
                 </Reveal>
-                <div className="mt-12 md:mt-16 grid md:grid-cols-4 border-t border-stone-900/15 md:border md:divide-x divide-stone-900/10">
+                <div className="mt-10 md:mt-14 border-t border-stone-900/15 md:border md:grid md:grid-cols-4 md:divide-x md:divide-stone-900/10">
                     {steps.map((s, i) => (
                         <Reveal key={i} delay={i * 0.09}>
-                            <div className="py-8 md:p-8 border-b border-stone-900/10 md:border-b-0 h-full">
-                                <div className="flex items-baseline justify-between">
-                                    <span className="font-display text-[15px] font-black text-stone-300 tracking-wide">( {s.no} )</span>
-                                    <span className="text-[9.5px] font-black tracking-[0.2em] uppercase px-2.5 py-1 border border-stone-900/15 text-stone-500">{s.time}</span>
+                            <div className="py-6 md:p-8 border-b border-stone-900/10 md:border-b-0 h-full flex md:block gap-5">
+                                <div className="font-display text-[22px] md:text-[15px] font-black text-stone-300 leading-none w-12 md:w-auto flex-shrink-0 pt-1 md:pt-0">
+                                    {s.no}
                                 </div>
-                                <h3 className="mt-6 font-display text-[18px] md:text-[19px] font-black text-[#141210]">{s.title}</h3>
-                                <p className="mt-3 text-stone-500 text-[12.5px] md:text-[13px] leading-[1.85] font-light">{s.desc}</p>
+                                <div className="md:mt-6">
+                                    <div className="flex items-center gap-2.5 flex-wrap">
+                                        <h3 className="text-[16px] md:text-[18px] font-black text-[#141210] tracking-[-0.01em]">{s.title}</h3>
+                                        <span className="text-[9px] font-black tracking-[0.18em] uppercase px-2 py-0.5 border border-stone-900/15 text-stone-500">{s.time}</span>
+                                    </div>
+                                    <p className="mt-2 md:mt-3 text-stone-500 text-[12.5px] md:text-[13px] leading-[1.85]">{s.desc}</p>
+                                </div>
                             </div>
                         </Reveal>
                     ))}
@@ -759,39 +788,39 @@ const ProcessSection = () => {
 const CallBand = () => {
     const status = getBizStatus();
     return (
-        <section className="py-20 md:py-28 relative overflow-hidden" style={{ backgroundColor: INK }}>
+        <section className="py-16 md:py-28 relative overflow-hidden" style={{ backgroundColor: INK }}>
             <div className="absolute -bottom-10 left-0 font-display font-black text-[90px] md:text-[170px] leading-none tracking-tighter text-transparent select-none pointer-events-none" aria-hidden="true"
                 style={{ WebkitTextStroke: "1px rgba(255,255,255,0.05)" }}>
                 CALL US
             </div>
-            <div className="max-w-[1200px] mx-auto px-5 md:px-10 relative z-10 text-center">
+            <div className="max-w-[1200px] mx-auto px-6 md:px-10 relative z-10 text-center">
                 <Reveal>
-                    <div className="flex items-center justify-center gap-4 mb-7">
+                    <div className="flex items-center justify-center gap-4 mb-6">
                         <span className="h-px w-10 bg-white/20"></span>
-                        <span className="text-[10.5px] font-bold tracking-[0.4em] uppercase text-[#C89B6D]">Direct Call</span>
+                        <span className="text-[10.5px] font-bold tracking-[0.4em] uppercase" style={{ color: GOLD }}>Direct Call</span>
                         <span className="h-px w-10 bg-white/20"></span>
                     </div>
-                    <h2 className="font-display text-[26px] md:text-[40px] font-black text-white leading-[1.3] tracking-[-0.02em]">
-                        타이핑이 번거로우시면,<br />지금 바로 통화하세요.
+                    <h2 className="text-[26px] md:text-[38px] font-black text-white leading-[1.28] tracking-[-0.03em]">
+                        글보다 말이 편하시다면,<br />지금 누르세요. 바로 연결됩니다.
                     </h2>
                 </Reveal>
                 <Reveal delay={0.12}>
                     <a href={TEL_LINK} onClick={() => track("call_click", { where: "callband" })}
-                        className="group inline-flex items-center gap-4 md:gap-6 mt-10 border-b-2 border-white/30 pb-3 hover:border-[#C89B6D] transition-colors" aria-label={`전화 즉시 연결 ${TEL_DISPLAY}`}>
-                        <span className="w-11 h-11 md:w-14 md:h-14 border border-white/25 flex items-center justify-center text-white group-hover:bg-white group-hover:text-[#141210] transition-colors">
+                        className="group inline-flex flex-col md:flex-row items-center gap-4 md:gap-6 mt-9 md:border-b-2 border-white/30 md:pb-3 hover:border-[#C89B6D] transition-colors" aria-label={`전화 즉시 연결 ${TEL_DISPLAY}`}>
+                        <span className="w-12 h-12 md:w-14 md:h-14 border border-white/25 flex items-center justify-center text-white group-hover:bg-white group-hover:text-[#141210] transition-colors">
                             <IcPhone className="w-5 h-5 md:w-6 md:h-6" />
                         </span>
-                        <span className="font-display text-[38px] md:text-[64px] font-black text-white tracking-[0.02em] leading-none">{TEL_DISPLAY}</span>
+                        <span className="font-display text-[34px] md:text-[64px] font-black text-white tracking-[0.02em] leading-none border-b-2 border-white/30 pb-2 md:border-0 md:pb-0">{TEL_DISPLAY}</span>
                     </a>
                     <p className="mt-6 text-stone-500 text-[12px] md:text-[13px] font-medium tracking-wide">
-                        연중무휴 08:00 – 21:00 · 대표가 직접 받습니다
+                        연중무휴 08:00 – 21:00 · 상담원 아닌 <strong className="text-stone-300">대표가 직접</strong> 받습니다
                         <span className="inline-flex items-center gap-1.5 ml-3">
                             <span className={`inline-flex rounded-full h-1.5 w-1.5 ${status.open ? "bg-emerald-400" : "bg-stone-500"}`}></span>
                             <span className="text-[11px]">{status.text}</span>
                         </span>
                     </p>
                     <a href={KAKAO_URL} target="_blank" rel="noopener" onClick={() => track("kakao_click", { where: "callband" })}
-                        className="inline-flex items-center gap-2.5 mt-7 h-12 px-7 bg-[#FEE500] text-stone-900 font-black text-[13.5px] hover:brightness-105 transition-all">
+                        className="inline-flex items-center gap-2.5 mt-6 h-12 px-7 bg-[#FEE500] text-stone-900 font-black text-[13.5px] hover:brightness-105 transition-all">
                         <IcChat className="w-4 h-4" /> 통화가 어려우면 카카오톡으로
                     </a>
                 </Reveal>
@@ -813,27 +842,27 @@ const FAQSection = () => {
         { q: "당일이나 주말에도 가능한가요?", a: "일정이 비어 있으면 당일 시공도 가능합니다. 주말·공휴일에도 정상 운영하니(08~21시) 급하신 경우 전화 주시면 가장 빠르게 잡아드립니다." }
     ];
     return (
-        <section className="py-20 md:py-32" style={{ backgroundColor: PAPER }}>
-            <div className="max-w-[820px] mx-auto px-5 md:px-10">
+        <section className="py-16 md:py-28" style={{ backgroundColor: PAPER }}>
+            <div className="max-w-[820px] mx-auto px-6 md:px-10">
                 <Reveal>
                     <Eyebrow no="08" en="FAQ" />
-                    <h2 className="font-display text-[30px] md:text-[42px] font-black text-[#141210] tracking-[-0.02em]">자주 묻는 질문</h2>
+                    <h2 className="text-[28px] md:text-[40px] font-black text-[#141210] tracking-[-0.03em]">망설이게 하는 질문들,<br />먼저 답해드립니다</h2>
                 </Reveal>
                 <Reveal delay={0.08}>
-                    <div className="mt-10 border-t border-stone-900/15">
+                    <div className="mt-9 border-t border-stone-900/15">
                         {faqs.map((f, i) => (
                             <div key={i} className="border-b border-stone-900/15">
                                 <button onClick={() => setOpenIdx(openIdx === i ? null : i)} aria-expanded={openIdx === i}
                                     className="w-full py-5 md:py-6 flex justify-between items-center text-left gap-4">
                                     <span className="text-[14.5px] md:text-[16px] font-bold text-stone-800 flex items-baseline gap-4">
-                                        <span className="font-display text-[12px] text-stone-400 font-black">Q{i + 1}</span>{f.q}
+                                        <span className="font-display text-[12px] text-stone-400 font-black flex-shrink-0">Q{i + 1}</span>{f.q}
                                     </span>
                                     <motion.span animate={{ rotate: openIdx === i ? 45 : 0 }} className="text-stone-400 text-[20px] font-light flex-shrink-0 leading-none">+</motion.span>
                                 </button>
                                 <AnimatePresence>
                                     {openIdx === i && (
                                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: EASE }} className="overflow-hidden">
-                                            <p className="pb-6 pl-9 text-[13px] md:text-[14px] text-stone-500 leading-[1.95] font-light max-w-xl">{f.a}</p>
+                                            <p className="pb-6 pl-9 text-[13px] md:text-[14px] text-stone-500 leading-[1.95] max-w-xl">{f.a}</p>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -1003,7 +1032,7 @@ const QuoteWizard = () => {
             clearDraft();
             setHasDraft(false);
             track("generate_lead", { karrot: "SubmitApplication", service: formData.service, region: regionValue });
-            confetti({ particleCount: 140, spread: 70, origin: { y: 0.5 }, colors: [ACCENT, "#ffffff", "#C89B6D"] });
+            confetti({ particleCount: 140, spread: 70, origin: { y: 0.5 }, colors: [ACCENT, "#ffffff", GOLD] });
         } catch (error) {
             clearTimeout(timer);
             console.error("Submit Error:", error);
@@ -1023,12 +1052,12 @@ const QuoteWizard = () => {
                     <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }} className="text-center">
                         <div className="w-16 h-16 border-2 border-emerald-600 text-emerald-600 flex items-center justify-center mx-auto mb-7"><IcCheck className="w-7 h-7" /></div>
                         <div className="text-[10px] font-bold tracking-[0.35em] uppercase text-stone-400 mb-4">Request Received</div>
-                        <h2 className="font-display text-[28px] md:text-[32px] font-black text-[#141210] leading-tight">접수가 완료되었습니다.<br />이제 저희 차례입니다.</h2>
-                        <p className="mt-5 text-stone-500 text-[14px] leading-[1.9] font-light">방금 <strong className="text-stone-800 font-semibold">정용원 대표 휴대폰으로</strong> 알림이 전송되었습니다.<br />영업시간 기준 <strong className="font-semibold" style={{ color: ACCENT }}>평균 10분 내</strong>에 연락드립니다.</p>
+                        <h2 className="text-[27px] md:text-[30px] font-black text-[#141210] leading-tight tracking-[-0.02em]">접수 완료.<br />지금부터는 저희가 움직입니다.</h2>
+                        <p className="mt-5 text-stone-500 text-[14px] leading-[1.9]">방금 <strong className="text-stone-800 font-semibold">정용원 대표 휴대폰으로</strong> 알림이 전송되었습니다.<br />영업시간 기준 <strong className="font-semibold" style={{ color: ACCENT }}>평균 10분 내</strong>에 연락드립니다.</p>
                     </motion.div>
 
                     {/* 다음 단계 안내 */}
-                    <div className="bg-white border border-stone-900/10 mt-10">
+                    <div className="bg-white border border-stone-900/10 mt-9">
                         {[
                             { t: "사진·내용 확인", d: "보내주신 정보를 대표가 직접 확인합니다.", state: "now" },
                             { t: "확정 견적 연락", d: "추가금 없는 확정 금액을 안내드립니다.", state: "next" },
@@ -1039,7 +1068,7 @@ const QuoteWizard = () => {
                                     style={s.state === "now" ? { backgroundColor: ACCENT } : {}}>{i + 1}</span>
                                 <div>
                                     <div className="text-[14px] font-black text-[#141210]">{s.t} {s.state === "now" && <span className="text-[10px] font-bold ml-1.5" style={{ color: ACCENT }}>— 진행 중</span>}</div>
-                                    <div className="text-[12px] text-stone-500 mt-1 font-light">{s.d}</div>
+                                    <div className="text-[12px] text-stone-500 mt-1">{s.d}</div>
                                 </div>
                             </div>
                         ))}
@@ -1047,10 +1076,10 @@ const QuoteWizard = () => {
 
                     {/* 대표 한마디 */}
                     <div className="mt-4 p-6 flex items-center gap-5" style={{ backgroundColor: INK }}>
-                        <div className="w-16 h-16 overflow-hidden border border-[#C89B6D]/50 flex-shrink-0">
+                        <div className="w-16 h-16 overflow-hidden border flex-shrink-0" style={{ borderColor: "rgba(200,155,109,0.5)" }}>
                             <img src="father.jpg" className="w-full h-full object-cover object-top" alt="정용원 대표" />
                         </div>
-                        <p className="font-display text-[13.5px] text-stone-300 leading-[1.9]">"꼼꼼히 확인하고 <strong className="text-[#C89B6D]">바로 전화드리겠습니다.</strong><br />모르는 번호로 와도 한 번만 받아주세요."</p>
+                        <p className="font-display text-[13.5px] text-stone-300 leading-[1.9]">"꼼꼼히 확인하고 <strong style={{ color: GOLD }}>바로 전화드리겠습니다.</strong><br />모르는 번호로 와도 한 번만 받아주세요."</p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 mt-4">
@@ -1065,9 +1094,9 @@ const QuoteWizard = () => {
                     </div>
 
                     {/* 기다리는 동안 신뢰 콘텐츠 */}
-                    <div className="mt-12">
-                        <div className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 mb-5">While You Wait</div>
-                        <h3 className="font-display text-[19px] font-black text-[#141210] mb-5">기다리시는 동안, 저희가 일하는 모습을 구경하세요</h3>
+                    <div className="mt-11">
+                        <div className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 mb-4">While You Wait</div>
+                        <h3 className="text-[19px] font-black text-[#141210] mb-5 tracking-[-0.01em]">기다리시는 동안, 저희가 일하는 모습을 구경하세요</h3>
                         <div className="grid grid-cols-2 gap-3">
                             {[
                                 { img: "A8.jpg", cap: "쇼파 전면 랩핑 보양" },
@@ -1092,7 +1121,7 @@ const QuoteWizard = () => {
                     </div>
 
                     <button onClick={() => { setIsExpanded(false); setIsSubmitted(false); setStep(1); setFormData(emptyForm); setAgree(false); }}
-                        className="mt-10 w-full py-3 text-stone-400 text-[12px] font-bold underline underline-offset-4">처음 화면으로 돌아가기</button>
+                        className="mt-9 w-full py-3 text-stone-400 text-[12px] font-bold underline underline-offset-4">처음 화면으로 돌아가기</button>
                 </div>
             </section>
         );
@@ -1101,33 +1130,34 @@ const QuoteWizard = () => {
     /* ── 섹션 (접힌 상태) — CTA 밴드 ── */
     if (!isExpanded) {
         return (
-            <section id="quote-form" className="py-20 md:py-32 relative overflow-hidden border-t border-white/[0.06]" style={{ backgroundColor: INK }}>
-                <div className="max-w-[820px] mx-auto px-5 md:px-10 relative z-10 text-center">
+            <section id="quote-form" className="py-16 md:py-28 relative overflow-hidden border-t border-white/[0.06]" style={{ backgroundColor: INK }}>
+                <div className="max-w-[820px] mx-auto px-6 md:px-10 relative z-10 text-center">
                     <Reveal>
-                        <div className="flex items-center justify-center gap-4 mb-7">
+                        <div className="flex items-center justify-center gap-4 mb-6">
                             <span className="h-px w-10 bg-white/20"></span>
-                            <span className="text-[10.5px] font-bold tracking-[0.4em] uppercase text-[#C89B6D]">Free Estimate · 1 Min</span>
+                            <span className="text-[10.5px] font-bold tracking-[0.4em] uppercase" style={{ color: GOLD }}>Free Estimate</span>
                             <span className="h-px w-10 bg-white/20"></span>
                         </div>
-                        <h2 className="font-display text-[30px] md:text-[46px] font-black text-white leading-[1.25] tracking-[-0.02em]">
-                            복잡한 건 저희가 할게요.<br />사진 한 장이면 충분합니다.
+                        <h2 className="text-[28px] md:text-[44px] font-black text-white leading-[1.25] tracking-[-0.03em]">
+                            고민에 쓰는 1분을,<br />견적 받는 1분으로.
                         </h2>
-                        <p className="mt-6 text-stone-400 text-[13.5px] md:text-[15px] font-light leading-relaxed">전화 통화가 부담스러우시다면, 몇 번의 터치만으로 확정 견적을 받아보세요.</p>
+                        <p className="mt-5 text-stone-400 text-[13.5px] md:text-[15px] leading-relaxed">사진 한 장이면 끝납니다. 복잡한 건 전부 저희 몫입니다.</p>
                     </Reveal>
                     <Reveal delay={0.12}>
                         {hasDraft ? (
                             <button onClick={() => setIsExpanded(true)}
-                                className="group mt-9 w-full md:w-auto md:px-14 h-[60px] bg-[#C89B6D] text-[#141210] font-black text-[15.5px] inline-flex items-center justify-center gap-3 hover:brightness-110 transition-all">
+                                className="group mt-8 w-full md:w-auto md:px-14 h-[58px] text-[#141210] font-black text-[15.5px] inline-flex items-center justify-center gap-3 hover:brightness-110 transition-all"
+                                style={{ backgroundColor: GOLD }}>
                                 작성하시던 견적 이어서 하기 <IcArrow className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
                         ) : (
                             <button onClick={() => openQuote()}
-                                className="group mt-9 w-full md:w-auto md:px-14 h-[60px] text-white font-black text-[15.5px] inline-flex items-center justify-center gap-3 hover:brightness-110 transition-all"
+                                className="group mt-8 w-full md:w-auto md:px-14 h-[58px] text-white font-black text-[15.5px] inline-flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-[0_18px_45px_-12px_rgba(199,91,18,0.7)]"
                                 style={{ backgroundColor: ACCENT }}>
                                 <IcCamera className="w-[18px] h-[18px]" /> 1분 무료 견적 시작하기 <IcArrow className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
                         )}
-                        <div className="flex items-center justify-center gap-5 mt-6 text-[11px] font-semibold text-stone-500 flex-wrap tracking-wide">
+                        <div className="flex items-center justify-center gap-5 mt-5 text-[11px] font-semibold text-stone-500 flex-wrap tracking-wide">
                             <span className="flex items-center gap-1.5"><IcCheck className="w-3 h-3" />입력 자동저장</span>
                             <span className="flex items-center gap-1.5"><IcCheck className="w-3 h-3" />스팸·광고 없음</span>
                             <span className="flex items-center gap-1.5"><IcCheck className="w-3 h-3" />상담 후 정보 파기</span>
@@ -1162,7 +1192,7 @@ const QuoteWizard = () => {
 
                     <div className="mb-6">
                         <div className="text-[10.5px] font-black tracking-[0.15em] mb-2" style={{ color: ACCENT }}>{STEP_CHEERS[step]}</div>
-                        <h2 className="font-display text-[25px] font-black text-[#141210] leading-tight whitespace-pre-line tracking-[-0.01em]">
+                        <h2 className="text-[24px] font-black text-[#141210] leading-tight whitespace-pre-line tracking-[-0.02em]">
                             {step === 1 && "어떤 도움이\n필요하세요?"}
                             {step === 2 && "어떤 가구인가요?"}
                             {step === 3 && "어디로, 언제\n가면 될까요?"}
@@ -1182,7 +1212,7 @@ const QuoteWizard = () => {
                                             <span>
                                                 <span className="block text-[9px] font-bold tracking-[0.25em] uppercase text-stone-400 mb-1">{o.en}</span>
                                                 <span className="block text-[15.5px] font-black text-[#141210]">{o.v}</span>
-                                                <span className="block text-[11.5px] text-stone-400 font-light mt-1">{o.d}</span>
+                                                <span className="block text-[11.5px] text-stone-400 mt-1">{o.d}</span>
                                             </span>
                                             <IcArrow className="w-4 h-4 text-stone-300 group-hover:text-stone-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
                                         </button>
@@ -1275,7 +1305,7 @@ const QuoteWizard = () => {
                                             <input type="date" min={todayStr} value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                                                 className="mt-2 w-full h-14 bg-white border-2 border-stone-900/10 px-4 text-stone-800 outline-none focus:border-stone-900/40" />
                                         )}
-                                        <p className="text-[11px] text-stone-400 font-light mt-2.5">확정이 아니어도 괜찮아요. 통화하면서 편하게 조율해요.</p>
+                                        <p className="text-[11px] text-stone-400 mt-2.5">확정이 아니어도 괜찮아요. 통화하면서 편하게 조율해요.</p>
                                     </div>
                                 </motion.div>
                             )}
@@ -1306,7 +1336,7 @@ const QuoteWizard = () => {
                                             </span>
                                         </label>
                                         {showPrivacy && (
-                                            <div className="mt-3 pt-3 border-t border-stone-900/5 text-[11px] text-stone-400 leading-relaxed font-light">
+                                            <div className="mt-3 pt-3 border-t border-stone-900/5 text-[11px] text-stone-400 leading-relaxed">
                                                 · 수집 항목: 연락처, 작업 정보(지역·가구·일정), 가구 사진<br />
                                                 · 이용 목적: 견적 산정 및 상담 연락<br />
                                                 · 보유 기간: 상담 완료 후 즉시 파기<br />
@@ -1367,8 +1397,8 @@ const QuoteWizard = () => {
                             className="w-full max-w-[480px] bg-white p-7 pb-9 md:pb-7 md:mx-6">
                             <div className="text-center mb-6">
                                 <div className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 mb-3">Wait a Second</div>
-                                <h3 className="font-display text-[20px] font-black text-[#141210]">잠깐만요, 거의 다 하셨어요.</h3>
-                                <p className="text-[13px] text-stone-500 mt-3 leading-[1.8] font-light">
+                                <h3 className="text-[20px] font-black text-[#141210] tracking-[-0.01em]">잠깐만요, 거의 다 하셨어요.</h3>
+                                <p className="text-[13px] text-stone-500 mt-3 leading-[1.8]">
                                     지금까지 입력하신 내용은 <strong className="text-stone-800 font-semibold">자동 저장</strong>됩니다.<br />
                                     {step >= 3 ? "딱 10초면 확정 견적을 받아보실 수 있어요." : "1분만 투자하시면 무료 확정 견적이 도착해요."}
                                 </p>
@@ -1395,17 +1425,17 @@ const QuoteWizard = () => {
 const Footer = () => {
     const naverMap = "https://map.naver.com/p/search/" + encodeURIComponent("경기도 화성시 효행로 1068");
     return (
-        <footer className="text-stone-500 pt-16 pb-44 md:pb-16 px-5 md:px-10 border-t border-white/[0.06]" style={{ backgroundColor: "#100E0C" }}>
+        <footer className="text-stone-500 pt-14 pb-40 md:pb-16 px-6 md:px-10 border-t border-white/[0.06]" style={{ backgroundColor: "#100E0C" }}>
             <div className="max-w-[1200px] mx-auto md:grid md:grid-cols-[1.2fr_1fr] md:gap-20">
                 <div>
-                    <div className="flex items-center gap-3 mb-6">
+                    <div className="flex items-center gap-3 mb-5">
                         <div className="w-9 h-9 border border-white/25 flex items-center justify-center text-white font-black text-[12px]">父子</div>
                         <div>
-                            <div className="font-display text-white text-[16px] font-black">아빠와 아들</div>
+                            <div className="text-white text-[16px] font-black">아빠와 아들</div>
                             <div className="text-[8.5px] font-bold text-stone-600 tracking-[0.28em] uppercase mt-1">Furniture Care Studio</div>
                         </div>
                     </div>
-                    <p className="text-[11.5px] leading-[1.9] font-light mb-7 max-w-sm">
+                    <p className="text-[11.5px] leading-[1.9] mb-7 max-w-sm">
                         경기남부 가구이동 · 이전설치 · 폐기 · 시스템행거 전문.
                         15년 경력의 가족 기술자가 직접 시공합니다. 파손 전액 책임보상 · 현장 추가금 0원 정찰제 원칙.
                     </p>
@@ -1416,14 +1446,14 @@ const Footer = () => {
                     </div>
                 </div>
                 <div>
-                    <div className="space-y-2 text-[10.5px] mb-8 font-light tracking-wide">
+                    <div className="space-y-2 text-[10.5px] mb-8 tracking-wide">
                         <p className="text-stone-400 font-medium">상호명: 가구전문가 아빠와 아들 — 대표자: 정용원</p>
                         <p>사업자등록번호: 715-03-03416</p>
                         <p>소재지: 경기도 화성시 효행로 1068, 604동 2층 G211호</p>
                         <p>대표번호: {TEL_DISPLAY} — 이메일: jung22459369@gmail.com</p>
                         <p>개인정보보호책임자: 정형진</p>
                     </div>
-                    <div className="border border-white/[0.06] p-4 text-[9px] leading-[1.8] text-stone-600 font-light">
+                    <div className="border border-white/[0.06] p-4 text-[9px] leading-[1.8] text-stone-600">
                         <p className="font-bold mb-1.5 text-stone-500">[서비스 이용 안내 및 고지]</p>
                         <p>
                             본 업체는 화물자동차 운수사업법을 준수하며, 가구의 '운송' 자체에 대한 비용을 수취하지 않습니다.
@@ -1450,30 +1480,28 @@ const FloatingBar = () => {
     return (
         <>
             {/* 모바일 하단 바 */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-[800] pointer-events-none">
-                <div className="px-4 pb-4 pointer-events-auto">
-                    <div className="flex justify-center mb-2">
-                        <div className="bg-white/95 backdrop-blur-md px-4 py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.15)] border border-stone-900/5 flex items-center gap-2">
-                            <span className="relative flex h-1.5 w-1.5">
-                                {status.open && <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
-                                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${status.open ? "bg-emerald-500" : "bg-stone-400"}`}></span>
-                            </span>
-                            <span className="text-[10.5px] font-bold text-stone-600 tracking-wide">{status.text} · {status.sub}</span>
-                        </div>
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-[800]">
+                <div className="backdrop-blur-xl border-t border-white/10 shadow-[0_-12px_40px_rgba(0,0,0,0.45)]" style={{ backgroundColor: "rgba(16,14,12,0.96)" }}>
+                    <div className="flex items-center justify-center gap-2 pt-2 pb-1.5">
+                        <span className="relative flex h-1.5 w-1.5">
+                            {status.open && <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
+                            <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${status.open ? "bg-emerald-400" : "bg-stone-500"}`}></span>
+                        </span>
+                        <span className="text-[10px] font-bold text-stone-400 tracking-wide">{status.text} · {status.sub}</span>
                     </div>
-                    <div className="backdrop-blur-xl shadow-[0_18px_45px_rgba(0,0,0,0.5)] p-2 flex gap-2 border border-white/10" style={{ backgroundColor: "rgba(20,18,16,0.95)" }}>
+                    <div className="px-3 pb-3 flex gap-2">
                         <a href={TEL_LINK} onClick={() => track("call_click", { where: "floating" })} aria-label={`전화 즉시 연결 ${TEL_DISPLAY}`}
-                            className="flex-1 h-14 border border-white/15 text-white flex flex-col items-center justify-center gap-1">
-                            <span className="flex items-center gap-1.5 text-[9px] font-bold text-stone-400 tracking-[0.15em] uppercase"><IcPhone className="w-3 h-3" /> 즉시 통화</span>
-                            <span className="text-[13px] font-black tracking-[0.08em] leading-none">2245-9369</span>
+                            className="flex-1 h-[52px] border border-white/15 text-white flex flex-col items-center justify-center gap-1">
+                            <span className="flex items-center gap-1.5 text-[8.5px] font-bold text-stone-400 tracking-[0.15em] uppercase"><IcPhone className="w-3 h-3" /> 즉시 통화</span>
+                            <span className="text-[12.5px] font-black tracking-[0.06em] leading-none">2245-9369</span>
                         </a>
                         <a href={KAKAO_URL} target="_blank" rel="noopener" onClick={() => track("kakao_click", { where: "floating" })} aria-label="카카오톡 상담"
-                            className="w-[64px] h-14 bg-[#FEE500] text-stone-900 flex flex-col items-center justify-center gap-1 font-black">
+                            className="w-[62px] h-[52px] bg-[#FEE500] text-stone-900 flex flex-col items-center justify-center gap-0.5 font-black">
                             <IcChat className="w-4 h-4" />
-                            <span className="text-[10px] leading-none">카톡</span>
+                            <span className="text-[9.5px] leading-none">카톡</span>
                         </a>
                         <button onClick={() => openQuote()}
-                            className="flex-[1.25] h-14 text-white flex items-center justify-center gap-2 font-black text-[13.5px]" style={{ backgroundColor: ACCENT }}>
+                            className="flex-[1.25] h-[52px] text-white flex items-center justify-center gap-2 font-black text-[13px]" style={{ backgroundColor: ACCENT }}>
                             <IcCamera className="w-4 h-4" /> 1분 무료 견적
                         </button>
                     </div>
