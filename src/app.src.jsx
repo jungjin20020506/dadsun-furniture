@@ -109,7 +109,8 @@ const SectionHead = ({ label, title, sub, dark = false }) => (
    1. 헤더 — 로고 · 전화 · 견적만
    ════════════════════════════════════════════ */
 const Header = () => (
-    <header className="sticky top-0 z-[500] backdrop-blur-xl border-b border-white/[0.07]" style={{ backgroundColor: "rgba(22,20,18,0.92)" }}>
+    // 모바일: blur 대신 불투명 배경(저사양 폰 스크롤 버벅임 방지), 데스크톱만 blur
+    <header className="sticky top-0 z-[500] border-b border-white/[0.07] bg-[#161412]/[0.97] md:bg-[#161412]/[0.92] md:backdrop-blur-xl">
         <div className="max-w-[1140px] mx-auto flex items-center justify-between px-5 md:px-8 h-14 md:h-[68px]">
             <a href="#top" className="flex items-center gap-2.5" aria-label="아빠와 아들 홈">
                 <div className="w-8 h-8 border border-white/30 flex items-center justify-center text-white font-black text-[11px] flex-shrink-0">父子</div>
@@ -147,7 +148,7 @@ const Hero = () => (
     <section id="top" className="relative overflow-hidden" style={{ backgroundColor: INK }}>
         {/* 모바일: 사진은 상단에만, 아래로 자연스럽게 어두워짐 */}
         <div className="absolute inset-x-0 top-0 h-[46%] md:hidden" aria-hidden="true">
-            <img src="father.jpg" loading="eager" fetchpriority="high" className="w-full h-full object-cover object-[center_22%]" alt="" />
+            <img src="img/father.webp" loading="eager" fetchpriority="high" decoding="async" width="1080" height="1350" className="w-full h-full object-cover object-[center_22%]" alt="" />
             <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(22,20,18,0.5) 0%, rgba(22,20,18,0.1) 30%, rgba(22,20,18,0.7) 72%, #161412 100%)" }}></div>
         </div>
 
@@ -186,7 +187,7 @@ const Hero = () => (
             {/* 데스크톱: 대표 포트레이트 */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.1, delay: 0.15 }} className="hidden md:block relative">
                 <div className="overflow-hidden">
-                    <motion.img src="father.jpg" alt="가구전문가 아빠와 아들 정용원 대표" loading="eager"
+                    <motion.img src="img/father.webp" alt="가구전문가 아빠와 아들 정용원 대표" loading="eager"
                         initial={{ scale: 1.12 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: EASE }}
                         className="w-full aspect-[4/5] object-cover object-[center_18%]" />
                 </div>
@@ -266,19 +267,19 @@ const LiveTicker = () => {
 const ServiceSection = () => {
     const services = [
         {
-            img: "A7.jpg", title: "방 ↔ 방 가구이동", price: "3만원~", formValue: "가구이동 (방 ↔ 방)",
+            img: "img/A7.webp", title: "방 ↔ 방 가구이동", price: "3만원~", formValue: "가구이동 (방 ↔ 방)",
             desc: "장롱·침대를 분해해 옮기고, 재조립 후 수평까지. 벽지 스침 하나 없이 끝냅니다."
         },
         {
-            img: "A8.jpg", title: "집 ↔ 집 이전설치", price: "5만원~", formValue: "가구이동 (집 ↔ 집)",
+            img: "img/A8.webp", title: "집 ↔ 집 이전설치", price: "5만원~", formValue: "가구이동 (집 ↔ 집)",
             desc: "이사업체 부르기엔 크고 용달은 불안한 가구 몇 점, 랩핑 포장해 새집 원하는 자리에 놓아드립니다."
         },
         {
-            img: "A6.jpg", title: "가구 폐기 · 수거", price: "2만원~", formValue: "가구폐기",
+            img: "img/A6.webp", title: "가구 폐기 · 수거", price: "2만원~", formValue: "가구폐기",
             desc: "돌침대·장롱 같은 대형 가구를 분해해 반출하고, 폐기 신고와 뒷정리까지 마칩니다."
         },
         {
-            img: "sh.jpg", title: "시스템행거 설치", price: "5만원~", formValue: "시스템행거",
+            img: "img/sh.webp", title: "시스템행거 설치", price: "5만원~", formValue: "시스템행거",
             desc: "레이저 수평으로 흔들림 없이 시공합니다. 이전 재설치와 부분 수리도 가능합니다."
         }
     ];
@@ -370,9 +371,9 @@ const StorySection = () => (
             <Reveal delay={0.1} className="mt-11 md:mt-0">
                 <div className="grid grid-cols-3 gap-3">
                     {[
-                        { img: "father.jpg", role: "아빠", name: "정용원", desc: "대표 · 수석 기술자" },
-                        { img: "son.jpg", role: "아들", name: "정형진", desc: "운영 총괄" },
-                        { img: "uncle.jpg", role: "삼촌", name: "김승욱", desc: "현장 관리" }
+                        { img: "img/father.webp", role: "아빠", name: "정용원", desc: "대표 · 수석 기술자" },
+                        { img: "img/son.webp", role: "아들", name: "정형진", desc: "운영 총괄" },
+                        { img: "img/uncle.webp", role: "삼촌", name: "김승욱", desc: "현장 관리" }
                     ].map((m, i) => (
                         <div key={i}>
                             <div className="overflow-hidden mb-3">
@@ -394,18 +395,18 @@ const StorySection = () => (
 const PortfolioSection = () => {
     const [tab, setTab] = useState("all");
     const works = [
-        { img: "A8.jpg", cat: "move", label: "쇼파 전면 랩핑 보양", area: "수원 광교" },
-        { img: "A7.jpg", cat: "move", label: "원목 침대 분해·이동", area: "화성 동탄" },
-        { img: "A2.jpg", cat: "install", label: "슬라이딩 장롱 이전설치", area: "용인 수지" },
-        { img: "stone2.jpg", cat: "disposal", label: "돌침대 분해·폐기", area: "오산 세교" },
-        { img: "A1.jpg", cat: "install", label: "아이방 침대 재조립", area: "평택 고덕" },
-        { img: "sh4.jpg", cat: "hanger", label: "ㄱ자 시스템행거 시공", area: "수원 영통" },
-        { img: "A9.jpg", cat: "move", label: "장식장 랩핑 이동", area: "화성 병점" },
-        { img: "A4.jpg", cat: "install", label: "붙박이장 조립·설치", area: "안산 단원" },
-        { img: "sh k.jpg", cat: "hanger", label: "드레스룸 행거 구성", area: "동탄2" },
-        { img: "bedframe.jpg", cat: "move", label: "침대 프레임 재조립", area: "용인 기흥" },
-        { img: "clo.jpg", cat: "install", label: "붙박이장 마감 실측", area: "수원 장안" },
-        { img: "A5.jpg", cat: "move", label: "원목 침대 수평 조립", area: "성남 분당" }
+        { img: "img/A8.webp", cat: "move", label: "쇼파 전면 랩핑 보양", area: "수원 광교" },
+        { img: "img/A7.webp", cat: "move", label: "원목 침대 분해·이동", area: "화성 동탄" },
+        { img: "img/A2.webp", cat: "install", label: "슬라이딩 장롱 이전설치", area: "용인 수지" },
+        { img: "img/stone2.webp", cat: "disposal", label: "돌침대 분해·폐기", area: "오산 세교" },
+        { img: "img/A1.webp", cat: "install", label: "아이방 침대 재조립", area: "평택 고덕" },
+        { img: "img/sh4.webp", cat: "hanger", label: "ㄱ자 시스템행거 시공", area: "수원 영통" },
+        { img: "img/A9.webp", cat: "move", label: "장식장 랩핑 이동", area: "화성 병점" },
+        { img: "img/A4.webp", cat: "install", label: "붙박이장 조립·설치", area: "안산 단원" },
+        { img: "img/sh-k.webp", cat: "hanger", label: "드레스룸 행거 구성", area: "동탄2" },
+        { img: "img/bedframe.webp", cat: "move", label: "침대 프레임 재조립", area: "용인 기흥" },
+        { img: "img/clo.webp", cat: "install", label: "붙박이장 마감 실측", area: "수원 장안" },
+        { img: "img/A5.webp", cat: "move", label: "원목 침대 수평 조립", area: "성남 분당" }
     ];
     const tabs = [
         { id: "all", label: "전체" },
@@ -454,10 +455,10 @@ const PortfolioSection = () => {
    ════════════════════════════════════════════ */
 const ReviewSection = () => {
     const captures = [
-        { url: "1.jpg", tag: "당근 후기" }, { url: "2.jpg", tag: "당근 후기" },
-        { url: "3.jpg", tag: "당근 후기" }, { url: "4.jpg", tag: "당근 후기" },
-        { url: "5.jpg", tag: "당근 후기" }, { url: "6.jpg", tag: "숨고 후기" },
-        { url: "7.jpg", tag: "숨고 후기" }, { url: "8.jpg", tag: "숨고 후기" }
+        { url: "img/1.webp", tag: "당근 후기" }, { url: "img/2.webp", tag: "당근 후기" },
+        { url: "img/3.webp", tag: "당근 후기" }, { url: "img/4.webp", tag: "당근 후기" },
+        { url: "img/5.webp", tag: "당근 후기" }, { url: "img/6.webp", tag: "숨고 후기" },
+        { url: "img/7.webp", tag: "숨고 후기" }, { url: "img/8.webp", tag: "숨고 후기" }
     ];
     const doubled = [...captures, ...captures];
     const quotes = [
@@ -472,8 +473,8 @@ const ReviewSection = () => {
                     sub={<>당근마켓 별점 <strong className="text-stone-800">5.0 · 단골 380+</strong>, 숨고 리뷰 <strong className="text-stone-800">5.0 · 185개+</strong> — 캡처 원본 그대로 보여드립니다.</>} />
             </div>
 
-            {/* 캡처 마키 */}
-            <motion.div className="flex gap-3" animate={{ x: [0, -(240 + 12) * captures.length] }} transition={{ repeat: Infinity, duration: 50, ease: "linear" }}>
+            {/* 캡처 마키 — CSS 애니메이션(index.html의 .marquee-track), 저사양 폰에서도 부드럽게 */}
+            <div className="marquee-track">
                 {doubled.map((r, i) => (
                     <div key={i} className="flex-shrink-0 w-[240px] relative bg-white border border-stone-900/10">
                         <div className="h-[300px] overflow-hidden">
@@ -482,7 +483,7 @@ const ReviewSection = () => {
                         <div className="absolute top-3 left-3 px-2 py-1 text-[9.5px] font-black text-white" style={{ backgroundColor: "rgba(22,20,18,0.8)" }}>{r.tag}</div>
                     </div>
                 ))}
-            </motion.div>
+            </div>
 
             <div className="max-w-[1140px] mx-auto px-6 md:px-8 mt-9 grid md:grid-cols-3 gap-4 md:gap-8">
                 {quotes.map((q, i) => (
@@ -529,9 +530,9 @@ const TrustSection = () => {
                 <SectionHead label="인증" title="의심되시나요? 당연합니다." sub="정식 사업자 등록부터 플랫폼 인증까지, 서류로 보여드립니다." />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:items-start">
                     {[
-                        { img: "숨고프로필.png", title: "숨고 본인인증 고수", sub: "리뷰 5.0 (185+)" },
-                        { img: "당근.png", title: "당근마켓 공식 동네업체", sub: "단골 380+ · 별점 5.0" },
-                        { img: "사업자.png", title: "정식 사업자 등록", sub: "등록번호 715-03-03416 · 대표 정용원" }
+                        { img: "img/cert-soomgo.webp", title: "숨고 본인인증 고수", sub: "리뷰 5.0 (185+)" },
+                        { img: "img/cert-danggeun.webp", title: "당근마켓 공식 동네업체", sub: "단골 380+ · 별점 5.0" },
+                        { img: "img/cert-biz.webp", title: "정식 사업자 등록", sub: "등록번호 715-03-03416 · 대표 정용원" }
                     ].map((c, i) => (
                         <Reveal key={i} delay={i * 0.06}>
                             <div className="bg-white border border-stone-900/10">
@@ -819,7 +820,7 @@ const QuoteWizard = () => {
 
                     <div className="mt-4 p-6 flex items-center gap-5" style={{ backgroundColor: INK }}>
                         <div className="w-16 h-16 overflow-hidden flex-shrink-0 border border-white/20">
-                            <img src="father.jpg" className="w-full h-full object-cover object-top" alt="정용원 대표" />
+                            <img src="img/father.webp" className="w-full h-full object-cover object-top" alt="정용원 대표" />
                         </div>
                         <p className="text-[13.5px] text-stone-300 leading-[1.9]">"꼼꼼히 확인하고 <strong className="text-white">바로 전화드리겠습니다.</strong><br />모르는 번호로 와도 한 번만 받아주세요."</p>
                     </div>
@@ -839,10 +840,10 @@ const QuoteWizard = () => {
                         <h3 className="text-[18px] font-black text-stone-900 mb-5 tracking-[-0.01em]">기다리시는 동안, 저희가 일하는 모습을 구경하세요</h3>
                         <div className="grid grid-cols-2 gap-3">
                             {[
-                                { img: "A8.jpg", cap: "쇼파 전면 랩핑 보양" },
-                                { img: "A2.jpg", cap: "슬라이딩 장롱 이전설치" },
-                                { img: "sh4.jpg", cap: "시스템행거 정밀 시공" },
-                                { img: "A5.jpg", cap: "원목 침대 재조립" }
+                                { img: "img/A8.webp", cap: "쇼파 전면 랩핑 보양" },
+                                { img: "img/A2.webp", cap: "슬라이딩 장롱 이전설치" },
+                                { img: "img/sh4.webp", cap: "시스템행거 정밀 시공" },
+                                { img: "img/A5.webp", cap: "원목 침대 재조립" }
                             ].map((w, i) => (
                                 <figure key={i} className="relative overflow-hidden">
                                     <div className="aspect-square"><img src={w.img} loading="lazy" className="w-full h-full object-cover" alt={w.cap} /></div>

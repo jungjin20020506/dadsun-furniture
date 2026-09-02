@@ -13,7 +13,8 @@ GitHub Pages로 배포되는 정적 웹사이트입니다.
 | `styles.css` | 디자인(색·여백 등) 빌드 결과물 | ❌ 직접 수정 금지 |
 | `manifest.json` | "홈 화면에 추가"(앱처럼 설치) 설정 | 가끔 |
 | `robots.txt`, `sitemap.xml` | 검색엔진 안내 파일 | 가끔 |
-| `*.jpg`, `*.png`, `icon.svg` | 사진/로고 이미지 | ✅ 교체 가능 |
+| `*.jpg`, `*.png`, `icon.svg` | 사진/로고 **원본** 이미지 | ✅ 교체 가능 |
+| `img/*.webp` | 원본을 모바일용으로 자동 최적화한 이미지 (사이트가 실제로 쓰는 파일) | ❌ 직접 수정 금지 — 원본 교체 후 `node scripts/optimize-images.mjs` 실행 |
 | `MANUAL.md` | **사장님이 직접 해야 할 일(검색등록·도메인 등) 안내서** | 읽기용 |
 
 > ⚠️ **중요:** `src/app.src.jsx`를 수정한 뒤에는 반드시 아래 "빌드"를 해야 `app.js`에 반영됩니다.

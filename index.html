@@ -93,15 +93,23 @@
     }
     </script>
 
+    <!-- 성능: 히어로(LCP) 이미지를 JS 실행 전에 미리 받기 시작 -->
+    <link rel="preload" as="image" href="img/father.webp" fetchpriority="high" />
+
     <!-- 성능: 빌드된 정적 CSS 사용 -->
     <link rel="stylesheet" href="styles.css" />
 
-    <!-- 폰트: Pretendard(본문) + Noto Serif KR(감성 제목) -->
+    <!-- 폰트: Pretendard(본문) + Noto Serif KR(감성 제목)
+         렌더링을 막지 않도록 비동기 로드 (로드 전엔 시스템 폰트로 즉시 표시) -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;900&display=swap" />
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;900&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+        <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;900&display=swap" />
+    </noscript>
 
     <style>
         body { font-family: "Pretendard Variable", Pretendard, sans-serif; background-color: #141210; color: #141210; word-break: keep-all; }
@@ -125,6 +133,10 @@
         #boot .spin { width: 26px; height: 26px; border: 2px solid rgba(255,255,255,.12); border-top-color: #C89B6D; border-radius: 50%; animation: bootspin 0.8s linear infinite; }
         #boot p { color: #78716c; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; }
         @keyframes bootspin { to { transform: rotate(360deg); } }
+        /* 후기 캡처 무한 흐름 — JS 대신 CSS(컴포지터) 애니메이션이라 저사양 폰에서도 부드러움 */
+        .marquee-track { display: flex; gap: 12px; width: max-content; animation: marquee 55s linear infinite; }
+        @keyframes marquee { to { transform: translateX(calc(-50% - 6px)); } }
+        @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
     </style>
 
     <!-- ▼▼▼ [사장님 작업] 구글 애널리틱스 GA4 — 매뉴얼 6번 참고. G-XXXXXXX를 본인 측정ID로 교체 후 주석을 해제하세요. ▼▼▼
@@ -137,15 +149,9 @@
     </script>
     ▲▲▲ GA4 끝 ▲▲▲ -->
 
-    <!-- Danggeun Market Code -->
-    <script src="https://karrot-pixel.business.daangn.com/karrot-pixel.js"></script>
-    <script>
-      // 픽셀 로드 실패(네트워크 차단 등) 시에도 페이지는 정상 동작하도록 방어
-      if (window.karrotPixel) {
-        window.karrotPixel.init('1768643305025660001');
-        window.karrotPixel.track('ViewPage');
-      }
-    </script>
+    <!-- Danggeun Market Code — async 로드로 렌더링을 막지 않음 -->
+    <script async src="https://karrot-pixel.business.daangn.com/karrot-pixel.js"
+      onload="try{window.karrotPixel.init('1768643305025660001');window.karrotPixel.track('ViewPage');}catch(e){}"></script>
     <!-- End Danggeun Market Code -->
 </head>
 <body>

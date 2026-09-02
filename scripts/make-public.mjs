@@ -23,4 +23,12 @@ for (const name of readdirSync(ROOT)) {
         copied++;
     }
 }
+
+// 최적화된 WebP 이미지 폴더 (img/) 복사
+const IMG_DIR = path.join(ROOT, "img");
+mkdirSync(path.join(OUT, "img"), { recursive: true });
+for (const name of readdirSync(IMG_DIR)) {
+    copyFileSync(path.join(IMG_DIR, name), path.join(OUT, "img", name));
+    copied++;
+}
 console.log(`public/ 생성 완료 — ${copied}개 파일 복사`);
