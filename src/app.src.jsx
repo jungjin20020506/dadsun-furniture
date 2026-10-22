@@ -793,6 +793,38 @@ const compressImage = (file) => new Promise((resolve) => {
     reader.readAsDataURL(file);
 });
 
+// 사진 여러 장을 "한 장"으로 모은 사진모음(콜라주) 생성 — 번호 표시 포함
+// 예전 구글 스크립트(사진 1장만 처리)가 켜져 있어도 사장님이 모든 사진을 한 번에 볼 수 있게 하는 안전장치
+const loadImg = (src) => new Promise((resolve) => { const im = new Image(); im.onload = () => resolve(im); im.onerror = () => resolve(null); im.src = src; });
+const buildContactSheet = async (photos) => {
+    try {
+        const n = photos.length;
+        if (n <= 1) return n ? photos[0].data : null;
+        const imgs = await Promise.all(photos.map((p) => loadImg(p.data)));
+        const cols = 2, rows = Math.ceil(n / cols);
+        const CELL = 960, GAP = 18, PAD = 18;
+        const canvas = document.createElement("canvas");
+        canvas.width = PAD * 2 + cols * CELL + (cols - 1) * GAP;
+        canvas.height = PAD * 2 + rows * CELL + (rows - 1) * GAP;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        imgs.forEach((im, i) => {
+            const cx = PAD + (i % cols) * (CELL + GAP), cy = PAD + Math.floor(i / cols) * (CELL + GAP);
+            ctx.fillStyle = "#f1efea"; ctx.fillRect(cx, cy, CELL, CELL);
+            if (im) {
+                const r = Math.min(CELL / im.width, CELL / im.height);
+                const w = Math.round(im.width * r), h = Math.round(im.height * r);
+                ctx.drawImage(im, cx + Math.round((CELL - w) / 2), cy + Math.round((CELL - h) / 2), w, h);
+            }
+            // 번호 배지
+            ctx.fillStyle = "rgba(0,0,0,0.72)"; ctx.fillRect(cx + 14, cy + 14, 92, 56);
+            ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px sans-serif"; ctx.textBaseline = "middle"; ctx.textAlign = "center";
+            ctx.fillText(String(i + 1) + "/" + n, cx + 60, cy + 43);
+        });
+        return canvas.toDataURL("image/jpeg", 0.8);
+    } catch (e) { return photos[0] ? photos[0].data : null; }
+};
+
 const QuoteWizard = () => {
     const emptyForm = { service: "", items: [], detail: "", photos: [], region: "", regionEtc: "", schedule: "가능한 한 빨리", date: "", phone: "" };
     const [formData, setFormData] = useState(() => {
@@ -896,6 +928,9 @@ const QuoteWizard = () => {
         if (formData.detail.trim()) contentParts.push(formData.detail.trim());
         contentParts.push(`[일정] ${scheduleNote}`);
         const photos = formData.photos.map((p, i) => ({ data: p.data, name: `사진${i + 1}.jpg` }));
+        if (photos.length > 1) contentParts.push(`[사진] 총 ${photos.length}장 (스크립트가 구버전이면 한 장에 모아서 전달)`);
+        // 구버전 스크립트(사진 1장만 처리)가 켜져 있어도 전부 보이도록, 첫 장 대신 "모든 사진을 모은 한 장"을 보냄
+        const contactSheet = await buildContactSheet(formData.photos);
         const payload = {
             service: formData.service,
             province: formData.regionEtc.trim() ? "직접입력" : "경기/수도권",
@@ -904,9 +939,9 @@ const QuoteWizard = () => {
             date: formData.schedule === "날짜 직접 선택" ? formData.date : "",
             dateNone: formData.schedule !== "날짜 직접 선택",
             phone: formData.phone,
-            photos,                                          // ★ 모든 사진 (새 Apps Script가 전부 첨부)
-            photoData: photos[0] ? photos[0].data : null,    // 구버전 스크립트 호환 (첫 장)
-            photoName: photos[0] ? photos[0].name : "",
+            photos,                                          // ★ 모든 사진 각각 (새 Apps Script v4: 메일 본문에 전부 표시 + 드라이브 저장)
+            photoData: contactSheet,                         // 구버전 스크립트 호환: 모든 사진을 한 장에 모은 사진모음
+            photoName: photos.length > 1 ? `사진모음_${photos.length}장.jpg` : (photos[0] ? photos[0].name : ""),
             photoCount: photos.length,
             agreedPrivacy: agree,
             source: "homepage-v7"
