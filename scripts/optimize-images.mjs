@@ -14,9 +14,8 @@ mkdirSync(OUT, { recursive: true });
 const JOBS = [
     // 히어로/대표 사진 (LCP) — 화면 전체 폭
     ["father.jpg", "father.webp", 1080, 78],
-    // 팀 소개 (3열 카드)
-    ["son.jpg", "son.webp", 520, 74],
-    ["uncle.jpg", "uncle.webp", 520, 74],
+    // 히어로 듀오 (아빠 옆에 나란히) + 소개 카드
+    ["son.jpg", "son.webp", 900, 76],
     // 서비스 카드 (모바일 전체 폭, 16:10)
     ["A6.jpg", "A6.webp", 800, 62],
     ["A7.jpg", "A7.webp", 960, 74],
