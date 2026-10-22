@@ -4,3 +4,4 @@ public/
 _verify*.mjs
 *.log
 .DS_Store
+.claude/
