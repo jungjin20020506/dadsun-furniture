@@ -16,7 +16,7 @@ GitHub Pages / Vercel로 배포되는 정적 웹사이트입니다.
 | `robots.txt`, `sitemap.xml` | 검색엔진 안내 파일 | 가끔 |
 | `*.jpg`, `*.png`, `icon.svg` | 사진/로고 **원본** 이미지 | ✅ 교체 가능 |
 | `img/*.webp` | 원본을 모바일용으로 자동 최적화한 이미지 (사이트가 실제로 쓰는 파일) | ❌ 직접 수정 금지 — 원본 교체 후 `node scripts/optimize-images.mjs` 실행 |
-| `scripts/apps-script.gs` | **구글 Apps Script에 붙여넣는 견적 접수 코드** (사진 여러 장 → 메일 첨부 + 드라이브 저장) | 매뉴얼 1단계 참고 |
+| `scripts/apps-script.gs` | **구글 Apps Script에 붙여넣는 견적 접수 코드 (v4)** — 사진 전부를 메일 본문에 바로 표시 + 드라이브 폴더 저장 + 첨부 | 매뉴얼 1단계 참고 |
 | `MANUAL.md` | **사장님이 직접 해야 할 일(스크립트 교체·검색등록·도메인 등) 안내서** | 읽기용 |
 
 > ⚠️ **중요:** `src/app.src.jsx`를 수정한 뒤에는 반드시 아래 "빌드"를 해야 `app.js`에 반영됩니다.
