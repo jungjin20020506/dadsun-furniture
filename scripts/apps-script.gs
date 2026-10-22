@@ -10,13 +10,15 @@
  *     - 사진 파일도 전부 첨부 (용량이 크면 첨부만 생략, 본문·드라이브는 유지)
  *  4) 드라이브가 실패해도 메일은 반드시 보냄 (사진은 본문에 포함)
  *
- * 설치: MANUAL.md 1단계. 붙여넣고 저장한 뒤, 먼저 위의 함수 선택에서 `testSend` 를 한 번 실행하세요.
+ * 시트: 이 스크립트는 시트에 연결되지 않은 독립 스크립트라 SPREADSHEET_ID 로 시트를 엽니다.
+ * 설치: MANUAL.md 1단계. 붙여넣고 저장한 뒤, 편집기에서 ▶ 실행을 한 번 누르세요 (doGet 그대로 두면 testSend가 실행됨).
  *       (권한 허용 창이 뜨면 허용 → 테스트 메일이 오면 성공) 그 다음 [배포] → [배포 관리] → 새 버전 → 배포.
  */
 
 var VERSION = 4;
 var NOTIFY_EMAIL = "jung22459369@gmail.com";      // 알림 받을 이메일
 var DRIVE_FOLDER_NAME = "아빠와아들_견적사진";      // 사진이 저장될 드라이브 폴더 이름 (없으면 자동 생성)
+var SPREADSHEET_ID = "1-kB4RaZoPJDO8hQRgjdwY8MnMOAZrmpiV33U4bQplPI";   // 견적이 쌓이는 구글 시트 ID (예전 스크립트와 동일)
 var MAX_ATTACH_BYTES = 18 * 1024 * 1024;          // 첨부 총량 한도 (Gmail 25MB 안전선)
 
 function doPost(e) {
@@ -33,7 +35,9 @@ function doPost(e) {
 }
 
 // 브라우저에서 주소를 직접 열었을 때 (버전 확인용)
-function doGet() {
+// ※ 편집기에서 ▶ 실행 버튼으로 돌리면(요청 정보 e 없음) 자동으로 testSend()가 실행됩니다 — 함수 선택을 바꿀 필요 없음
+function doGet(e) {
+  if (!e) { testSend(); return; }
   return json_({ result: "ok", version: VERSION, msg: "아빠와 아들 견적 접수 스크립트 v" + VERSION + " 작동 중 (사진 여러 장 지원)" });
 }
 
@@ -91,13 +95,15 @@ function handleQuote_(data) {
     } catch (err) { driveError = String(err); }
   }
 
-  // ── 4. 구글 시트 기록 ──
+  // ── 4. 구글 시트 기록 (예전 열 순서 유지: 날짜·서비스·지역·내용·희망일·사진·연락처 + 새 열: 사진 수·동의·출처) ──
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    var ss = SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheets()[0];
     sheet.appendRow([
-      now, data.service || "", region, data.content || "", when, phone,
-      blobs.length, folderUrl || (driveError ? "드라이브 저장 실패: " + driveError : ""),
-      data.agreedPrivacy ? "동의" : "", data.source || ""
+      now, data.service || "", region, data.content || "", when,
+      folderUrl || (driveError ? "드라이브 저장 실패: " + driveError : (blobs.length ? "사진 " + blobs.length + "장 (메일 본문)" : "사진 없음")),
+      "'" + phone,
+      blobs.length, data.agreedPrivacy ? "동의" : "", data.source || ""
     ]);
   } catch (err) { /* 시트 실패가 메일을 막지 않도록 */ }
 
